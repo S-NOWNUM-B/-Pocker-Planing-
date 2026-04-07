@@ -17,6 +17,7 @@
 
 - [О проекте](#о-проекте)
 - [Технологический стек](#технологический-стек)
+- [Текущее состояние](#текущее-состояние)
 - [Архитектура](#архитектура)
 - [Быстрый старт](#быстрый-старт)
 - [Команды](#команды)
@@ -64,6 +65,14 @@
 
 ---
 
+## Текущее состояние
+
+- Монорепозиторий настроен для `frontend` и `packages/shared`.
+- Backend в этом репозитории не подготавливается: будет подключён отдельный готовый Python-сервис.
+- Подготовлены общие конфиги качества кода: ESLint, Prettier, Stylelint, TypeScript base config, Turbo.
+
+---
+
 ## Архитектура
 
 ```mermaid
@@ -84,9 +93,9 @@ flowchart LR
     end
 
     subgraph BE["Backend API"]
-        REST["REST API"]
-        WSEndpoint["WebSocket /\nHub"]
-        Services["Services /\nБизнес-логика"]
+        REST["External Python API"]
+        WSEndpoint["External WebSocket Hub"]
+        Services["Будет подключён отдельно"]
     end
 
     subgraph Storage["Хранилище"]
@@ -103,8 +112,8 @@ flowchart LR
     WS <--> WSEndpoint
     REST --> Services
     WSEndpoint --> Services
-    Services --> DB
-    Services <--> Cache
+    Services -. external .-> DB
+    Services -. external .-> Cache
 ```
 
 ---
@@ -145,34 +154,47 @@ pnpm dev
 ### Настройки по умолчанию
 
 - Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:8000`
-- WebSocket: `ws://localhost:8000/ws`
+- Backend API (будет внешним): `http://localhost:8000`
+- WebSocket (будет внешним): `ws://localhost:8000/ws`
 
 ---
 
 ## Команды
 
-### Frontend (Vite)
+### Root (monorepo)
 
 ```bash
-# Запуск dev-сервера (http://localhost:5173)
+# Запуск dev-задач во всех пакетах
 pnpm dev
 
-# Production-сборка
+# Сборка всех пакетов
 pnpm build
 
-# Запуск production-сборки
-pnpm start
-
-# Предпросмотр production-сборки
-pnpm preview
-
-# Линтинг
+# Линтинг всех пакетов
 pnpm lint
 
-# Форматирование кода
+# Проверка типов
+pnpm typecheck
+
+# Форматирование всего репозитория
 pnpm format
 
-# Проверка типов TypeScript
-pnpm typecheck
+# Проверка форматирования
+pnpm format:check
+```
+
+### Frontend (targeted)
+
+```bash
+# Запуск только frontend
+pnpm --filter @poker/frontend dev
+
+# Сборка только frontend
+pnpm --filter @poker/frontend build
+
+# Предпросмотр production-сборки frontend
+pnpm --filter @poker/frontend preview
+
+# Линтинг frontend
+pnpm --filter @poker/frontend lint
 ```

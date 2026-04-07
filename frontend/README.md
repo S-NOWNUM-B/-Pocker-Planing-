@@ -18,6 +18,7 @@
 - [Описание](#описание)
 - [Технологический стек](#технологический-стек)
 - [Структура проекта](#структура-проекта)
+- [Интеграции](#интеграции)
 - [Быстрый старт](#быстрый-старт)
 - [Команды](#команды)
 
@@ -26,6 +27,8 @@
 ## Описание
 
 Frontend — клиентское приложение для участия в сессиях планирования покером. Обеспечивает создание комнат, голосование картами, просмотр результатов в реальном времени через WebSocket.
+
+Backend подключается как внешний Python-сервис по URL из `.env`.
 
 ---
 
@@ -41,10 +44,8 @@ Frontend — клиентское приложение для участия в 
 | Серверный стейт | TanStack Query 5+ |
 | HTTP-клиент | Axios |
 | Стили | Tailwind CSS 4+ |
-| UI-компоненты | shadcn/ui |
-| Анимации | Framer Motion |
-| Валидация | Zod + React Hook Form |
-| Иконки | Lucide React |
+| Переиспользуемые типы | `@poker/shared` |
+| Качество кода | ESLint + Prettier + Stylelint |
 
 </div>
 
@@ -55,30 +56,27 @@ Frontend — клиентское приложение для участия в 
 ```
 frontend/
 ├── src/
-│   ├── app/              ← роуты React Router
-│   ├── pages/            ← страницы (Home, Room, Results)
-│   ├── widgets/          ← крупные блоки UI
-│   ├── features/         ← голосование, комнаты, WebSocket
-│   ├── entities/         ← Room, User, Card, Vote
-│   ├── shared/
-│   │   ├── api/          ← axios instance, tanstack query hooks
-│   │   ├── ui/           ← переиспользуемые компоненты
-│   │   └── lib/          ← утилиты, константы
-│   └── main.tsx
-├── public/
+│   ├── main.tsx
+│   └── styles.css
+├── .env.example
 ├── index.html
 ├── vite.config.ts
-├── tailwind.config.ts
+├── tsconfig.app.json
 ├── tsconfig.json
-├── .eslintrc.js
-├── .prettierrc.js
-├── .stylelintrc.js
 └── package.json
 ```
 
 ### Методология: Feature-Sliced Design
 
-Проект следует FSD для обеспечения масштабируемости и переиспользуемости кода.
+Проект запущен на стартовом каркасе. FSD будет вводиться по мере роста модулей (`pages`, `features`, `entities`, `shared`).
+
+---
+
+## Интеграции
+
+- API Base URL: `VITE_API_URL` (по умолчанию `http://localhost:8000/api/v1`)
+- WebSocket URL: `VITE_WS_URL` (по умолчанию `ws://localhost:8000/ws`)
+- Контракты данных: через workspace-пакет `@poker/shared`
 
 ---
 
@@ -92,44 +90,38 @@ frontend/
 ### Установка
 
 ```bash
-cd frontend
+# Из корня монорепозитория
 pnpm install
 
-# Копирование .env
-cp .env.example .env
+# Копирование env в папке frontend
+cp frontend/.env.example frontend/.env
 
-# Запуск dev-сервера
-pnpm dev
+# Запуск dev-сервера frontend
+pnpm --filter @poker/frontend dev
 ```
 
 ### Настройки по умолчанию
 
 - Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:8000`
+- Backend API (внешний): `http://localhost:8000`
 
 ---
 
 ## Команды
 
 ```bash
-# Запуск dev-сервера
-pnpm dev
+# Запуск dev-сервера frontend
+pnpm --filter @poker/frontend dev
 
-# Production-сборка
-pnpm build
-
-# Запуск production
-pnpm start
+# Production-сборка frontend
+pnpm --filter @poker/frontend build
 
 # Предпросмотр production-сборки
-pnpm preview
+pnpm --filter @poker/frontend preview
 
-# Линтинг
-pnpm lint
+# Линтинг frontend
+pnpm --filter @poker/frontend lint
 
-# Форматирование
-pnpm format
-
-# Проверка типов
-pnpm typecheck
+# Проверка типов frontend
+pnpm --filter @poker/frontend typecheck
 ```

@@ -45,9 +45,6 @@ coverage/
 .turbo/
 .cache/
 
-# Husky
-.husky/
-
 # TypeScript
 *.tsbuildinfo
 

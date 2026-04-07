@@ -47,19 +47,18 @@
 
 | **Категория** | **Технологии** | **Версия / Детали** |
 |:---:|:---:|:---:|
-| Фреймворк | React, TypeScript | React 19+ |
-| Сборка | Vite | 6+ |
-| Роутинг | React Router (Framework Mode) | 7+ |
-| Серверный стейт | TanStack Query | 5+ |
-| HTTP-клиент | Axios | 1.13+ |
-| Стили | Tailwind CSS | 4+ |
-| UI-компоненты | shadcn/ui | — |
-| Анимации | Framer Motion | 12+ |
-| Реальное время | WebSocket | — |
-| Валидация | Zod + React Hook Form | — |
-| Иконки | Lucide React | — |
-| Линтинг | ESLint + Prettier + Stylelint | — |
-| Git-хуки | Husky + lint-staged | — |
+| UI framework | [React](https://react.dev/learn) | 19+ |
+| Язык | [TypeScript](https://www.typescriptlang.org/docs/) | 5+ |
+| Сборка | [Vite](https://vite.dev/guide/) | 6+ |
+| Роутинг | [React Router (Framework Mode)](https://reactrouter.com/start/framework/installation) | 7+ |
+| Серверный стейт | [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview) | 5+ |
+| Стили | [Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite) | 4+ |
+| HTTP-клиент | [Axios](https://axios-http.com/docs/intro) | 1.13+ |
+| Realtime | [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) | нативный браузерный API |
+| Документация API | [Swagger / OpenAPI](https://swagger.io/docs/) | спецификация и описание контрактов |
+| Методология | [Feature-Sliced Design](https://feature-sliced.design/) | организация frontend-кода |
+| Контроль версий | [Git](https://git-scm.com/doc) | workflow разработки |
+| Линтинг и форматирование | ESLint + Prettier + Stylelint | инструменты качества кода |
 
 </div>
 

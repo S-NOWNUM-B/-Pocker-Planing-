@@ -50,3 +50,6 @@ coverage/
 
 # Vite
 vite.config.ts.timestamp-*
+
+# AI generated files
+*.qwen

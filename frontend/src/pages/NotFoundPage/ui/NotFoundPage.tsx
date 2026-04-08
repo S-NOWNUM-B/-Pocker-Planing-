@@ -1,15 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Button, EmptyState } from '@/shared/ui';
-import styles from './NotFoundPage.module.css';
 
 export function NotFoundPage() {
   return (
-    <div className={styles.page}>
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-5">
       <EmptyState
         title="404 - Page Not Found"
         description="The page you're looking for doesn't exist"
-        actionLabel="Go Home"
-        onAction={() => {}}
       />
       <Link to="/">
         <Button variant="primary">Return Home</Button>

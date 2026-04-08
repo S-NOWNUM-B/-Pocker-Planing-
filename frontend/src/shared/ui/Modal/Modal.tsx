@@ -12,11 +12,11 @@ export function Modal({ children, isOpen, onClose, title, className = '', ...pro
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1000]"
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-1000"
       onClick={onClose}
     >
       <div
-        className={`bg-white rounded-2xl p-6 max-w-[500px] w-[90%] max-h-[90vh] overflow-y-auto ${className}`}
+        className={`bg-white rounded-2xl p-6 max-w-500px w-[90%] max-h-[90vh] overflow-y-auto ${className}`}
         onClick={(e) => e.stopPropagation()}
         {...props}
       >

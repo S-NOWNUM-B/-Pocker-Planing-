@@ -6,9 +6,9 @@ const colorClasses = {
   gray: 'bg-gray-100 text-gray-800',
 };
 
-type BadgeColor = keyof typeof colorClasses;
+export type BadgeColor = keyof typeof colorClasses;
 
-interface BadgeProps {
+export interface BadgeProps {
   label: string;
   color?: BadgeColor;
 }

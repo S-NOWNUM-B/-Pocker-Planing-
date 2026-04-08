@@ -1,6 +1,6 @@
 import { type ButtonHTMLAttributes, forwardRef } from 'react';
 
-const variantClasses = {
+export const variantClasses = {
   primary: 'bg-blue-500 text-white hover:bg-blue-600',
   secondary: 'bg-indigo-500 text-white hover:bg-indigo-600',
   outline: 'bg-transparent border-2 border-gray-300 text-gray-700 hover:border-blue-500',
@@ -8,13 +8,13 @@ const variantClasses = {
   ghost: 'bg-transparent text-gray-700 hover:bg-gray-100',
 };
 
-const sizeClasses = {
+export const sizeClasses = {
   sm: 'px-3 py-1.5 text-sm',
   md: 'px-5 py-2.5 text-base',
   lg: 'px-7 py-3.5 text-lg',
 };
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'card' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
 }

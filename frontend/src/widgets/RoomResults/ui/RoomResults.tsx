@@ -14,7 +14,9 @@ interface RoomResultsProps {
 
 export function RoomResults({ results, average }: RoomResultsProps) {
   if (results.length === 0) {
-    return <EmptyState title="No votes to display" description="Waiting for participants to vote" />;
+    return (
+      <EmptyState title="No votes to display" description="Waiting for participants to vote" />
+    );
   }
 
   return (
@@ -33,7 +35,7 @@ export function RoomResults({ results, average }: RoomResultsProps) {
           {results.map((result, index) => (
             <div key={index} className="flex flex-col items-center gap-2">
               <VoteDisplay value={result.vote} size="sm" revealed />
-              <span className="text-xs text-gray-500 text-center max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
+              <span className="text-xs text-gray-500 text-center max-w-100px overflow-hidden text-ellipsis whitespace-nowrap">
                 {result.participantName}
               </span>
             </div>

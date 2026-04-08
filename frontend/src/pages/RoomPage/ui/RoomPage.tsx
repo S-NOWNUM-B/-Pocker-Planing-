@@ -4,7 +4,6 @@ import { VotingCards } from '@/widgets/VotingCards';
 import { RoomResults } from '@/widgets/RoomResults';
 import { useRoomParams } from '../lib/useRoomParams';
 import { Spinner } from '@/shared/ui';
-import styles from './RoomPage.module.css';
 
 // Placeholder data - will be replaced with actual API calls
 const mockRoom = {
@@ -30,9 +29,9 @@ export function RoomPage() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className="min-h-screen bg-gray-50">
       <RoomHeader room={room} roomId={roomId} isModerator={true} />
-      <main className={styles.main}>
+      <main className="max-w-[1200px] mx-auto p-5 flex flex-col gap-6">
         <ParticipantsList participants={room.participants} />
         {room.status === 'voting' && <VotingCards roomId={roomId} />}
         {room.status === 'revealed' && <RoomResults results={[]} />}

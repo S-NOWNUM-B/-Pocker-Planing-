@@ -1,23 +1,22 @@
 import { Card } from '@/shared/ui';
 import { CreateRoomForm } from '@/features/create-room';
 import { JoinRoomForm } from '@/features/join-room';
-import styles from './HomePage.module.css';
 
 export function HomePage() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Planning Poker</h1>
-          <p className={styles.subtitle}>Estimate your tasks efficiently with your team</p>
+    <div className="min-h-screen bg-gray-50">
+      <main className="max-w-800px] mx-auto p-10">
+        <div className="text-center mb-10">
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-3">Planning Poker</h1>
+          <p className="text-lg text-gray-500">Estimate your tasks efficiently with your team</p>
         </div>
-        <div className={styles.forms}>
-          <Card className={styles.card}>
-            <h2 className={styles['card-title']}>Create New Room</h2>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-5">Create New Room</h2>
             <CreateRoomForm />
           </Card>
-          <Card className={styles.card}>
-            <h2 className={styles['card-title']}>Join Existing Room</h2>
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-5">Join Existing Room</h2>
             <JoinRoomForm />
           </Card>
         </div>

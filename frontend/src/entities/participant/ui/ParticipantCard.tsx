@@ -11,7 +11,7 @@ export function ParticipantCard({ participant, showVoteStatus = true }: Particip
 
   return (
     <li className="flex items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg">
-      <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold text-sm flex-shrink-0">
+      <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold text-sm shrink-0">
         {initials}
       </div>
       <div className="flex flex-col gap-0.5 flex-1 min-w-0">

@@ -36,16 +36,16 @@ Backend подключается как внешний Python-сервис по 
 
 <div align="center">
 
-| **Категория** | **Технологии** |
-|:---|:---|
-| Фреймворк | React 19 + TypeScript |
-| Сборка | Vite 6+ |
-| Роутинг | React Router (Framework Mode) |
-| Серверный стейт | TanStack Query 5+ |
-| HTTP-клиент | Axios |
-| Стили | Tailwind CSS 4+ |
-| Переиспользуемые типы | `@poker/shared` |
-| Качество кода | ESLint + Prettier + Stylelint |
+| **Категория**         | **Технологии**                |
+| :-------------------- | :---------------------------- |
+| Фреймворк             | React 19 + TypeScript         |
+| Сборка                | Vite 6+                       |
+| Роутинг               | React Router (Framework Mode) |
+| Серверный стейт       | TanStack Query 5+             |
+| HTTP-клиент           | Axios                         |
+| Стили                 | Tailwind CSS 4+               |
+| Переиспользуемые типы | `@poker/shared`               |
+| Качество кода         | ESLint + Prettier + Stylelint |
 
 </div>
 

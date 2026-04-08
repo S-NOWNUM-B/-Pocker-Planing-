@@ -9,15 +9,9 @@ interface EmptyStateProps {
   onAction?: () => void;
 }
 
-export function EmptyState({
-  icon,
-  title,
-  description,
-  actionLabel,
-  onAction,
-}: EmptyStateProps) {
+export function EmptyState({ icon, title, description, actionLabel, onAction }: EmptyStateProps) {
   return (
-    <div className={styles.emptyState}>
+    <div className={styles['empty-state']}>
       {icon && <div className={styles.icon}>{icon}</div>}
       <h3 className={styles.title}>{title}</h3>
       {description && <p className={styles.description}>{description}</p>}

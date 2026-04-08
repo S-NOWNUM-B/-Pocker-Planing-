@@ -8,14 +8,7 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   title?: string;
 }
 
-export function Modal({
-  children,
-  isOpen,
-  onClose,
-  title,
-  className = '',
-  ...props
-}: ModalProps) {
+export function Modal({ children, isOpen, onClose, title, className = '', ...props }: ModalProps) {
   if (!isOpen) return null;
 
   return (

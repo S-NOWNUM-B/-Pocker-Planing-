@@ -1,8 +1,12 @@
+import { AppProviders } from './app/providers';
+import { AppRoutes } from './app/router';
+import './app/styles/index.css';
+
 function App() {
-	  return (
-	<div className="App">
-	  <h1>Planning Poker</h1>
-	</div>
+  return (
+    <AppProviders>
+      <AppRoutes />
+    </AppProviders>
   );
 }
 

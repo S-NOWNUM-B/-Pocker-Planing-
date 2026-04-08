@@ -6,12 +6,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'elevated' | 'outlined';
 }
 
-export function Card({
-  className = '',
-  variant = 'default',
-  children,
-  ...props
-}: CardProps) {
+export function Card({ className = '', variant = 'default', children, ...props }: CardProps) {
   return (
     <div className={`${styles.card} ${styles[variant]} ${className}`} {...props}>
       {children}

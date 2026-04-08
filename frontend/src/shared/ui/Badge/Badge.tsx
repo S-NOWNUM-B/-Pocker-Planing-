@@ -14,9 +14,5 @@ const colorMap = {
 };
 
 export function Badge({ label, color = 'gray' }: BadgeProps) {
-  return (
-    <span className={`${styles.badge} ${styles[colorMap[color]]}`}>
-      {label}
-    </span>
-  );
+  return <span className={`${styles.badge} ${styles[colorMap[color]]}`}>{label}</span>;
 }

@@ -18,7 +18,7 @@ api.interceptors.response.use(
       message: error.response?.data?.message || error.message,
     };
     return Promise.reject(apiError);
-  }
+  },
 );
 
 export type { ApiError };

@@ -62,14 +62,11 @@ export function useWebSocket<T>({
     };
   }, [connect, disconnect, autoConnect]);
 
-  const sendMessage = useCallback(
-    (message: unknown) => {
-      if (wsRef.current?.readyState === WebSocket.OPEN) {
-        wsRef.current.send(JSON.stringify(message));
-      }
-    },
-    []
-  );
+  const sendMessage = useCallback((message: unknown) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify(message));
+    }
+  }, []);
 
   return { sendMessage, disconnect, isConnected: wsRef.current?.readyState === WebSocket.OPEN };
 }

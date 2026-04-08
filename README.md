@@ -47,20 +47,20 @@
 
 <div align="center">
 
-| **Категория** | **Технологии** | **Версия / Детали** |
-|:---:|:---:|:---:|
-| UI framework | [React](https://react.dev/learn) | 19+ |
-| Язык | [TypeScript](https://www.typescriptlang.org/docs/) | 5+ |
-| Сборка | [Vite](https://vite.dev/guide/) | 6+ |
-| Роутинг | [React Router (Framework Mode)](https://reactrouter.com/start/framework/installation) | 7+ |
-| Серверный стейт | [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview) | 5+ |
-| Стили | [Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite) | 4+ |
-| HTTP-клиент | [Axios](https://axios-http.com/docs/intro) | 1.13+ |
-| Realtime | [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) | нативный браузерный API |
-| Документация API | [Swagger / OpenAPI](https://swagger.io/docs/) | спецификация и описание контрактов |
-| Методология | [Feature-Sliced Design](https://feature-sliced.design/) | организация frontend-кода |
-| Контроль версий | [Git](https://git-scm.com/doc) | workflow разработки |
-| Линтинг и форматирование | ESLint + Prettier + Stylelint | инструменты качества кода |
+|      **Категория**       |                                    **Технологии**                                     |        **Версия / Детали**         |
+| :----------------------: | :-----------------------------------------------------------------------------------: | :--------------------------------: |
+|       UI framework       |                           [React](https://react.dev/learn)                            |                19+                 |
+|           Язык           |                  [TypeScript](https://www.typescriptlang.org/docs/)                   |                 5+                 |
+|          Сборка          |                            [Vite](https://vite.dev/guide/)                            |                 6+                 |
+|         Роутинг          | [React Router (Framework Mode)](https://reactrouter.com/start/framework/installation) |                 7+                 |
+|     Серверный стейт      |   [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview)   |                 5+                 |
+|          Стили           |         [Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite)          |                 4+                 |
+|       HTTP-клиент        |                      [Axios](https://axios-http.com/docs/intro)                       |               1.13+                |
+|         Realtime         |        [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)        |      нативный браузерный API       |
+|     Документация API     |                     [Swagger / OpenAPI](https://swagger.io/docs/)                     | спецификация и описание контрактов |
+|       Методология        |                [Feature-Sliced Design](https://feature-sliced.design/)                |     организация frontend-кода      |
+|     Контроль версий      |                            [Git](https://git-scm.com/doc)                             |        workflow разработки         |
+| Линтинг и форматирование |                             ESLint + Prettier + Stylelint                             |     инструменты качества кода      |
 
 </div>
 
@@ -126,9 +126,9 @@ flowchart LR
 <div align="center">
 
 | Компонент | Минимум | Рекомендуется |
-|:---:|:---:|:---:|
-| Node.js | 18.18+ | 20+ |
-| pnpm | 8+ | 9+ |
+| :-------: | :-----: | :-----------: |
+|  Node.js  | 18.18+  |      20+      |
+|   pnpm    |   8+    |      9+       |
 
 </div>
 

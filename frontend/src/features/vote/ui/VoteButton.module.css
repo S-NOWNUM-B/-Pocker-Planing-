@@ -1,0 +1,7 @@
+.vote-button {
+  transition: all 0.2s;
+}
+
+.vote-button:hover:not(:disabled) {
+  transform: translateY(-4px);
+}

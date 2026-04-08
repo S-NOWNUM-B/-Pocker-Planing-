@@ -20,7 +20,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
         console.error('Error saving to localStorage:', error);
       }
     },
-    [key, storedValue]
+    [key, storedValue],
   );
 
   return [storedValue, setValue] as const;

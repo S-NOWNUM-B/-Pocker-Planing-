@@ -4,7 +4,7 @@ const sizeClasses = {
   lg: 'w-12 h-12',
 };
 
-interface SpinnerProps {
+export interface SpinnerProps {
   size?: 'sm' | 'md' | 'lg';
   label?: string;
 }

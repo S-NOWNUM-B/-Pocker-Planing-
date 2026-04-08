@@ -7,14 +7,12 @@
     "moduleDetection": "force",
     "verbatimModuleSyntax": true,
     "noUncheckedSideEffectImports": true,
+    "noEmit": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/app/*": ["./src/app/*"],
-      "@/pages/*": ["./src/pages/*"],
-      "@/widgets/*": ["./src/widgets/*"],
-      "@/features/*": ["./src/features/*"],
-      "@/entities/*": ["./src/entities/*"],
-      "@/shared/*": ["./src/shared/*"]
+      "@poker/shared": ["../packages/shared/src/index.ts"]
     }
   },
   "include": ["src"]

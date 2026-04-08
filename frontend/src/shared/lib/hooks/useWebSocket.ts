@@ -14,7 +14,7 @@ export function useWebSocket<T>({
   autoConnect = true,
 }: UseWebSocketOptions<T>) {
   const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const connect = useCallback(() => {
     const ws = new WebSocket(url);

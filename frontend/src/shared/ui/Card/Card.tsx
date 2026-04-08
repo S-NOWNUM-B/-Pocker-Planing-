@@ -6,7 +6,7 @@ const variantClasses = {
   outlined: 'bg-transparent border-2 border-gray-300',
 };
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
+export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   variant?: 'default' | 'elevated' | 'outlined';
 }

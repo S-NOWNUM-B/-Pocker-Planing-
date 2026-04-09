@@ -22,18 +22,16 @@ export function RoomResults({
   statusMessage,
   onReveal,
   onNextTask,
+  className,
 }: RoomResultsProps) {
   return (
-  className,
-    <section className="relative flex min-h-28rem flex-1 flex-col overflow-hidden rounded-3xl border border-border/70 bg-card/80 shadow-2xl backdrop-blur lg:min-h-32rem">
-      <div className="absolute inset-4 rounded-4xl bg-table/95 shadow-inner" />
     <section
       className={cn(
         'relative flex flex-col overflow-hidden rounded-3xl border border-border/70 bg-card/80 shadow-2xl backdrop-blur',
         className,
       )}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-table/95 via-table/90 to-table/100" />
+      <div className="absolute inset-0 bg-linear-to-br from-table/95 via-table/90 to-table" />
       <div className="absolute inset-3 rounded-[1.45rem] border border-table-border/55" />
 
       <div className="relative z-10 flex h-full flex-col p-3 sm:p-5">
@@ -93,10 +91,6 @@ export function RoomResults({
             <Button type="button" onClick={onNextTask} className="h-11 rounded-2xl px-8 text-base font-semibold">
               Следующая задача
             </Button>
-          ) : null}
-        </div>
-      </div>
-    </section>
           ) : null}
         </div>
       </div>

@@ -15,7 +15,7 @@ export function VotingCards({
   onSelectCard,
 }: VotingCardsProps) {
   return (
-    <section className="sticky bottom-0 z-20 border-t border-border/70 bg-card/92 shadow-[0_-8px_30px_-20px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+    <section className="z-20 border-t border-border/70 bg-card/92 shadow-[0_-8px_30px_-20px_rgba(0,0,0,0.45)] backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
         <div className="mb-2 flex items-center justify-between gap-3">
           <div className="text-sm font-semibold text-foreground">Карты голосования</div>

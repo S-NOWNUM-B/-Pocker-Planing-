@@ -16,7 +16,7 @@ export function ParticipantsList({ players, isRevealed, className }: Participant
 
   return (
     <section className={cn('w-full', className)}>
-      <Card className="h-full border border-border/70 bg-card/90 p-2.5 shadow-lg backdrop-blur">
+      <Card className="h-auto border border-border/70 bg-card/90 p-2.5 shadow-lg backdrop-blur">
         <div className="mb-1.5 flex items-center justify-between gap-3">
           <h2 className="text-base font-bold text-foreground">Участники</h2>
           <span className="text-sm text-muted-foreground">{players.length}</span>

@@ -63,16 +63,26 @@ export function RoomResults({
 
         <div className="flex min-h-0 flex-1 items-center justify-center px-3 py-1.5">
           {isRevealed ? (
-            <Card className="w-full max-w-[20rem] border border-primary/50 bg-card/95 p-3.5 text-center shadow-xl">
-              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                Финальная оценка
-              </div>
-              <div className="mt-1.5 text-4xl font-black text-primary sm:text-5xl">{average}</div>
-              <div className="mt-0.5 text-sm font-medium text-muted-foreground">Story Points</div>
-            </Card>
+            <div className="flex w-full flex-col items-center gap-2 text-center">
+              <Card className="w-full max-w-[20rem] border border-primary/50 bg-card/95 p-3.5 text-center shadow-xl">
+                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                  Финальная оценка
+                </div>
+                <div className="mt-1.5 text-4xl font-black text-primary sm:text-5xl">{average}</div>
+                <div className="mt-0.5 text-sm font-medium text-muted-foreground">Story Points</div>
+              </Card>
+
+              <Button
+                type="button"
+                onClick={onNextTask}
+                className="h-9 rounded-2xl px-6 text-base font-semibold"
+              >
+                Следующая задача
+              </Button>
+            </div>
           ) : (
             <div className="flex flex-col items-center gap-3 text-center">
-              <div className="text-sm text-card-foreground/90">
+              <div className="text-sm font-medium text-primary-foreground/92 drop-shadow-[0_1px_1px_rgba(0,0,0,0.35)]">
                 {allPlayersVoted
                   ? 'Все участники проголосовали. Можно показывать результат.'
                   : anyPlayerVoted
@@ -91,14 +101,6 @@ export function RoomResults({
               </Button>
             </div>
           )}
-        </div>
-
-        <div className="pt-0.5 text-center">
-          {isRevealed ? (
-            <Button type="button" onClick={onNextTask} className="h-9 rounded-2xl px-6 text-base font-semibold">
-              Следующая задача
-            </Button>
-          ) : null}
         </div>
       </div>
     </section>

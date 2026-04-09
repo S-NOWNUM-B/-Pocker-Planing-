@@ -53,8 +53,8 @@ export function HomePage() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-24 right-[-6rem] h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute bottom-0 left-[-5rem] h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
+        <div className="absolute -top-24 right--6rem h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute bottom-0 left--5rem h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
       </div>
 
       <button

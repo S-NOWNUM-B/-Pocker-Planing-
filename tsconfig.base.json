@@ -11,7 +11,6 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "baseUrl": ".",
     "paths": {
       "@poker/shared": ["packages/shared/src/index.ts"]
     }

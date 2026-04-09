@@ -1,14 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Input } from '@/shared/ui';
-import {
-  LinkIcon,
-  MoonIcon,
-  PlayIcon,
-  SunIcon,
-  TrophyIcon,
-  UsersIcon,
-} from '@/shared/ui/icons';
+import { LinkIcon, MoonIcon, PlayIcon, SunIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
 import { createRoomId, type DeckType, type GameSession } from '@/shared/lib/poker';
 import { useTheme } from '@/shared/lib/hooks';
 

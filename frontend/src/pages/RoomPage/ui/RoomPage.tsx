@@ -180,7 +180,7 @@ export function RoomPage() {
   }
 
   return (
-    <div className="min-h-screen overflow-hidden">
+    <div className="min-h-screen">
       {celebrate && (
         <div className="pointer-events-none fixed inset-0 z-50 bg-primary/10 animate-pulse" />
       )}
@@ -196,7 +196,7 @@ export function RoomPage() {
         onExit={handleExitRoom}
       />
 
-      <main className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 sm:py-5 lg:flex-row lg:px-8">
+      <main className="mx-auto grid w-full max-w-7xl flex-1 gap-4 px-4 pb-28 pt-4 sm:px-6 sm:pt-5 lg:grid-cols-[19rem_minmax(0,1fr)] lg:px-8">
         <TaskSidebar
           tasks={tasks}
           activeTaskId={activeTaskId}
@@ -205,21 +205,25 @@ export function RoomPage() {
           onNewTaskTitleChange={setNewTaskTitle}
           onAddTask={handleAddTask}
           onSelectTask={setActiveTaskId}
+          className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-11.5rem)]"
         />
 
-        <RoomResults
-          activeTaskTitle={activeTask ? activeTask.title : null}
-          average={average}
-          isRevealed={isRevealed}
-          allPlayersVoted={allPlayersVoted}
-          anyPlayerVoted={anyPlayerVoted}
-          statusMessage={statusMessage}
-          onReveal={handleReveal}
-          onNextTask={handleClearTable}
-        />
+        <div className="flex min-h-22rem flex-col gap-4">
+          <RoomResults
+            activeTaskTitle={activeTask ? activeTask.title : null}
+            average={average}
+            isRevealed={isRevealed}
+            allPlayersVoted={allPlayersVoted}
+            anyPlayerVoted={anyPlayerVoted}
+            statusMessage={statusMessage}
+            onReveal={handleReveal}
+            onNextTask={handleClearTable}
+            className="min-h-19rem flex-1"
+          />
+
+          <ParticipantsList players={players} isRevealed={isRevealed} className="min-h-9.5rem" />
+        </div>
       </main>
-
-      <ParticipantsList players={players} isRevealed={isRevealed} />
 
       <VotingCards
         cards={deck}

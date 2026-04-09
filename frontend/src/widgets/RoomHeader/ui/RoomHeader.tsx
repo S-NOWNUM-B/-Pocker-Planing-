@@ -39,11 +39,7 @@ export function RoomHeader({
 
         <div className="flex flex-wrap items-center justify-end gap-2">
           <Button type="button" variant="outline" onClick={onToggleTheme} className="rounded-xl">
-            {theme === 'dark' ? (
-              <SunIcon className="h-4 w-4" />
-            ) : (
-              <MoonIcon className="h-4 w-4" />
-            )}
+            {theme === 'dark' ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
             <span className="hidden sm:inline">Тема</span>
           </Button>
           <Button type="button" variant="outline" onClick={onCopyLink} className="rounded-xl">

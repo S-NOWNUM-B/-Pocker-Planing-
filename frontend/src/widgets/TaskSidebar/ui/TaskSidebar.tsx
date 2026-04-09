@@ -1,5 +1,6 @@
 import { Button, Input } from '@/shared/ui';
 import { PlusIcon } from '@/shared/ui/icons';
+import { cn } from '@/shared/lib';
 import type { Task } from '@/shared/lib/poker';
 
 interface TaskSidebarProps {
@@ -10,6 +11,7 @@ interface TaskSidebarProps {
   onNewTaskTitleChange: (value: string) => void;
   onAddTask: () => void;
   onSelectTask: (taskId: string) => void;
+  className?: string;
 }
 
 export function TaskSidebar({
@@ -20,9 +22,15 @@ export function TaskSidebar({
   onNewTaskTitleChange,
   onAddTask,
   onSelectTask,
+  className,
 }: TaskSidebarProps) {
   return (
-    <aside className="w-full shrink-0 rounded-3xl border border-border/70 bg-card/95 p-4 shadow-lg lg:w-80">
+    <aside
+      className={cn(
+        'w-full shrink-0 rounded-3xl border border-border/70 bg-card/95 p-4 shadow-lg lg:w-80 lg:overflow-auto',
+        className,
+      )}
+    >
       <div className="mb-4 flex items-center gap-2">
         <h2 className="text-lg font-bold text-foreground">Задачи</h2>
         <span className="ml-auto text-sm text-muted-foreground">
@@ -32,7 +40,7 @@ export function TaskSidebar({
 
       <div className="mb-4 space-y-2">
         {tasks.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+          <div className="rounded-2xl border border-dashed border-border bg-secondary/30 p-6 text-center text-sm text-muted-foreground">
             Добавьте первую задачу, чтобы начать оценку
           </div>
         ) : (
@@ -46,10 +54,10 @@ export function TaskSidebar({
                 onClick={() => !isRevealed && onSelectTask(task.id)}
                 className={`w-full rounded-2xl border p-3 text-left transition ${
                   isActive
-                    ? 'border-primary bg-primary/10 shadow-sm'
+                    ? 'border-primary/70 bg-primary/12 shadow-sm'
                     : task.estimate
-                      ? 'border-border bg-secondary/50 text-muted-foreground'
-                      : 'border-border bg-card hover:border-primary/50'
+                      ? 'border-border bg-secondary/45 text-muted-foreground'
+                      : 'border-border/80 bg-card/80 hover:border-primary/50 hover:bg-card'
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
@@ -71,7 +79,7 @@ export function TaskSidebar({
           value={newTaskTitle}
           onChange={(event) => onNewTaskTitleChange(event.target.value)}
           placeholder="Новая задача"
-          className="flex-1"
+          className="h-11 flex-1"
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
               onAddTask();
@@ -83,7 +91,7 @@ export function TaskSidebar({
           variant="outline"
           onClick={onAddTask}
           disabled={!newTaskTitle.trim()}
-          className="rounded-xl px-3"
+          className="h-11 rounded-xl px-3"
         >
           <PlusIcon className="h-4 w-4" />
         </Button>

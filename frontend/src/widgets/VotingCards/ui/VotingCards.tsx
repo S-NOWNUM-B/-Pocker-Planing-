@@ -8,11 +8,23 @@ interface VotingCardsProps {
   onSelectCard: (card: string) => void;
 }
 
-export function VotingCards({ cards, selectedCard, disabled = false, onSelectCard }: VotingCardsProps) {
+export function VotingCards({
+  cards,
+  selectedCard,
+  disabled = false,
+  onSelectCard,
+}: VotingCardsProps) {
   return (
-    <section className="sticky bottom-0 border-t border-border/70 bg-card/90 backdrop-blur-xl">
-      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-3 justify-items-center">
+    <section className="sticky bottom-0 z-20 border-t border-border/70 bg-card/92 shadow-[0_-8px_30px_-20px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+      <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <div className="text-sm font-semibold text-foreground">Карты голосования</div>
+          <div className="text-xs text-muted-foreground">
+            {selectedCard ? `Выбрано: ${selectedCard}` : 'Карта не выбрана'}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(2.75rem,1fr))] gap-2 justify-items-center sm:gap-3">
           {cards.map((card) => (
             <Button
               key={card}
@@ -20,7 +32,7 @@ export function VotingCards({ cards, selectedCard, disabled = false, onSelectCar
               disabled={disabled}
               onClick={() => onSelectCard(card)}
               variant={selectedCard === card ? 'primary' : 'outline'}
-              className="flex h-16 w-12 rounded-2xl text-lg font-black shadow-sm transition hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex h-14 w-11 rounded-xl text-base font-black shadow-sm transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 sm:h-16 sm:w-12 sm:text-lg"
             >
               {card === '☕' ? (
                 <CoffeeIcon className="h-5 w-5" />

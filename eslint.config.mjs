@@ -7,7 +7,17 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default [
   {
-    ignores: ['**/dist/**', '**/build/**', '**/node_modules/**'],
+    ignores: [
+      '**/dist/**',
+      '**/build/**',
+      '**/coverage/**',
+      '**/.turbo/**',
+      '**/node_modules/**',
+      '**/*.min.*',
+    ],
+    linterOptions: {
+      reportUnusedDisableDirectives: 'error',
+    },
   },
   js.configs.recommended,
   {
@@ -23,7 +33,23 @@ export default [
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
+      'no-unused-vars': 'off',
       'no-undef': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports',
+          fixStyle: 'separate-type-imports',
+        },
+      ],
     },
   },
   {
@@ -35,6 +61,19 @@ export default [
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
+    files: ['**/*.{js,mjs,cjs}'],
+    rules: {
+      'no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
     },
   },
   eslintConfigPrettier,

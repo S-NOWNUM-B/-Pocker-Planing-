@@ -1,49 +1,91 @@
-import { VoteDisplay } from '@/entities/vote';
-import { Card, EmptyState } from '@/shared/ui';
-import type { VoteValue } from '@poker/shared';
-
-interface VoteResult {
-  participantName: string;
-  vote: VoteValue;
-}
+import { Button, Card } from '@/shared/ui';
 
 interface RoomResultsProps {
-  results: VoteResult[];
-  average?: number;
+  activeTaskTitle: string | null;
+  average: string;
+  isRevealed: boolean;
+  allPlayersVoted: boolean;
+  anyPlayerVoted: boolean;
+  statusMessage: string;
+  onReveal: () => void;
+  onNextTask: () => void;
 }
 
-export function RoomResults({ results, average }: RoomResultsProps) {
-  if (results.length === 0) {
-    return (
-      <EmptyState title="No votes to display" description="Waiting for participants to vote" />
-    );
-  }
-
+export function RoomResults({
+  activeTaskTitle,
+  average,
+  isRevealed,
+  allPlayersVoted,
+  anyPlayerVoted,
+  statusMessage,
+  onReveal,
+  onNextTask,
+}: RoomResultsProps) {
   return (
-    <section className="p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900">Results</h2>
-        {average !== undefined && (
-          <div className="flex items-baseline gap-1">
-            <span className="text-sm text-gray-500">Average:</span>
-            <span className="text-xl font-bold text-blue-500">{average.toFixed(1)}</span>
+    <section className="relative flex min-h-144 flex-1 flex-col overflow-hidden rounded-3xl border border-border/70 bg-card/80 shadow-2xl backdrop-blur">
+      <div className="absolute inset-4 rounded-4xl bg-table/95 shadow-inner" />
+      <div className="absolute inset-4 rounded-4xl border-4 border-table-border/50" />
+
+      <div className="relative z-10 flex flex-1 flex-col p-4 sm:p-6">
+        <Card className="mb-5 border border-border/70 bg-card/95 p-4 shadow-lg">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                Текущая задача
+              </div>
+              <div className="mt-1 text-lg font-bold text-foreground">
+                {activeTaskTitle ?? 'Добавьте задачу для оценки'}
+              </div>
+            </div>
+            <div className="rounded-2xl border border-border bg-secondary/50 px-4 py-3 text-right">
+              <div className="text-xs text-muted-foreground">Средняя оценка</div>
+              <div className="font-semibold text-foreground">{average} SP</div>
+            </div>
+          </div>
+        </Card>
+
+        {statusMessage && (
+          <div className="mb-4 rounded-2xl border border-border bg-card/90 px-4 py-3 text-sm text-muted-foreground shadow-sm">
+            {statusMessage}
           </div>
         )}
-      </div>
-      <Card className="p-6">
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-4 justify-items-center">
-          {results.map((result, index) => (
-            <div key={index} className="flex flex-col items-center gap-2">
-              <VoteDisplay value={result.vote} size="sm" revealed />
-              <span className="text-xs text-gray-500 text-center max-w-100px overflow-hidden text-ellipsis whitespace-nowrap">
-                {result.participantName}
-              </span>
+
+        <div className="flex flex-1 items-center justify-center py-4">
+          {isRevealed ? (
+            <Card className="mb-4 border border-primary/50 bg-card/95 p-6 text-center shadow-xl">
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                Результат
+              </div>
+              <div className="mt-2 text-6xl font-black text-primary">{average}</div>
+              <div className="mt-1 text-sm font-medium text-muted-foreground">Story Points</div>
+            </Card>
+          ) : (
+            <div className="flex flex-col items-center gap-3">
+              {anyPlayerVoted && (
+                <div className="text-sm text-foreground">
+                  {allPlayersVoted ? 'Все проголосовали. Можно вскрывать карты.' : 'Кто-то уже проголосовал.'}
+                </div>
+              )}
+              <Button
+                type="button"
+                onClick={onReveal}
+                disabled={!allPlayersVoted && !anyPlayerVoted}
+                className="h-12 rounded-2xl px-8 text-base font-semibold"
+              >
+                Вскрыть карты
+              </Button>
             </div>
-          ))}
+          )}
         </div>
-      </Card>
+
+        <div className="flex flex-col items-center gap-3 pb-2">
+          {isRevealed ? (
+            <Button type="button" onClick={onNextTask} className="h-12 rounded-2xl px-8 text-base font-semibold">
+              Следующая задача
+            </Button>
+          ) : null}
+        </div>
+      </div>
     </section>
   );
 }
-
-export type { VoteResult };

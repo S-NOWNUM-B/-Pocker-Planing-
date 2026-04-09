@@ -1,30 +1,66 @@
-import { ParticipantCard, sortParticipants } from '@/entities/participant';
-import { EmptyState } from '@/shared/ui';
-import type { Participant } from '@poker/shared';
+import { Card } from '@/shared/ui';
+import { CoffeeIcon, HelpCircleIcon } from '@/shared/ui/icons';
+import type { Player } from '@/shared/lib/poker';
 
 interface ParticipantsListProps {
-  participants: Participant[];
+  players: Player[];
+  isRevealed: boolean;
 }
 
-export function ParticipantsList({ participants }: ParticipantsListProps) {
-  if (participants.length === 0) {
-    return (
-      <EmptyState title="No participants yet" description="Share the room ID to invite others" />
-    );
+export function ParticipantsList({ players, isRevealed }: ParticipantsListProps) {
+  if (players.length === 0) {
+    return null;
   }
 
-  const sortedParticipants = [...participants].sort(sortParticipants);
-
   return (
-    <section className="p-5">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">
-        Participants ({participants.length})
-      </h2>
-      <ul className="flex flex-col gap-2 list-none p-0 m-0">
-        {sortedParticipants.map((participant) => (
-          <ParticipantCard key={participant.id} participant={participant} />
-        ))}
-      </ul>
+    <section className="flex flex-1 items-center justify-center py-4">
+      <Card className="border border-border/70 bg-card/80 px-6 py-5 shadow-sm">
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <h2 className="text-lg font-bold text-foreground">Участники</h2>
+          <span className="text-sm text-muted-foreground">{players.length}</span>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-6">
+          {players.map((player) => {
+            const voteIsVisible = isRevealed && player.vote !== null;
+
+            return (
+              <div key={player.id} className="flex flex-col items-center gap-3">
+                <div
+                  className={`flex h-24 w-16 items-center justify-center rounded-2xl border-2 text-2xl font-black shadow-lg transition ${
+                    player.vote && !isRevealed
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : player.vote && isRevealed
+                        ? 'border-primary bg-card text-foreground'
+                        : 'border-border bg-card/80 text-muted-foreground'
+                  }`}
+                >
+                  {voteIsVisible ? (
+                    player.vote === '☕' ? (
+                      <CoffeeIcon className="h-6 w-6" />
+                    ) : player.vote === '?' ? (
+                      <HelpCircleIcon className="h-6 w-6" />
+                    ) : (
+                      player.vote
+                    )
+                  ) : player.vote ? (
+                    '✓'
+                  ) : (
+                    '?'
+                  )}
+                </div>
+
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-md">
+                  {player.name.slice(0, 1).toUpperCase()}
+                </div>
+                <div className="rounded-full bg-card/80 px-3 py-1 text-sm font-semibold text-card-foreground shadow-sm">
+                  {player.name}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Card>
     </section>
   );
 }

@@ -1,0 +1,93 @@
+import { Button, Input } from '@/shared/ui';
+import { PlusIcon } from '@/shared/ui/icons';
+import type { Task } from '@/shared/lib/poker';
+
+interface TaskSidebarProps {
+  tasks: Task[];
+  activeTaskId: string | null;
+  isRevealed: boolean;
+  newTaskTitle: string;
+  onNewTaskTitleChange: (value: string) => void;
+  onAddTask: () => void;
+  onSelectTask: (taskId: string) => void;
+}
+
+export function TaskSidebar({
+  tasks,
+  activeTaskId,
+  isRevealed,
+  newTaskTitle,
+  onNewTaskTitleChange,
+  onAddTask,
+  onSelectTask,
+}: TaskSidebarProps) {
+  return (
+    <aside className="w-full shrink-0 rounded-3xl border border-border/70 bg-card/95 p-4 shadow-lg lg:w-80">
+      <div className="mb-4 flex items-center gap-2">
+        <h2 className="text-lg font-bold text-foreground">Задачи</h2>
+        <span className="ml-auto text-sm text-muted-foreground">
+          {tasks.filter((task) => task.estimate).length}/{tasks.length}
+        </span>
+      </div>
+
+      <div className="mb-4 space-y-2">
+        {tasks.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+            Добавьте первую задачу, чтобы начать оценку
+          </div>
+        ) : (
+          tasks.map((task) => {
+            const isActive = task.id === activeTaskId;
+
+            return (
+              <button
+                key={task.id}
+                type="button"
+                onClick={() => !isRevealed && onSelectTask(task.id)}
+                className={`w-full rounded-2xl border p-3 text-left transition ${
+                  isActive
+                    ? 'border-primary bg-primary/10 shadow-sm'
+                    : task.estimate
+                      ? 'border-border bg-secondary/50 text-muted-foreground'
+                      : 'border-border bg-card hover:border-primary/50'
+                }`}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <span className="line-clamp-2 text-sm font-medium">{task.title}</span>
+                  {task.estimate && (
+                    <span className="shrink-0 rounded-lg bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
+                      {task.estimate} SP
+                    </span>
+                  )}
+                </div>
+              </button>
+            );
+          })
+        )}
+      </div>
+
+      <div className="flex gap-2">
+        <Input
+          value={newTaskTitle}
+          onChange={(event) => onNewTaskTitleChange(event.target.value)}
+          placeholder="Новая задача"
+          className="flex-1"
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              onAddTask();
+            }
+          }}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onAddTask}
+          disabled={!newTaskTitle.trim()}
+          className="rounded-xl px-3"
+        >
+          <PlusIcon className="h-4 w-4" />
+        </Button>
+      </div>
+    </aside>
+  );
+}

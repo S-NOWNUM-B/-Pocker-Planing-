@@ -8,8 +8,6 @@
     "verbatimModuleSyntax": true,
     "noUncheckedSideEffectImports": true,
     "noEmit": true,
-    "ignoreDeprecations": "6.0",
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@poker/shared": ["../packages/shared/src/index.ts"]

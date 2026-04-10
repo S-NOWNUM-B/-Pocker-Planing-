@@ -1,3 +1,10 @@
+export { LandingPage } from './LandingPage';
+export { CreateRoomPage } from './CreateRoomPage';
+export { LoginPage } from './LoginPage';
+export { RegisterPage } from './RegisterPage';
+export { DashboardPage } from './DashboardPage';
+export { ProfilePage } from './ProfilePage';
+export { AboutPage } from './AboutPage';
 export { HomePage } from './HomePage';
 export { RoomPage } from './RoomPage';
 export { NotFoundPage } from './NotFoundPage';

@@ -1,3 +1,16 @@
+/**
+ * Карточка участника в списке игроков.
+ *
+ * Отображает:
+ *  - Аватар с инициалами
+ *  - Имя участника
+ *  - Статус голосования (✓ Voted / Pending) — опционально
+ *
+ * Используется в ParticipantsList (widget) на странице комнаты.
+ *
+ * @param participant — данные участника
+ * @param showVoteStatus — показывать ли статус голосования (по умолчанию true)
+ */
 import { getInitials } from '../model/selectors';
 import type { Participant } from '../model/types';
 

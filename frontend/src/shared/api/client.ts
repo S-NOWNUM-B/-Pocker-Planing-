@@ -1,3 +1,13 @@
+/**
+ * Базовый HTTP-клиент на основе axios.
+ *
+ * Настройки:
+ *  - baseURL берётся из VITE_API_URL (по умолчанию localhost:3000/api)
+ *  - Заголовок Content-Type: application/json
+ *  - Интерцептор ответа: преобразует ошибки axios в типизированный ApiError
+ *
+ * Используется во всех API-модулях (entities/api).
+ */
 import axios from 'axios';
 import type { ApiError } from '@poker/shared';
 

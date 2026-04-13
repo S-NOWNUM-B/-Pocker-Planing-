@@ -1,3 +1,12 @@
+/**
+ * Кнопка раскрытия результатов голосования.
+ *
+ * При клике вызывает useRevealVotes(roomId).mutate() для показа голосов.
+ * Доступна только модератору. Блокируется во время отправки.
+ *
+ * @param roomId — ID комнаты
+ * @param disabled — заблокирована ли кнопка (например, если не все проголосовали)
+ */
 import { Button } from '@/shared/ui';
 import { useRevealVotes } from '../lib/useRevealVotes';
 

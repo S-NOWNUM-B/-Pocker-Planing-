@@ -1,3 +1,12 @@
+/**
+ * Хук управления темой оформления (тёмная/светлая).
+ *
+ * Считывает сохранённую тему из localStorage или системные настройки.
+ * Переключает класс 'dark' на <html> для CSS-селекторов.
+ * Сохраняет выбор в localStorage.
+ *
+ * @returns { theme, setTheme, toggleTheme, isDark } — текущая тема и методы управления
+ */
 import { useEffect, useState } from 'react';
 import { THEME_STORAGE_KEY, type Theme } from '../poker';
 

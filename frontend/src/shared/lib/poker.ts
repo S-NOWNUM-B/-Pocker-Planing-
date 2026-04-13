@@ -1,3 +1,16 @@
+/**
+ * Доменная логика и типы Planning Poker.
+ *
+ * Определяет:
+ *  - DeckType — тип колоды ('fibonacci' | 'even')
+ *  - Theme — тема оформления ('light' | 'dark')
+ *  - Player — игрок с голосом и статусом
+ *  - Task — задача с оценкой
+ *  - GameSession — сессия игры (хранится в localStorage)
+ *  - DECKS — конфигурация колод (массивы карт)
+ *  - createRoomId() — генерация ID комнаты из названия
+ *  - getAverageVote() — подсчёт среднего значения голосов
+ */
 export type DeckType = 'fibonacci' | 'even';
 
 export type Theme = 'light' | 'dark';

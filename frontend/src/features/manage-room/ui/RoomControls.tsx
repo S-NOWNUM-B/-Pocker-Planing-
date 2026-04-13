@@ -1,3 +1,13 @@
+/**
+ * Кнопка сброса комнаты (перезапуск раунда).
+ *
+ * При клике вызывает useResetRoom(roomId).mutate() для сброса голосов.
+ * Доступна только модератору. Поддерживает два варианта оформления:
+ * primary — основная кнопка, outline — контурная (для тулбаров).
+ *
+ * @param roomId — ID комнаты
+ * @param variant — стиль кнопки ('primary' | 'outline'), по умолчанию 'outline'
+ */
 import { Button } from '@/shared/ui';
 import { useResetRoom } from '../lib/useResetRoom';
 

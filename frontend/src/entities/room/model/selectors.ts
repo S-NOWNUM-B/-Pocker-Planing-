@@ -1,3 +1,10 @@
+/**
+ * Селекторы и утилиты для сущности «Комната».
+ *
+ * statusLabels — словарь подписей статусов (waiting → 'Waiting' и т.д.).
+ * getRoomStatusColor — возвращает цвет бейджа по статусу (blue/yellow/green).
+ * isRoomActive — проверяет, активна ли комната (статус voting или waiting).
+ */
 import type { RoomState, RoomStatus } from '@poker/shared';
 
 export const statusLabels: Record<RoomStatus, string> = {

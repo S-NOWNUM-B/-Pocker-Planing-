@@ -1,3 +1,19 @@
+/**
+ * Хук для работы с WebSocket-соединением.
+ *
+ * Поддерживает:
+ *  - Автоматическое подключение при монтировании
+ *  - Переподключение при обрыве связи (настраиваемый интервал)
+ *  - Парсинг JSON-сообщений
+ *  - Отправку сообщений через sendMessage()
+ *  - Ручное отключение через disconnect()
+ *
+ * @param url — адрес WebSocket-сервера
+ * @param onMessage — обработчик входящих сообщений
+ * @param reconnectInterval — интервал переподключения (мс), по умолчанию 3000
+ * @param autoConnect — подключаться автоматически, по умолчанию true
+ * @returns { sendMessage, disconnect, isConnected }
+ */
 import { useEffect, useRef, useCallback } from 'react';
 
 interface UseWebSocketOptions<T> {

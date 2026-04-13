@@ -1,3 +1,21 @@
+/**
+ * Страница игровой комнаты — основной рабочий экран Planning Poker.
+ *
+ * Маршрут: /room/:roomId.
+ *
+ * Функциональность:
+ *  - Чтение сессии из localStorage (GameSession)
+ *  - Управление игроками (пока только локальный пользователь + боты)
+ *  - Добавление задач для оценки через TaskSidebar
+ *  - Выбор карты через VotingCards
+ *  - Раскрытие результатов и подсчёт среднего значения
+ *  - Копирование ссылки на комнату для приглашения участников
+ *
+ * Виджеты: RoomHeader, TaskSidebar, RoomResults, ParticipantsList, VotingCards.
+ *
+ * В будущей реализации сессия будет синхронизироваться через WebSocket
+ * и данные будут загружаться с backend через TanStack Query.
+ */
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, EmptyState } from '@/shared/ui';

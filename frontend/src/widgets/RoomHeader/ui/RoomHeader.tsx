@@ -1,3 +1,24 @@
+/**
+ * Шапка игровой комнаты.
+ *
+ * Верхняя панель RoomPage. Содержит:
+ *  - Название комнаты и ID
+ *  - Бейдж выбранной колоды
+ *  - Кнопку переключения темы (тёмная/светлая)
+ *  - Кнопку копирования ссылки для приглашения
+ *  - Кнопку выхода из комнаты
+ *
+ * Прикрепляется к верху экрана (sticky).
+ *
+ * @param roomName — название комнаты
+ * @param roomId — ID комнаты
+ * @param deckName — название колоды
+ * @param theme — текущая тема
+ * @param copyLabel — текст кнопки копирования
+ * @param onToggleTheme — переключатель темы
+ * @param onCopyLink — копирование ссылки
+ * @param onExit — выход из комнаты
+ */
 import { Button, Card } from '@/shared/ui';
 import { LinkIcon, LogOutIcon, MoonIcon, SparklesIcon, SunIcon } from '@/shared/ui/icons';
 import type { Theme } from '@/shared/lib/poker';

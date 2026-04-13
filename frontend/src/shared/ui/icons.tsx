@@ -1,3 +1,19 @@
+/**
+ * Набор SVG-иконок для интерфейса.
+ *
+ * Все иконки:
+ *  - Размер 24×24 (viewBox)
+ *  - stroke-width 1.8
+ *  - round linecap/linejoin
+ *  - aria-hidden="true"
+ *
+ * Экспортируемые иконки:
+ *  SparklesIcon, MoonIcon, SunIcon, PlayIcon, TrophyIcon,
+ *  UsersIcon, LinkIcon, LogOutIcon, TargetIcon, CheckIcon,
+ *  CoffeeIcon, HelpCircleIcon, EyeIcon, RotateCcwIcon, PlusIcon
+ *
+ * Принимают стандартные SVG-пропсы (className, style и т.д.).
+ */
 import type { SVGProps, ReactNode } from 'react';
 
 type IconProps = SVGProps<SVGSVGElement>;

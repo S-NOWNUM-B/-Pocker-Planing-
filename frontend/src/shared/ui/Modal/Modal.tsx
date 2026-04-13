@@ -1,3 +1,15 @@
+/**
+ * Модальное окно.
+ *
+ * Фиксированный оверлей с центрированной карточкой.
+ * Закрывается по клику на оверлей или на кнопку «×».
+ *
+ * @param isOpen — открыто ли модальное окно
+ * @param onClose — обработчик закрытия
+ * @param title — заголовок (опционально)
+ * @param children — содержимое модального окна
+ * @param className — дополнительный CSS-класс
+ */
 import { type HTMLAttributes, type ReactNode } from 'react';
 
 export interface ModalProps extends HTMLAttributes<HTMLDivElement> {

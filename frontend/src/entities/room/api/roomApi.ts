@@ -1,3 +1,16 @@
+/**
+ * Room API — операции с комнатами через REST API.
+ *
+ * Использует общий axios-клиент из shared/api.
+ *
+ * Методы:
+ *  - getRoom(roomId) — GET /rooms/:roomId — получить данные комнаты
+ *  - createRoom(name) — POST /rooms — создать новую комнату
+ *  - updateRoomStatus(roomId, status) — PATCH /rooms/:roomId/status — изменить статус
+ *  - resetRoom(roomId) — POST /rooms/:roomId/reset — сбросить голоса
+ *
+ * Типы данных: RoomState, RoomDetails из entities/room/model/types.
+ */
 import { api } from '@/shared/api';
 import type { RoomState, RoomDetails } from '../model/types';
 

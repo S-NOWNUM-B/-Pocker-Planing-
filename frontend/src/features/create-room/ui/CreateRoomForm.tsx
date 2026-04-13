@@ -1,3 +1,14 @@
+/**
+ * Форма создания комнаты через API.
+ *
+ * Использует TanStack Query (useMutation) для вызова roomApi.createRoom().
+ * После успешного создания:
+ *  - Инвалидирует кэш ['rooms'] для обновления списка комнат
+ *  - Перенаправляет на /room/:id
+ *
+ * Используется на странице /create-room как альтернатива CreateRoomPage
+ * (когда backend будет готов).
+ */
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';

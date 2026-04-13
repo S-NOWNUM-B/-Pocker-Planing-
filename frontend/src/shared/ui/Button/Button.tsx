@@ -1,3 +1,16 @@
+/**
+ * Универсальная кнопка.
+ *
+ * Поддерживает 5 вариантов оформления (primary, secondary, outline, card, ghost)
+ * и 3 размера (sm, md, lg). Пробрасывает все стандартные атрибуты button.
+ *
+ * @example
+ * <Button variant="primary" size="md" onClick={handleClick}>Нажми</Button>
+ *
+ * @param variant — стиль кнопки
+ * @param size — размер кнопки
+ * @param className — дополнительный CSS-класс
+ */
 import { type ButtonHTMLAttributes, forwardRef } from 'react';
 
 export const variantClasses = {

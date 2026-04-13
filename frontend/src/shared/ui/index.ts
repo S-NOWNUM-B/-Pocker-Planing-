@@ -1,3 +1,11 @@
+/**
+ * Barrel-экспорт UI-компонентов слоя shared/ui.
+ *
+ * Доступные компоненты:
+ *  Button, Input, Card, Badge, Modal, Spinner, EmptyState
+ *
+ * Экспортируются как компоненты, так и типы пропсов.
+ */
 export { Button } from './Button';
 export { Input } from './Input';
 export { Card } from './Card';

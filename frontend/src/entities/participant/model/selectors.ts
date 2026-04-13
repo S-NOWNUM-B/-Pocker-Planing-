@@ -1,3 +1,10 @@
+/**
+ * Селекторы и утилиты для сущности «Участник».
+ *
+ * hasVoted(participant) — проголосовал ли участник.
+ * getInitials(name) — инициалы из имени (макс. 2 буквы).
+ * sortParticipants(a, b) — сортировка: проголосовавшие первыми, затем по имени.
+ */
 import type { Participant } from '@poker/shared';
 
 export function hasVoted(participant: Participant): boolean {

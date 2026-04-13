@@ -1,3 +1,14 @@
+/**
+ * Бейдж — цветная метка со статусом.
+ *
+ * Отображает текст на цветном фоне в виде скруглённой плашки.
+ * Пять цветов: blue, green, yellow, red, gray.
+ *
+ * Используется в RoomStatusBadge для отображения статуса комнаты.
+ *
+ * @param label — текст бейджа
+ * @param color — цвет бейджа (по умолчанию 'gray')
+ */
 const colorClasses = {
   blue: 'border border-blue-500/25 bg-blue-500/12 text-blue-700 dark:text-blue-300',
   green: 'border border-emerald-500/25 bg-emerald-500/12 text-emerald-700 dark:text-emerald-300',

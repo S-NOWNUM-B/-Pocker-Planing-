@@ -1,3 +1,16 @@
+/**
+ * Хук для реактивной работы с localStorage.
+ *
+ * Сохраняет и считывает значение из localStorage по ключу.
+ * Поддерживает функциональное обновление (как useState).
+ *
+ * @example
+ * const [theme, setTheme] = useLocalStorage('theme', 'light');
+ *
+ * @param key — ключ в localStorage
+ * @param initialValue — значение по умолчанию
+ * @returns [storedValue, setValue] — текущее значение и сеттер
+ */
 import { useState, useCallback } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue: T) {

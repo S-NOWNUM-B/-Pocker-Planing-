@@ -1,3 +1,11 @@
+/**
+ * Barrel-экспорт сущностей слоя entities.
+ *
+ * Содержит три сущности: room (комната), participant (участник), vote (голос).
+ * Каждая сущность экспортирует: UI-компоненты, типы, селекторы, API.
+ *
+ * Также экспортирует authApi и типы авторизации из user.
+ */
 export { RoomStatusBadge } from './room';
 export type { RoomState, RoomStatus, RoomDetails } from './room';
 export { roomApi, statusLabels, getRoomStatusColor, isRoomActive } from './room';

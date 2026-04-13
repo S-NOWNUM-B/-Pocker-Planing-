@@ -1,3 +1,13 @@
+/**
+ * Контейнер-карточка с границей и фоном.
+ *
+ * Три варианта: default (с фоном), elevated (с тенью), outlined (без фона).
+ * Используется как обёртка для группировки контента.
+ *
+ * @param variant — стиль карточки
+ * @param children — содержимое
+ * @param className — дополнительный CSS-класс
+ */
 import { type HTMLAttributes, type ReactNode } from 'react';
 
 const variantClasses = {

@@ -3,7 +3,6 @@ import { AuthLayout } from '@/app/layouts';
 import { AuthGuard, PublicOnlyGuard } from '@/app/router/guards';
 import {
   OnboardingPage,
-  HomePage,
   CreateRoomPage,
   LoginPage,
   RegisterPage,
@@ -17,14 +16,13 @@ import {
 export function AppRoutes() {
   return (
     <Routes>
-      {/* Public routes */}
+      {/* Публичные маршруты */}
       <Route path="/" element={<OnboardingPage />} />
-      <Route path="/home" element={<HomePage />} />
       <Route path="/create-room" element={<CreateRoomPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/room/:roomId" element={<RoomPage />} />
 
-      {/* Auth routes — only accessible when NOT logged in */}
+      {/* Маршруты авторизации — доступны только неавторизованным */}
       <Route
         path="/login"
         element={
@@ -46,7 +44,7 @@ export function AppRoutes() {
         }
       />
 
-      {/* Protected routes — only accessible when logged in */}
+      {/* Защищённые маршруты — доступны только авторизованным */}
       <Route
         path="/dashboard"
         element={
@@ -64,7 +62,7 @@ export function AppRoutes() {
         }
       />
 
-      {/* Fallback */}
+      {/* Запасной маршрут — 404 */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

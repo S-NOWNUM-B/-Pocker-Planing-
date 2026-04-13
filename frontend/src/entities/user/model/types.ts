@@ -1,3 +1,11 @@
+/**
+ * Типы данных сущности «Пользователь» и авторизации.
+ *
+ * User — профиль пользователя (id, email, name, avatarUrl).
+ * LoginCredentials / RegisterCredentials — данные для входа/регистрации.
+ * AuthTokens — пара access/refresh токенов с TTL.
+ * LoginResponse / RegisterResponse — ответ сервера при авторизации.
+ */
 export interface User {
   id: string;
   email: string;

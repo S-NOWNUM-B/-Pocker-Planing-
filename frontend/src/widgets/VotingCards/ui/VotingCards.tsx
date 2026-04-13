@@ -1,3 +1,19 @@
+/**
+ * Панель выбора карт для голосования.
+ *
+ * Нижняя панель RoomPage. Отображает все карты выбранной колоды
+ * в виде кнопок. Поддерживает:
+ *  - Выбор карты (подсветка активного варианта)
+ *  - Специальные карты: «?» (не знаю), «☕» (перерыв)
+ *  - Блокировку при раскрытых результатах
+ *
+ * При клике вызывает onSelectCard(card) для отправки голоса.
+ *
+ * @param cards — массив значений карт (из DECKS)
+ * @param selectedCard — выбранная карта (null если не выбрана)
+ * @param disabled — заблокирована ли панель
+ * @param onSelectCard — выбор карты
+ */
 import { Button } from '@/shared/ui';
 import { CheckIcon, CoffeeIcon, HelpCircleIcon, TrophyIcon } from '@/shared/ui/icons';
 

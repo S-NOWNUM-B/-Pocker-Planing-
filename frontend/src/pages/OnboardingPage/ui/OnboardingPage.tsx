@@ -1,3 +1,13 @@
+/**
+ * Приветственная (onboarding) страница — точка входа в приложение.
+ *
+ * Расположена на маршруте /. Содержит:
+ *  - Hero-секцию с названием проекта и CTA-кнопками
+ *  - Блок преимуществ (совместная оценка, реальное время, гибкие колоды, история)
+ *  - Секцию «Как это работает» (3 шага)
+ *
+ * Кнопки ведут на /create-room (быстрый старт) и /login (авторизация).
+ */
 import { Link } from 'react-router-dom';
 import styles from './OnboardingPage.module.css';
 
@@ -10,7 +20,7 @@ export function OnboardingPage() {
           Инструмент для оценки задач в Agile-командах с помощью Planning Poker
         </p>
         <div className={styles.actions}>
-          <Link to="/register" className={styles.buttonPrimary}>
+          <Link to="/create-room" className={styles.buttonPrimary}>
             Начать бесплатно
           </Link>
           <Link to="/login" className={styles.buttonSecondary}>

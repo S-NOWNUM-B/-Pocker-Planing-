@@ -1,3 +1,13 @@
+/**
+ * Поле ввода с опциональной подписью и сообщением об ошибке.
+ *
+ * Обёртка над <input> с лейаутом: label → input → error.
+ * Автоматически генерирует id из label, если не передан.
+ *
+ * @param label — подпись над полем
+ * @param error — текст ошибки под полем
+ * @param id — id элемента (генерируется из label если не указан)
+ */
 import { type InputHTMLAttributes, forwardRef } from 'react';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

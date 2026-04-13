@@ -1,3 +1,13 @@
+/**
+ * Визуальное отображение голоса (карты).
+ *
+ * Рендерит карту заданного размера с значением или «?» если не раскрыта.
+ * Три размера: sm (список), md (результаты), lg (выбор карты).
+ *
+ * @param value — значение карты (VoteValue)
+ * @param size — размер ('sm' | 'md' | 'lg'), по умолчанию 'md'
+ * @param revealed — раскрыта ли карта (по умолчанию true)
+ */
 import { VOTE_LABELS } from '../model/types';
 import type { VoteValue } from '@poker/shared';
 

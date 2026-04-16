@@ -1,0 +1,64 @@
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.Python
+env/
+venv/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov
+.tox
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+/data
+
+# Migrations history
+alembic/versions/__pycache__
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+.env.local
+
+# Documentation
+docs/
+README.md
+LICENSE
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Node/Frontend (don't include if you might build frontend from backend)
+node_modules
+npm-debug.log
+yarn-error.log

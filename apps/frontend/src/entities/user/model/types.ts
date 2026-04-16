@@ -1,17 +1,17 @@
 /**
  * Типы данных сущности «Пользователь» и авторизации.
  *
- * User — профиль пользователя (id, email, name, avatarUrl).
+ * User — профиль пользователя (id, email, name, avatar_color).
  * LoginCredentials / RegisterCredentials — данные для входа/регистрации.
- * AuthTokens — пара access/refresh токенов с TTL.
+ * AuthTokens — access токен от сервера.
  * LoginResponse / RegisterResponse — ответ сервера при авторизации.
  */
 export interface User {
   id: string;
   email: string;
   name: string;
-  avatarUrl?: string;
-  createdAt: string;
+  avatar_color: string;
+  created_at: string;
 }
 
 export interface LoginCredentials {
@@ -26,17 +26,18 @@ export interface RegisterCredentials {
 }
 
 export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+  access_token: string;
+  token_type: string;
 }
 
 export interface LoginResponse {
+  access_token: string;
+  token_type: string;
   user: User;
-  tokens: AuthTokens;
 }
 
 export interface RegisterResponse {
+  access_token: string;
+  token_type: string;
   user: User;
-  tokens: AuthTokens;
 }

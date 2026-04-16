@@ -4,18 +4,29 @@
  * Настройки:
  *  - baseURL берётся из VITE_API_URL (по умолчанию localhost:3000/api)
  *  - Заголовок Content-Type: application/json
- *  - Интерцептор ответа: преобразует ошибки axios в типизированный ApiError
+ *  - Request interceptor: добавляет Authorization header с токеном
+ *  - Response interceptor: преобразует ошибки axios в типизированный ApiError
  *
  * Используется во всех API-модулях (entities/api).
  */
 import axios from 'axios';
 import type { ApiError } from '@poker/shared';
+import { SessionManager } from '@/shared/lib/sessionManager';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
   headers: {
     'Content-Type': 'application/json',
   },
+});
+
+// Request interceptor to add Authorization header
+api.interceptors.request.use((config) => {
+  const token = SessionManager.getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // Response interceptor for error handling

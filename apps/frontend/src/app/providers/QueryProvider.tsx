@@ -2,6 +2,7 @@
  * Корневой провайдер приложения.
  *
  * Оборачивает всё приложение в:
+ *  - SessionProvider — управление состоянием авторизации и восстановление сессии
  *  - QueryClientProvider (TanStack Query) — для серверного состояния
  *  - BrowserRouter (react-router-dom) — для клиентской маршрутизации
  *
@@ -13,6 +14,7 @@ import { type ReactNode } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { queryClient } from '@/shared/config';
+import { SessionProvider } from './SessionProvider';
 
 interface AppProvidersProps {
   children: ReactNode;
@@ -20,8 +22,10 @@ interface AppProvidersProps {
 
 export function AppProviders({ children }: AppProvidersProps) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>{children}</BrowserRouter>
-    </QueryClientProvider>
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>{children}</BrowserRouter>
+      </QueryClientProvider>
+    </SessionProvider>
   );
 }

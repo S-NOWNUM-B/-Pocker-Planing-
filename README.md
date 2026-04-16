@@ -23,6 +23,7 @@
 - [Архитектура](#архитектура)
 - [Структура монорепозитория](#структура-монорепозитория)
 - [Быстрый старт](#быстрый-старт)
+- [Docker 🐳](#docker-)
 - [Команды](#команды)
 - [Форматирование и стили](#форматирование-и-стили)
 
@@ -221,12 +222,6 @@ pnpm install
 pnpm dev
 ```
 
-### Настройки по умолчанию
-
-- Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:3000`
-- WebSocket: `ws://localhost:3001`
-
 ---
 
 ## Команды
@@ -300,8 +295,6 @@ pnpm --filter @poker/frontend format:check
 
 ### Backend (Python/FastAPI)
 
-Backend — отдельный Python проект. Перейдите в `apps/backend` и см. [README](apps/backend/README.md).
-
 ```bash
 # Переход в папку backend
 cd apps/backend
@@ -323,4 +316,19 @@ alembic upgrade head
 docker compose up
 ```
 
-Подробнее: [apps/backend/README.md](apps/backend/README.md)
+
+### Docker
+
+```bash
+# Просмотр статуса контейнеров
+docker-compose ps
+
+# Просмотр логов
+docker-compose logs -f
+
+# Остановка всех сервисов
+docker-compose down
+
+# Полная очистка (удалить всё)
+docker-compose down -v
+```

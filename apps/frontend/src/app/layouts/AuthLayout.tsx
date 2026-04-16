@@ -7,19 +7,17 @@ interface AuthLayoutProps {
 /**
  * Лейаут для страниц авторизации (login, register).
  *
- * Должен содержать:
- *  - Центрированную карточку с формой
- *  - Фоновое оформление с градиентом или паттерном
- *  - Логотип проекта в верхней части
- *  - Ссылку на переключение между входом и регистрацией
+ * Содержит:
+ *  - Минимальную высоту экрана для центрирования
+ *  - Центрированную колонку с формой
+ *  - Мягкий фон
  *
  * Используется как обёртка для LoginPage и RegisterPage в роутере.
  */
 export function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div>
-      {/* TODO: Лейаут авторизации — центрированная карточка, фон, логотип */}
-      {children}
+    <div className="flex min-h-screen flex-col items-center justify-center bg-linear-to-br from-card to-card/50 px-4 py-8">
+      <div className="w-full max-w-sm">{children}</div>
     </div>
   );
 }

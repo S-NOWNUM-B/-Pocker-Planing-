@@ -1,0 +1,72 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: planning-poker-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: planning_poker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - poker_network
+
+  # Backend (FastAPI)
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    container_name: planning-poker-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@postgres:5432/planning_poker
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-your-secret-key-change-in-production}
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 10080
+      FRONTEND_URL: http://localhost
+      CORS_ORIGINS: http://localhost,http://127.0.0.1,http://localhost:5173,http://127.0.0.1:5173
+      SEED_DEMO_DATA: "true"
+      DEMO_USER_PASSWORD: DemoPass123!
+      ENVIRONMENT: docker
+      APP_NAME: "Покер-планирование"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./apps/backend:/app
+    networks:
+      - poker_network
+    restart: unless-stopped
+
+  # Frontend (Nginx)
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    container_name: planning-poker-frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      - ./apps/frontend/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - poker_network
+    restart: unless-stopped
+
+networks:
+  poker_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

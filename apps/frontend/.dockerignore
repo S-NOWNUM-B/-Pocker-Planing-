@@ -1,0 +1,57 @@
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Build artifacts
+dist
+build
+*.tsbuildinfo
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Testing
+coverage
+.cypress
+cypress/screenshots
+cypress/videos
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+.env.local
+.env.*.local
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Python
+__pycache__
+*.pyc
+venv/
+.venv
+
+# Miscellaneous
+.cache
+.parcel-cache
+.next
+out/
+

@@ -35,7 +35,6 @@ export interface GameSession {
   roomName: string;
   userName: string;
   deckType: DeckType;
-  theme: Theme;
 }
 
 export const DECKS: Record<DeckType, string[]> = {

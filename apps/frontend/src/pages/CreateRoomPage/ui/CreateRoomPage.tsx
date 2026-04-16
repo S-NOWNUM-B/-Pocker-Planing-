@@ -14,9 +14,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Input } from '@/shared/ui';
-import { LinkIcon, MoonIcon, PlayIcon, SunIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
+import { LinkIcon, PlayIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
 import { createRoomId, type DeckType, type GameSession } from '@/shared/lib/poker';
-import { useTheme } from '@/shared/lib/hooks';
 
 const DECK_INFO: Record<DeckType, { title: string; description: string }> = {
   fibonacci: {
@@ -31,7 +30,6 @@ const DECK_INFO: Record<DeckType, { title: string; description: string }> = {
 
 export function CreateRoomPage() {
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
   const [roomName, setRoomName] = useState('');
   const [userName, setUserName] = useState('');
   const [deckType, setDeckType] = useState<DeckType>('fibonacci');
@@ -47,8 +45,7 @@ export function CreateRoomPage() {
       roomId: createRoomId(roomName),
       roomName: roomName.trim(),
       userName: userName.trim(),
-      deckType,
-      theme,
+      deckType
     };
 
     window.localStorage.setItem('poker-planning:session', JSON.stringify(session));
@@ -61,16 +58,6 @@ export function CreateRoomPage() {
         <div className="absolute -top-24 right--6rem h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
         <div className="absolute bottom-0 left--5rem h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
       </div>
-
-      <button
-        type="button"
-        onClick={toggleTheme}
-        className="absolute right-4 top-4 z-20 inline-flex items-center gap-2 rounded-full border border-border bg-card/90 px-4 py-2 text-sm shadow-sm backdrop-blur transition hover:-translate-y-0.5"
-      >
-        {theme === 'dark' ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
-        {theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
-      </button>
-
       <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <section className="space-y-6">

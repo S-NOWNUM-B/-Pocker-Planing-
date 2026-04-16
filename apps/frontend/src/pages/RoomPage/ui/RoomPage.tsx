@@ -20,7 +20,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, EmptyState } from '@/shared/ui';
 import { TargetIcon } from '@/shared/ui/icons';
-import { useTheme } from '@/shared/lib/hooks';
 import {
   DECKS,
   SESSION_STORAGE_KEY,
@@ -31,7 +30,7 @@ import {
   type Player,
   type Task,
 } from '@/shared/lib/poker';
-import { ParticipantsList, RoomHeader, RoomResults, TaskSidebar, VotingCards } from '@/widgets';
+import { ParticipantsList, RoomFooter, RoomHeader, RoomResults, TaskSidebar } from '@/widgets';
 import { useRoomParams } from '../lib/useRoomParams';
 
 function readSession(roomId: string) {
@@ -55,7 +54,6 @@ function getDeckName(deckType: DeckType) {
 export function RoomPage() {
   const navigate = useNavigate();
   const { roomId } = useRoomParams();
-  const { theme, setTheme, toggleTheme } = useTheme();
   const [session, setSession] = useState<GameSession | null>(null);
   const [players, setPlayers] = useState<Player[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -63,7 +61,6 @@ export function RoomPage() {
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [isRevealed, setIsRevealed] = useState(false);
-  const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle');
   const [celebrate, setCelebrate] = useState(false);
 
   useEffect(() => {
@@ -75,7 +72,6 @@ export function RoomPage() {
     }
 
     setSession(storedSession);
-    setTheme(storedSession.theme);
     setPlayers([
       {
         id: 'user',
@@ -86,7 +82,7 @@ export function RoomPage() {
         isBot: false,
       },
     ]);
-  }, [roomId, setTheme]);
+  }, [roomId]);
 
   const deck = useMemo(() => {
     return session ? DECKS[session.deckType] : DECKS.fibonacci;
@@ -166,20 +162,6 @@ export function RoomPage() {
     setNewTaskTitle('');
   };
 
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(`${window.location.origin}/room/${roomId}`);
-      setCopyState('copied');
-      window.setTimeout(() => setCopyState('idle'), 1800);
-    } catch {
-      return;
-    }
-  };
-
-  const handleExitRoom = () => {
-    navigate('/');
-  };
-
   if (!session) {
     return (
       <div className="mx-auto flex min-h-screen max-w-3xl items-center justify-center px-4 py-10">
@@ -206,11 +188,6 @@ export function RoomPage() {
         roomName={session.roomName}
         roomId={roomId}
         deckName={getDeckName(session.deckType)}
-        theme={theme}
-        copyLabel={copyState === 'copied' ? 'Скопировано' : 'Пригласить'}
-        onToggleTheme={toggleTheme}
-        onCopyLink={handleCopyLink}
-        onExit={handleExitRoom}
       />
 
       <main className="mx-auto grid w-full max-w-7xl min-h-0 flex-1 gap-2.5 overflow-y-auto px-4 py-2.5 pb-3 sm:px-6 sm:py-3 sm:pb-4 lg:grid-cols-[20rem_minmax(0,1fr)] lg:overflow-visible lg:px-8">
@@ -245,7 +222,7 @@ export function RoomPage() {
         </div>
       </main>
 
-      <VotingCards
+      <RoomFooter
         cards={deck}
         selectedCard={selectedCard}
         disabled={isRevealed || !activeTask}

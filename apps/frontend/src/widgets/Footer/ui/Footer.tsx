@@ -1,18 +1,37 @@
 /**
  * Подвал сайта.
  *
- * Должен содержать:
- *  - Копирайт и год
- *  - Ссылки на документацию, исходный код, политику конфиденциальности
- *  - Иконки социальных сетей (если будут)
- *
- * Отображается на всех публичных страницах (/, /about, /login, /register).
- * Пока это заглушка.
+ * Отображается на всех страницах, кроме /room/:roomId.
  */
+import { Link, useMatch } from 'react-router-dom';
+
 export function Footer() {
+  const isRoomPage = useMatch('/room/:roomId') !== null;
+
+  if (isRoomPage) {
+    return null;
+  }
+
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer>
-      {/* TODO: Подвал сайта — ссылки, копирайт, соцсети */}
+    <footer className="border-t border-border/70 bg-card/70 backdrop-blur-xl">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 py-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <p>© {currentYear} Pocker Planning</p>
+        <div className="flex items-center gap-4">
+          <Link to="/about" className="transition-colors hover:text-foreground">
+            О проекте
+          </Link>
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
     </footer>
   );
 }

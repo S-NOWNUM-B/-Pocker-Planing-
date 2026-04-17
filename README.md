@@ -7,7 +7,9 @@
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite)](https://vite.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss)](https://tailwindcss.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss) ](https://tailwindcss.com/)
+[![Python](https://img.shields.io/badge/Python-3.13+-3776AB?logo=python)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js)](https://nodejs.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-336791?logo=postgresql)](https://www.postgresql.org/)
 
@@ -121,8 +123,8 @@ flowchart LR
         WS["WebSocket /\n(реальное время)"]
     end
 
-    subgraph BE["Backend (Node.js + TypeScript)"]
-        REST["REST API /\n(Express/Fastify)"]
+    subgraph BE["Backend (Python + FastAPI)"]
+        REST["REST API /\n(FastAPI)"]
         WSEndpoint["WebSocket Server"]
         Services["Business Logic"]
     end
@@ -147,48 +149,6 @@ flowchart LR
 
 ---
 
-## Структура монорепозитория
-
-```
-poker-planning/
-├── apps/
-│   ├── frontend/           # React frontend приложение (TypeScript)
-│   │   ├── src/
-│   │   ├── package.json
-│   │   └── ...
-│   └── backend/            # FastAPI backend сервис (Python)
-│       ├── app/
-│       │   ├── api/        # REST API routes
-│       │   ├── core/       # Config, security, dependencies
-│       │   ├── db/         # Database session, base models
-│       │   ├── models/     # SQLAlchemy ORM models
-│       │   ├── repositories/  # Data access layer
-│       │   ├── schemas/    # Pydantic DTO schemas
-│       │   ├── services/   # Business logic
-│       │   └── websocket/  # WebSocket manager
-│       ├── alembic/        # Database migrations
-│       ├── requirements.txt
-│       ├── Dockerfile
-│       └── docker-compose.yml
-├── packages/
-│   └── shared/             # Общие типы и утилиты (TypeScript)
-│       ├── src/
-│       ├── package.json
-│       └── tsconfig.json
-├── docs/                   # Документация проекта
-├── infrastructure/         # Docker, CI/CD, деплой
-├── package.json            # Root package.json (pnpm scripts)
-├── pnpm-workspace.yaml     # pnpm workspace конфигурация
-├── turbo.json              # Turbo monorepo конфигурация
-├── tsconfig.base.json      # Базовый TypeScript конфиг
-├── eslint.config.mjs       # ESLint конфигурация
-├── prettier.config.cjs     # Prettier конфигурация
-├── stylelint.config.cjs    # Stylelint конфигурация
-└── .editorconfig           # EditorConfig
-```
-
----
-
 ## Быстрый старт
 
 ### Требования
@@ -197,6 +157,7 @@ poker-planning/
 
 | Компонент | Минимум | Рекомендуется |
 | :-------: | :-----: | :-----------: |
+|  Python   |  3.13+  |     3.13+     |
 |  Node.js  | 18.18+  |      20+      |
 |   pnpm    |   8+    |      9+       |
 

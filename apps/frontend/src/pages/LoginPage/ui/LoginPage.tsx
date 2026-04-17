@@ -1,14 +1,10 @@
-/**
- * Страница входа в аккаунт.
- *
- * Содержит форму с полями email и пароль.
- * После успешного входа:
- *  - Сохраняется JWT-токен в localStorage через SessionManager
- *  - Пользователь перенаправляется на /dashboard
- *  - При ошибке показывается сообщение под формой
- */
-import { LoginForm } from '@/features/auth';
-
 export function LoginPage() {
-  return <LoginForm />;
+  return (
+    <section className="mx-auto w-full max-w-xl rounded-2xl border border-border/60 bg-card p-6 shadow-sm">
+      <h1 className="text-2xl font-semibold text-foreground">Вход</h1>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Страница обнулена и готова для ручной реализации формы авторизации.
+      </p>
+    </section>
+  );
 }

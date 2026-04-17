@@ -14,7 +14,6 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import type { User } from '@/entities/user';
 import { login as apiLogin, register as apiRegister, getUser as apiGetUser } from '@/entities/user';
 import type { LoginCredentials, RegisterCredentials } from '@/entities/user';
-import { SessionManager } from '@/shared/lib/sessionManager';
 
 export interface SessionContextValue {
   user: User | null;

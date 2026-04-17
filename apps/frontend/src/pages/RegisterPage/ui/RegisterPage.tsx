@@ -1,20 +1,10 @@
-/**
- * Страница регистрации нового пользователя.
- *
- * Содержит форму с полями:
- *  - имя (минимум 2 символа)
- *  - email (корректный формат)
- *  - пароль (минимум 8 символов, буквы + цифры + спец символы)
- *  - подтверждение пароля
- *
- * Требования к паролю отмечаются красным/зелёным в реальном времени.
- * После успешной регистрации:
- *  - Сохраняется JWT-токен в localStorage
- *  - Пользователь перенаправляется на /dashboard
- *  - При ошибке (email уже занят) показывается сообщение
- */
-import { RegisterForm } from '@/features/auth';
-
 export function RegisterPage() {
-  return <RegisterForm />;
+  return (
+    <section className="mx-auto w-full max-w-xl rounded-2xl border border-border/60 bg-card p-6 shadow-sm">
+      <h1 className="text-2xl font-semibold text-foreground">Регистрация</h1>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Страница обнулена и готова для ручной реализации формы регистрации.
+      </p>
+    </section>
+  );
 }

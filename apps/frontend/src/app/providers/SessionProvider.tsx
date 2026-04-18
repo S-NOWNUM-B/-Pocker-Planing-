@@ -52,22 +52,13 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        // Попробуем получить сохранённый профиль из localStorage
-        const savedUser = SessionManager.getUser();
-        if (savedUser) {
-          setUser(savedUser);
-          setIsLoading(false);
-          return;
-        }
-
-        // Если профиля нет в localStorage, восстановим его из API
+        // Восстанавливаем профиль пользователя из API по токену
         try {
           const currentUser = await apiGetUser();
           setUser(currentUser);
-          SessionManager.saveSession(token, currentUser);
         } catch {
           // Если API вернул ошибку (токен истёк), очистим сессию
-          SessionManager.clearSession();
+          SessionManager.removeToken();
           setUser(null);
         }
       } finally {
@@ -80,7 +71,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
   const handleLogin = async (credentials: LoginCredentials) => {
     const response = await apiLogin(credentials);
-    SessionManager.saveSession(response.access_token, response.user);
+    SessionManager.saveToken(response.accessToken);
     setUser(response.user);
   };
 
@@ -89,7 +80,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   };
 
   const handleLogout = () => {
-    SessionManager.clearSession();
+    SessionManager.removeToken();
     setUser(null);
   };
 

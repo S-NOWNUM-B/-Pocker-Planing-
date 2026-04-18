@@ -35,3 +35,13 @@ export interface IRegisterResponse {
   user: IUser;
   accessToken: string;
 }
+
+export interface AuthTokens {
+  accessToken: string;
+}
+
+export type User = IUser;
+export type LoginCredentials = ILoginCredentails;
+export type RegisterCredentials = IRegisterCredentials;
+export type LoginResponse = ILoginResponse;
+export type RegisterResponse = IRegisterResponse;

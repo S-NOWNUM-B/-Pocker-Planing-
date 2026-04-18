@@ -33,6 +33,10 @@ export const RegisterSchema = z
     message: 'Пароли не совпадают',
   });
 
+// Алиасы в camelCase для обратной совместимости с текущими импортами.
+export const loginSchema = LoginSchema;
+export const registerSchema = RegisterSchema;
+
 // Схемы для валидации ответов от сервера при логине и регистрации
 export const LoginResponseSchema = z.object({
   user: UserShema,

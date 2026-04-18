@@ -26,3 +26,7 @@ export const userAPI = {
     return data;
   },
 };
+
+export const login = userAPI.login;
+export const register = userAPI.register;
+export const getUser = userAPI.getMe;

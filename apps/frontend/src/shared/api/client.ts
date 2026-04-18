@@ -37,7 +37,8 @@ api.interceptors.response.use(
     const apiError: ApiError = {
       statusCode: error.response?.status || 500,
       error: error.response?.data?.error || 'Unknown error',
-      message: error.response?.data?.message || (typeof detail === 'string' ? detail : error.message),
+      message:
+        error.response?.data?.message || (typeof detail === 'string' ? detail : error.message),
     };
     return Promise.reject(apiError);
   },

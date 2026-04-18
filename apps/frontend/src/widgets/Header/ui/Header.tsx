@@ -68,6 +68,18 @@ export function Header({
             </div>
           )}
 
+          <div className="flex h-10 items-center gap-1.5 rounded-xl border border-border bg-card/70 px-2">
+            {theme === 'dark' ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
+            <Switch
+              checked={theme === 'dark'}
+              onChange={(isDark) => setTheme(isDark ? 'dark' : 'light')}
+              label="Переключить тему"
+            />
+            <span className="hidden text-left text-xs sm:inline sm:whitespace-nowrap">
+              {theme === 'dark' ? 'Светлая' : 'Тёмная'}
+            </span>
+          </div>
+
           {showProfileMenu && (
             <Menu as="div" className="relative hidden sm:block">
               <MenuButton
@@ -78,7 +90,7 @@ export function Header({
 
               <MenuItems
                 anchor="bottom end"
-                className="mt-2 w-56 origin-top-right rounded-xl border border-border/70 bg-card p-1.5 shadow-xl focus:outline-none"
+                className="z-50 mt-2 w-56 origin-top-right rounded-xl border border-border/70 bg-card p-1.5 shadow-xl focus:outline-none"
               >
                 <MenuItem>
                   <Link
@@ -103,18 +115,6 @@ export function Header({
               </MenuItems>
             </Menu>
           )}
-
-          <div className="flex h-10 items-center gap-2 rounded-xl border border-border bg-card/70 px-3">
-            {theme === 'dark' ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
-            <Switch
-              checked={theme === 'dark'}
-              onChange={(isDark) => setTheme(isDark ? 'dark' : 'light')}
-              label="Переключить тему"
-            />
-            <span className="hidden text-left text-sm sm:inline sm:min-w-30">
-              {theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
-            </span>
-          </div>
         </div>
       </div>
     </header>

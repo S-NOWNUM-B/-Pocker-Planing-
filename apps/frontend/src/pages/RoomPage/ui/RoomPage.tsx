@@ -210,7 +210,9 @@ export function RoomPage() {
                 <div className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   Создатель комнаты
                 </div>
-                <div className="mt-1 text-sm font-semibold text-foreground">{session.ownerName}</div>
+                <div className="mt-1 text-sm font-semibold text-foreground">
+                  {session.ownerName}
+                </div>
               </div>
             </div>
           </Card>

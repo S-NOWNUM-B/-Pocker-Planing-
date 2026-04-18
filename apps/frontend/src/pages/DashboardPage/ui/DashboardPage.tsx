@@ -30,9 +30,15 @@ export function DashboardPage() {
               Ваши активные и завершённые комнаты
             </p>
           </div>
-          <Button as={Link} to="/create-room">
-            Создать комнату
-          </Button>
+          <div className="flex gap-2">
+            <Button as={Link} to="/create-room">
+              Создать комнату
+            </Button>
+
+            <Button as={Link} to="/join-room" variant="outline">
+              Присоединиться к комнате
+            </Button>
+          </div>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">

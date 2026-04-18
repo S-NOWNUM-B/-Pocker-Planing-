@@ -136,7 +136,11 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
                         : 'bg-secondary text-muted-foreground'
                     }`}
                   >
-                    {item.isMet ? <CheckIcon className="h-3 w-3" /> : <span className="h-1.5 w-1.5 rounded-full bg-current" />}
+                    {item.isMet ? (
+                      <CheckIcon className="h-3 w-3" />
+                    ) : (
+                      <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                    )}
                   </span>
                   <span className={item.isMet ? 'text-foreground/85' : 'text-muted-foreground'}>
                     {item.label}

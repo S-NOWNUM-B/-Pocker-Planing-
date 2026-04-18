@@ -11,12 +11,17 @@
  * Используется в SessionProvider для оборачивания приложения.
  */
 import { createContext, useContext, useEffect, useState } from 'react';
-import { getUser as getUserRequest, login as loginRequest, register as registerRequest } from '@/entities/user';
+import {
+  getUser as getUserRequest,
+  login as loginRequest,
+  register as registerRequest,
+} from '@/entities/user';
 import type { ApiError } from '@/shared/api';
 import type { User } from '@/entities/user';
 import type { LoginCredentials, RegisterCredentials } from '@/entities/user';
 import { SessionManager } from '@/shared/lib/session';
 
+// Функция для извлечения сообщения об ошибке из ответа API
 const parseApiErrorMessage = (error: unknown) => {
   if (typeof error === 'object' && error !== null && 'message' in error) {
     return (error as ApiError).message;
@@ -25,6 +30,7 @@ const parseApiErrorMessage = (error: unknown) => {
   return 'Произошла ошибка. Попробуйте позже.';
 };
 
+// Интерфейс для значения контекста сессии
 export interface SessionContextValue {
   user: User | null;
   isLoading: boolean;
@@ -36,16 +42,10 @@ export interface SessionContextValue {
   setUser: (user: User | null) => void;
 }
 
+// Создаём контекст с начальным значением undefined
 const SessionContext = createContext<SessionContextValue | undefined>(undefined);
 
-/**
- * SessionProvider — инициализирует сессию и управляет состоянием авторизации.
- *
- * При загрузке приложения:
- *  1. Проверяет наличие токена в localStorage
- *  2. Восстанавливает профиль пользователя из localStorage или API
- *  3. Устанавливает isLoading = false, чтобы приложение начало отрисовку
- */
+// Провайдер сессии, который оборачивает приложение и предоставляет контекст
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,6 +79,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     initializeSession();
   }, []);
 
+  // Вход в аккаунт — сохраняем токен и профиль
   const handleLogin = async (credentials: LoginCredentials) => {
     try {
       const authData = await loginRequest(credentials);
@@ -90,6 +91,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Регистрация нового пользователя — сохраняем токен и профиль
   const handleRegister = async (credentials: RegisterCredentials) => {
     try {
       const authData = await registerRequest(credentials);
@@ -101,11 +103,13 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Выход из аккаунта — удаляем токен и сбрасываем профиль
   const handleLogout = () => {
     SessionManager.removeToken();
     setUser(null);
   };
 
+  // Значение, предоставляемое через контекст
   const value: SessionContextValue = {
     user,
     isLoading,
@@ -120,12 +124,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }
 
-/**
- * Hook для использования сессии в компонентах.
- *
- * @example
- * const { user, isAuthenticated, login, logout } = useSession();
- */
+// Хук для доступа к сессии из компонентов
 export function useSession(): SessionContextValue {
   const context = useContext(SessionContext);
   if (!context) {

@@ -8,8 +8,12 @@
  */
 import { Link } from 'react-router-dom';
 import { Button, Card, EmptyState, PageShell } from '@/shared/ui';
+import { useSession } from '@/app/providers';
 
 export function NotFoundPage() {
+  const { isAuthenticated } = useSession();
+  const homePath = isAuthenticated ? '/dashboard' : '/';
+
   return (
     <PageShell
       maxWidth="md"
@@ -22,7 +26,7 @@ export function NotFoundPage() {
           description="Похоже, ссылка устарела или маршрут был удалён"
         />
         <div className="flex justify-center">
-          <Button as={Link} to="/" variant="primary">
+          <Button as={Link} to={homePath} variant="primary">
             Вернуться на главную
           </Button>
         </div>

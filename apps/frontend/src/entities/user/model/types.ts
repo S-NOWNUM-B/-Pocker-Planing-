@@ -6,38 +6,32 @@
  * AuthTokens — access токен от сервера.
  * LoginResponse / RegisterResponse — ответ сервера при авторизации.
  */
-export interface User {
+
+export interface IUser {
   id: string;
   email: string;
-  name: string;
-  avatar_color: string;
-  created_at: string;
+  username: string;
+  avatarColor?: string;
+  createdAt: string;
 }
 
-export interface LoginCredentials {
+export interface ILoginCredentails {
   email: string;
   password: string;
 }
 
-export interface RegisterCredentials {
+export interface IRegisterCredentials {
   email: string;
+  username: string;
   password: string;
-  name: string;
 }
 
-export interface AuthTokens {
-  access_token: string;
-  token_type: string;
+export interface ILoginResponse {
+  user: IUser;
+  accessToken: string;
 }
 
-export interface LoginResponse {
-  access_token: string;
-  token_type: string;
-  user: User;
-}
-
-export interface RegisterResponse {
-  access_token: string;
-  token_type: string;
-  user: User;
+export interface IRegisterResponse {
+  user: IUser;
+  accessToken: string;
 }

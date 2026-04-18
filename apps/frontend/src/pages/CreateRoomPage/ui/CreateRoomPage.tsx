@@ -3,7 +3,7 @@
  *
  * Содержит форму для быстрого старта сессии:
  *  - Название комнаты
- *  - Имя пользователя (модератора)
+ *  - Автоматическое имя создателя из текущего профиля
  *  - Выбор колоды (Фибоначчи или Чётная)
  *
  * После заполнения формы сохраняет GameSession в localStorage
@@ -13,6 +13,7 @@
  */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSession } from '@/app/providers';
 import { Button, Card, Input, PageShell, RadioGroup } from '@/shared/ui';
 import { LinkIcon, PlayIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
 import { createRoomId, type DeckType, type GameSession } from '@/shared/lib/poker';
@@ -30,11 +31,13 @@ const DECK_INFO: Record<DeckType, { title: string; description: string }> = {
 
 export function CreateRoomPage() {
   const navigate = useNavigate();
+  const { user } = useSession();
   const [roomName, setRoomName] = useState('');
-  const [userName, setUserName] = useState('');
   const [deckType, setDeckType] = useState<DeckType>('fibonacci');
+  const creatorName = user?.name?.trim() || 'Гость';
+  const creatorId = user?.id || 'guest';
 
-  const canStart = Boolean(roomName.trim() && userName.trim());
+  const canStart = Boolean(roomName.trim());
 
   const handleStart = () => {
     if (!canStart) {
@@ -44,8 +47,10 @@ export function CreateRoomPage() {
     const session: GameSession = {
       roomId: createRoomId(roomName),
       roomName: roomName.trim(),
-      userName: userName.trim(),
+      userName: creatorName,
       deckType,
+      ownerId: creatorId,
+      ownerName: creatorName,
     };
 
     window.localStorage.setItem('poker-planning:session', JSON.stringify(session));
@@ -106,18 +111,18 @@ export function CreateRoomPage() {
           </div>
 
           <div className="space-y-5">
+            <Card className="border border-border/70 bg-secondary/35 p-3 shadow-none">
+              <div className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                Создатель комнаты
+              </div>
+              <div className="mt-1 text-sm font-semibold text-foreground">{creatorName}</div>
+            </Card>
+
             <Input
               label="Название комнаты"
               placeholder="Sprint planning"
               value={roomName}
               onChange={(event) => setRoomName(event.target.value)}
-            />
-
-            <Input
-              label="Ваше имя"
-              placeholder="Алексей"
-              value={userName}
-              onChange={(event) => setUserName(event.target.value)}
             />
 
             <RadioGroup

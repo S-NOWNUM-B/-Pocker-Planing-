@@ -1,4 +1,3 @@
-export { LandingPage } from './LandingPage';
 export { OnboardingPage } from './OnboardingPage';
 export { CreateRoomPage } from './CreateRoomPage';
 export { LoginPage } from './LoginPage';

@@ -3,4 +3,4 @@
  *
  * SessionManager — управление сессией пользователя.
  */
-export { SessionManager } from './sessionManager';
+export { SessionManager } from './SessionManager';

@@ -72,19 +72,21 @@ export function RoomResults({
 
         <div className="flex min-h-0 flex-col gap-2 px-2 py-2 sm:gap-3 sm:px-3 sm:py-3">
           {isRevealed ? (
-            <div className="flex w-full flex-col items-center gap-2 text-center">
-              <Card className="w-full max-w-[20rem] border border-primary/50 bg-card/95 p-3.5 text-center shadow-xl">
-                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            <div className="flex w-full flex-col items-center gap-1.5 text-center sm:gap-2">
+              <Card className="w-full max-w-66 border border-primary/50 bg-card/95 p-2.5 text-center shadow-xl sm:max-w-70 sm:p-3">
+                <div className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:text-xs">
                   Финальная оценка
                 </div>
-                <div className="mt-1.5 text-4xl font-black text-primary sm:text-5xl">{average}</div>
-                <div className="mt-0.5 text-sm font-medium text-muted-foreground">Story Points</div>
+                <div className="mt-1 text-3xl font-black text-primary sm:text-4xl">{average}</div>
+                <div className="mt-0.5 text-xs font-medium text-muted-foreground sm:text-sm">
+                  Story Points
+                </div>
               </Card>
 
               <Button
                 type="button"
                 onClick={onNextTask}
-                className="h-9 rounded-2xl px-6 text-base font-semibold"
+                className="h-8 rounded-2xl px-5 text-sm font-semibold sm:h-9 sm:px-6 sm:text-base"
               >
                 Следующая задача
               </Button>

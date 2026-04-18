@@ -34,6 +34,8 @@ export interface GameSession {
   roomId: string;
   roomName: string;
   userName: string;
+  ownerId: string;
+  ownerName: string;
   deckType: DeckType;
 }
 

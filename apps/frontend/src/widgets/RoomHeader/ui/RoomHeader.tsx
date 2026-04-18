@@ -42,7 +42,7 @@ export function RoomHeader({ roomName, roomId, deckName }: RoomHeaderProps) {
   };
 
   const handleExitRoom = () => {
-    navigate('/');
+    navigate('/dashboard');
   };
 
   return (

@@ -14,7 +14,7 @@ export function RoomFooter({
   onSelectCard,
 }: RoomFooterProps) {
   return (
-    <footer>
+    <footer className="mt-auto">
       <VotingCards
         cards={cards}
         selectedCard={selectedCard}

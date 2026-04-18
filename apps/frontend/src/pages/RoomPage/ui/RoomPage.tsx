@@ -5,6 +5,7 @@
  *
  * Функциональность:
  *  - Чтение сессии из localStorage (GameSession)
+ *  - Привязка комнаты к создателю (ownerId/ownerName)
  *  - Управление игроками (пока только локальный пользователь + боты)
  *  - Добавление задач для оценки через TaskSidebar
  *  - Выбор карты через VotingCards
@@ -17,9 +18,8 @@
  * и данные будут загружаться с backend через TanStack Query.
  */
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, EmptyState } from '@/shared/ui';
-import { TargetIcon } from '@/shared/ui/icons';
+import { NotFoundPage } from '@/pages/NotFoundPage';
+import { Card } from '@/shared/ui';
 import {
   DECKS,
   SESSION_STORAGE_KEY,
@@ -40,8 +40,19 @@ function readSession(roomId: string) {
       return null;
     }
 
-    const session = JSON.parse(rawSession) as GameSession;
-    return session.roomId === roomId ? session : null;
+    const parsed = JSON.parse(rawSession) as Partial<GameSession>;
+    if (parsed.roomId !== roomId || !parsed.roomName || !parsed.userName || !parsed.deckType) {
+      return null;
+    }
+
+    return {
+      roomId: parsed.roomId,
+      roomName: parsed.roomName,
+      userName: parsed.userName,
+      deckType: parsed.deckType,
+      ownerId: parsed.ownerId || parsed.userName,
+      ownerName: parsed.ownerName || parsed.userName,
+    } satisfies GameSession;
   } catch {
     return null;
   }
@@ -52,7 +63,6 @@ function getDeckName(deckType: DeckType) {
 }
 
 export function RoomPage() {
-  const navigate = useNavigate();
   const { roomId } = useRoomParams();
   const [session, setSession] = useState<GameSession | null>(null);
   const [players, setPlayers] = useState<Player[]>([]);
@@ -74,9 +84,9 @@ export function RoomPage() {
     setSession(storedSession);
     setPlayers([
       {
-        id: 'user',
+        id: storedSession.ownerId,
         name: storedSession.userName,
-        role: 'Вы',
+        role: 'Создатель',
         vote: null,
         isThinking: false,
         isBot: false,
@@ -163,23 +173,14 @@ export function RoomPage() {
   };
 
   if (!session) {
-    return (
-      <div className="mx-auto flex min-h-screen max-w-3xl items-center justify-center px-4 py-10">
-        <Card className="w-full border border-border/70 bg-card/95 p-8 text-center shadow-2xl backdrop-blur">
-          <EmptyState
-            icon={<TargetIcon className="h-10 w-10" />}
-            title="Комната не найдена"
-            description="Сначала создайте сессию на главной странице, затем откройте комнату снова"
-            actionLabel="Вернуться на главную"
-            onAction={() => navigate('/')}
-          />
-        </Card>
-      </div>
-    );
+    return <NotFoundPage />;
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
+    <div className="relative flex h-screen flex-col overflow-hidden">
+      <div className="pointer-events-none absolute -left-24 top-20 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-24 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
+
       {celebrate && (
         <div className="pointer-events-none fixed inset-0 z-50 bg-primary/10 animate-pulse" />
       )}
@@ -190,7 +191,7 @@ export function RoomPage() {
         deckName={getDeckName(session.deckType)}
       />
 
-      <main className="mx-auto grid w-full max-w-7xl min-h-0 flex-1 gap-2.5 overflow-y-auto px-4 py-2.5 pb-3 sm:px-6 sm:py-3 sm:pb-4 lg:grid-cols-[20rem_minmax(0,1fr)] lg:overflow-visible lg:px-8">
+      <main className="relative mx-auto grid w-full max-w-7xl min-h-0 flex-1 gap-3 overflow-y-auto px-4 py-3 pb-4 sm:px-6 sm:py-4 sm:pb-5 lg:grid-cols-[20rem_minmax(0,1fr)] lg:overflow-visible lg:px-8">
         <TaskSidebar
           tasks={tasks}
           activeTaskId={activeTaskId}
@@ -202,7 +203,18 @@ export function RoomPage() {
           className="h-auto min-h-0 lg:h-full lg:max-h-full"
         />
 
-        <div className="grid min-w-0 min-h-0 gap-2.5 lg:grid-rows-[minmax(0,1.8fr)_auto]">
+        <div className="grid min-w-0 min-h-0 gap-3 lg:grid-rows-[auto_minmax(0,1.8fr)_auto]">
+          <Card className="border border-border/70 bg-card/90 p-3 shadow-sm backdrop-blur">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Создатель комнаты
+                </div>
+                <div className="mt-1 text-sm font-semibold text-foreground">{session.ownerName}</div>
+              </div>
+            </div>
+          </Card>
+
           <RoomResults
             activeTaskTitle={activeTask ? activeTask.title : null}
             average={average}

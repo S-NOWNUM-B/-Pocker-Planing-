@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@/app/providers';
+import type { ApiError } from '@/shared/api';
 import { Button, Card, Input, PageShell, RadioGroup } from '@/shared/ui';
 import { LinkIcon, PlayIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
 import { roomApi } from '@/entities/room';
@@ -31,6 +32,16 @@ const DECK_INFO: Record<DeckType, { title: string; description: string }> = {
   },
 };
 
+const isApiError = (error: unknown): error is ApiError => {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'statusCode' in error &&
+    'error' in error &&
+    'message' in error
+  );
+};
+
 export function CreateRoomPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -38,11 +49,13 @@ export function CreateRoomPage() {
   const [roomName, setRoomName] = useState('');
   const [deckType, setDeckType] = useState<DeckType>('fibonacci');
   const creatorName = user?.name?.trim() || 'Гость';
+  const trimmedRoomName = roomName.trim();
 
-  const canStart = Boolean(roomName.trim());
+  const isRoomNameValid = trimmedRoomName.length >= 3 && trimmedRoomName.length <= 120;
+  const canStart = isRoomNameValid;
 
   const createRoomMutation = useMutation({
-    mutationFn: () => roomApi.createRoom(roomName.trim(), deckType),
+    mutationFn: () => roomApi.createRoom(trimmedRoomName, deckType),
     onSuccess: (snapshot) => {
       const session: GameSession = {
         roomId: snapshot.room.slug,
@@ -71,6 +84,9 @@ export function CreateRoomPage() {
 
     createRoomMutation.mutate();
   };
+
+  const mutationError = createRoomMutation.error;
+  const apiError: ApiError | null = isApiError(mutationError) ? mutationError : null;
 
   return (
     <PageShell
@@ -139,6 +155,11 @@ export function CreateRoomPage() {
               value={roomName}
               onChange={(event) => setRoomName(event.target.value)}
               disabled={createRoomMutation.isPending}
+              error={
+                trimmedRoomName.length > 0 && trimmedRoomName.length < 3
+                  ? 'Минимум 3 символа'
+                  : undefined
+              }
             />
 
             <RadioGroup
@@ -165,7 +186,10 @@ export function CreateRoomPage() {
             </Button>
             {createRoomMutation.isError && (
               <p className="text-sm text-destructive">
-                Не удалось создать комнату. Проверьте авторизацию и попробуйте снова.
+                {apiError?.statusCode === 401
+                  ? 'Сессия истекла. Войдите снова и повторите попытку.'
+                  : apiError?.message ||
+                    'Не удалось создать комнату. Проверьте данные и попробуйте снова.'}
               </p>
             )}
           </div>

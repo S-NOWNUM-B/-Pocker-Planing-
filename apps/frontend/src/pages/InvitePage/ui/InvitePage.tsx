@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { roomApi } from '@/entities/room';
+import { loginAsGuest } from '@/entities/user';
 import { PageShell, Spinner } from '@/shared/ui';
 import { SESSION_STORAGE_KEY, type DeckType, type GameSession } from '@/shared/lib/poker';
 import { useSession } from '@/app/providers';
@@ -15,16 +16,49 @@ export function InvitePage() {
   const { token } = useParams<{ token: string }>();
   const { user } = useSession();
 
+  const getSession = (): GameSession | null => {
+    const rawSession = window.localStorage.getItem(SESSION_STORAGE_KEY);
+    if (!rawSession) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(rawSession) as GameSession;
+    } catch {
+      return null;
+    }
+  };
+
+  const ensureRoomAccessToken = async (): Promise<{ token?: string; guestName?: string }> => {
+    if (user) {
+      return {};
+    }
+
+    const existingSession = getSession();
+    if (existingSession?.roomAccessToken) {
+      return { token: existingSession.roomAccessToken, guestName: existingSession.userName };
+    }
+
+    const guestAuth = await loginAsGuest({ name: 'Гость' });
+    return { token: guestAuth.access_token, guestName: guestAuth.user.name };
+  };
+
   const joinMutation = useMutation({
-    mutationFn: (invitationToken: string) => roomApi.joinRoomByInvitation(invitationToken),
-    onSuccess: (snapshot) => {
+    mutationFn: async (invitationToken: string) => {
+      const roomAccess = await ensureRoomAccessToken();
+      const snapshot = await roomApi.joinRoomByInvitation(invitationToken, roomAccess.token);
+      return { snapshot, roomAccessToken: roomAccess.token, guestName: roomAccess.guestName };
+    },
+    onSuccess: ({ snapshot, roomAccessToken, guestName }) => {
       const session: GameSession = {
         roomId: snapshot.room.slug,
         roomName: snapshot.room.name,
-        userName: user?.name?.trim() || 'Гость',
+        userName: user?.name?.trim() || guestName || 'Гость',
         ownerId: snapshot.room.owner_id,
         ownerName: 'Владелец комнаты',
         deckType: normalizeDeckType(snapshot.room.deck?.code),
+        roomAccessToken,
+        selfParticipantId: snapshot.self_participant_id,
       };
 
       window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
@@ -36,18 +70,13 @@ export function InvitePage() {
   });
 
   useEffect(() => {
-    if (!user) {
-      navigate('/login', { replace: true });
-      return;
-    }
-
     if (!token) {
       navigate('/join-room', { replace: true });
       return;
     }
 
     joinMutation.mutate(token);
-  }, [joinMutation, navigate, token, user]);
+  }, [joinMutation, navigate, token]);
 
   return (
     <PageShell className="min-h-[calc(100vh-8.5rem)]">

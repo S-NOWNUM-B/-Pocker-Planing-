@@ -26,6 +26,10 @@ export interface IRegisterCredentials {
   password: string;
 }
 
+export interface IGuestLoginCredentials {
+  name?: string;
+}
+
 export interface ILoginResponse {
   user: IUser;
   access_token: string;
@@ -33,6 +37,12 @@ export interface ILoginResponse {
 }
 
 export interface IRegisterResponse {
+  user: IUser;
+  access_token: string;
+  token_type: 'bearer';
+}
+
+export interface IGuestLoginResponse {
   user: IUser;
   access_token: string;
   token_type: 'bearer';
@@ -46,5 +56,7 @@ export interface AuthTokens {
 export type User = IUser;
 export type LoginCredentials = ILoginCredentails;
 export type RegisterCredentials = IRegisterCredentials;
+export type GuestLoginCredentials = IGuestLoginCredentials;
 export type LoginResponse = ILoginResponse;
 export type RegisterResponse = IRegisterResponse;
+export type GuestLoginResponse = IGuestLoginResponse;

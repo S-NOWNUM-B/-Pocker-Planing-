@@ -13,14 +13,13 @@ import { Button, PageShell, Spinner, EmptyState } from '@/shared/ui';
 import { RoomCard, roomApi } from '@/entities/room';
 
 export function DashboardPage() {
-
   const {
     data: rooms,
     isLoading,
     isError,
   } = useQuery({
     queryKey: ['rooms'],
-    queryFn: roomApi.listRooms,
+    queryFn: () => roomApi.listRooms(),
   });
 
   return (

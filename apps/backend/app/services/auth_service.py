@@ -1,9 +1,12 @@
+import secrets
+from uuid import uuid4
+
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.security import create_access_token, hash_password, verify_password
 from app.repositories.auth_repository import UserRepository
-from app.schemas.auth import AuthResponse, LoginRequest, RegisterRequest, UserResponse
+from app.schemas.auth import AuthResponse, GuestAuthRequest, LoginRequest, RegisterRequest, UserResponse
 
 AVATAR_PALETTE = [
     "#52B6FF",
@@ -43,6 +46,23 @@ class AuthService:
         user = self.users.get_by_email(payload.email)
         if user is None or not verify_password(payload.password, user.password_hash):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Неверный email или пароль")
+
+        token = create_access_token(str(user.id))
+        return AuthResponse(access_token=token, user=UserResponse.model_validate(user))
+
+    def guest_login(self, payload: GuestAuthRequest) -> AuthResponse:
+        display_name = payload.name.strip() if payload.name else "Гость"
+        suffix = uuid4().hex[:8]
+        guest_email = f"guest-{suffix}@guest.local"
+
+        user = self.users.create(
+            email=guest_email,
+            name=display_name,
+            password_hash=hash_password(secrets.token_urlsafe(32)),
+            avatar_color=self._pick_avatar_color(guest_email),
+        )
+        self.db.commit()
+        self.db.refresh(user)
 
         token = create_access_token(str(user.id))
         return AuthResponse(access_token=token, user=UserResponse.model_validate(user))

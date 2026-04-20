@@ -6,72 +6,74 @@
 import { Button, Card, PageShell } from '@/shared/ui';
 
 export function AboutPage() {
+  const sectionContainerClass = 'mx-auto w-full max-w-7xl';
+
   return (
     <PageShell maxWidth="full" className="min-h-[calc(100vh-8.5rem)]">
-      <section className="flex flex-col items-center py-12 text-center lg:py-14">
-        <h1 className="mt-4 max-w-5xl font-display text-4xl font-bold leading-[0.96] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+      <section className="flex flex-col items-center py-16 text-center lg:py-20">
+        <h1 className="max-w-4xl font-display text-5xl font-bold tracking-tight text-foreground sm:text-7xl">
           Почему существует{' '}
-          <span className="whitespace-nowrap bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
             Pocker Planning
           </span>
         </h1>
-        <p className="mt-5 max-w-3xl text-lg leading-8 text-muted-foreground">
+        <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
           Большинство команд теряют время не на разработку, а на споры об оценках. Здесь объясняем, почему — и как это починить
         </p>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+      </section>
+
+      <section className="py-20 sm:py-24">
+        <div className={sectionContainerClass}>
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Проблема, которую проект решает
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-muted-foreground">
+              В классическом планировании команды часто теряют время и точность оценок из-за
+              социальных и процессных перекосов — от эффекта якоря до неравного участия и потери контекста
+            </p>
+          </div>
+          <div className="mx-auto mt-14 grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                title: 'Эффект якоря',
+                text: 'Когда первым высказывается самый уверенный участник, остальные бессознательно смещают оценку к его мнению. Это искажает результат и скрывает реальное понимание задачи',
+              },
+              {
+                title: 'Дискуссии без рамки',
+                text: 'Команда тратит много времени на спор о числе, вместо обсуждения рисков, неопределённости и объёма работы. Это приводит к затяжным встречам и усталости от планирования',
+              },
+              {
+                title: 'Невидимые расхождения',
+                text: 'Если оценки не собираются структурированно, сложно понять, где участники видят разные риски и зависимости. Это мешает синхронизации и выявлению проблем на ранней стади',
+              },
+              {
+                title: 'Потеря контекста',
+                text: 'После встречи исчезает связь между обсуждением и итогом, из-за чего сложно улучшать процесс от спринта к спринту. Команды не могут учиться на своих ошибках и повторять успехи',
+              },
+              {
+                title: 'Неравное участие',
+                text: 'В офлайн и распределённых командах часть людей молчит, и итоговая оценка не отражает общее понимание задачи. Это снижает вовлечённость и ответственность за результат',
+              },
+              {
+                title: 'Сложно повторить успех',
+                text: 'Без прозрачного ритуала оценки невозможно стабильно проводить планирование одинаково качественно от команды к команде. Успех зависит от наличия опытного фасилитатора и удачного стечения обстоятельств',
+              },
+            ].map((item) => (
+              <Card
+                key={item.title}
+                className="h-full border border-border/70 bg-card/88 p-6 shadow-lg backdrop-blur"
+              >
+                <h3 className="text-lg font-semibold leading-7 text-foreground">{item.title}</h3>
+                <p className="mt-3 text-base leading-7 text-muted-foreground">{item.text}</p>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="py-20 sm:py-24">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Проблема, которую проект решает
-          </h2>
-          <p className="mt-4 text-lg leading-8 text-muted-foreground">
-            В классическом планировании команды часто теряют время и точность оценок из-за
-            социальных и процессных перекосов — от эффекта якоря до неравного участия и потери контекста
-          </p>
-        </div>
-        <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              title: 'Эффект якоря',
-              text: 'Когда первым высказывается самый уверенный участник, остальные бессознательно смещают оценку к его мнению. Это искажает результат и скрывает реальное понимание задачи',
-            },
-            {
-              title: 'Дискуссии без рамки',
-              text: 'Команда тратит много времени на спор о числе, вместо обсуждения рисков, неопределённости и объёма работы. Это приводит к затяжным встречам и усталости от планирования',
-            },
-            {
-              title: 'Невидимые расхождения',
-              text: 'Если оценки не собираются структурированно, сложно понять, где участники видят разные риски и зависимости. Это мешает синхронизации и выявлению проблем на ранней стади',
-            },
-            {
-              title: 'Потеря контекста',
-              text: 'После встречи исчезает связь между обсуждением и итогом, из-за чего сложно улучшать процесс от спринта к спринту. Команды не могут учиться на своих ошибках и повторять успехи',
-            },
-            {
-              title: 'Неравное участие',
-              text: 'В офлайн и распределённых командах часть людей молчит, и итоговая оценка не отражает общее понимание задачи. Это снижает вовлечённость и ответственность за результат',
-            },
-            {
-              title: 'Сложно повторить успех',
-              text: 'Без прозрачного ритуала оценки невозможно стабильно проводить планирование одинаково качественно от команды к команде. Успех зависит от наличия опытного фасилитатора и удачного стечения обстоятельств',
-            },
-          ].map((item) => (
-            <Card
-              key={item.title}
-              className="h-full border border-border/70 bg-card/88 p-6 shadow-lg backdrop-blur"
-            >
-              <h3 className="text-lg font-semibold leading-7 text-foreground">{item.title}</h3>
-              <p className="mt-3 text-base leading-7 text-muted-foreground">{item.text}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <section className="py-20 sm:py-24">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className={`${sectionContainerClass} grid grid-cols-1 gap-6 lg:grid-cols-3`}>
           <Card className="lg:col-span-2 border border-border/70 bg-card/90 p-6 shadow-lg backdrop-blur">
             <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               Принципы хорошей оценки
@@ -122,7 +124,7 @@ export function AboutPage() {
       </section>
 
       <section className="relative isolate overflow-hidden py-20 sm:py-24">
-        <div className="mx-auto max-w-6xl">
+        <div className={sectionContainerClass}>
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Сценарий до и после
@@ -131,7 +133,7 @@ export function AboutPage() {
               Как меняется планирование, когда у команды есть единый ритуал оценки и инструмент для его проведения
             </p>
           </div>
-          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
+          <div className="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2">
             {[
               {
                 step: 'До',
@@ -165,7 +167,7 @@ export function AboutPage() {
       </section>
 
       <section className="py-20 sm:py-24">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className={`${sectionContainerClass} grid grid-cols-1 gap-6 lg:grid-cols-3`}>
           <Card className="lg:col-span-2 border border-border/70 bg-card/90 p-6 shadow-lg backdrop-blur">
             <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               Open source сегодня и что дальше

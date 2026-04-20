@@ -37,6 +37,8 @@ export interface GameSession {
   ownerId: string;
   ownerName: string;
   deckType: DeckType;
+  roomAccessToken?: string;
+  selfParticipantId?: string | null;
 }
 
 export const DECKS: Record<DeckType, string[]> = {

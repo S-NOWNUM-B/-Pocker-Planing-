@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@/app/providers';
+import { loginAsGuest } from '@/entities/user';
 import type { ApiError } from '@/shared/api';
 import { Button, Card, Input, PageShell, RadioGroup } from '@/shared/ui';
 import { LinkIcon, PlayIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
@@ -54,16 +55,49 @@ export function CreateRoomPage() {
   const isRoomNameValid = trimmedRoomName.length >= 3 && trimmedRoomName.length <= 120;
   const canStart = isRoomNameValid;
 
+  const getSession = (): GameSession | null => {
+    const rawSession = window.localStorage.getItem(SESSION_STORAGE_KEY);
+    if (!rawSession) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(rawSession) as GameSession;
+    } catch {
+      return null;
+    }
+  };
+
+  const ensureRoomAccessToken = async (): Promise<{ token?: string; guestName?: string }> => {
+    if (user) {
+      return {};
+    }
+
+    const existingSession = getSession();
+    if (existingSession?.roomAccessToken) {
+      return { token: existingSession.roomAccessToken, guestName: existingSession.userName };
+    }
+
+    const guestAuth = await loginAsGuest({ name: creatorName });
+    return { token: guestAuth.access_token, guestName: guestAuth.user.name };
+  };
+
   const createRoomMutation = useMutation({
-    mutationFn: () => roomApi.createRoom(trimmedRoomName, deckType),
-    onSuccess: (snapshot) => {
+    mutationFn: async () => {
+      const roomAccess = await ensureRoomAccessToken();
+      const snapshot = await roomApi.createRoom(trimmedRoomName, deckType, roomAccess.token);
+      return { snapshot, roomAccessToken: roomAccess.token, guestName: roomAccess.guestName };
+    },
+    onSuccess: ({ snapshot, roomAccessToken, guestName }) => {
       const session: GameSession = {
         roomId: snapshot.room.slug,
         roomName: snapshot.room.name,
-        userName: creatorName,
+        userName: user?.name?.trim() || guestName || creatorName,
         deckType,
         ownerId: snapshot.room.owner_id,
-        ownerName: creatorName,
+        ownerName: user?.name?.trim() || guestName || creatorName,
+        roomAccessToken,
+        selfParticipantId: snapshot.self_participant_id,
       };
 
       window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
@@ -74,11 +108,6 @@ export function CreateRoomPage() {
 
   const handleStart = () => {
     if (!canStart || createRoomMutation.isPending) {
-      return;
-    }
-
-    if (!user) {
-      navigate('/login');
       return;
     }
 
@@ -186,10 +215,7 @@ export function CreateRoomPage() {
             </Button>
             {createRoomMutation.isError && (
               <p className="text-sm text-destructive">
-                {apiError?.statusCode === 401
-                  ? 'Сессия истекла. Войдите снова и повторите попытку.'
-                  : apiError?.message ||
-                    'Не удалось создать комнату. Проверьте данные и попробуйте снова.'}
+                {apiError?.message || 'Не удалось создать комнату. Проверьте данные и попробуйте снова.'}
               </p>
             )}
           </div>

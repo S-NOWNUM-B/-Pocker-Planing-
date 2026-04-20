@@ -22,12 +22,25 @@ function roomRefLooksLikeCode(value: string) {
   return /^[a-zA-Z]{4}$/.test(value);
 }
 
-async function loadRoomSnapshot(roomRef: string): Promise<RoomSnapshot> {
+function getLocalSession(): GameSession | null {
+  const rawSession = window.localStorage.getItem(SESSION_STORAGE_KEY);
+  if (!rawSession) {
+    return null;
+  }
+
   try {
-    return await roomApi.getRoomSnapshot(roomRef);
+    return JSON.parse(rawSession) as GameSession;
+  } catch {
+    return null;
+  }
+}
+
+async function loadRoomSnapshotWithToken(roomRef: string, roomAccessToken?: string): Promise<RoomSnapshot> {
+  try {
+    return await roomApi.getRoomSnapshot(roomRef, roomAccessToken);
   } catch {
     if (roomRefLooksLikeCode(roomRef)) {
-      return roomApi.joinRoomByCode(roomRef.toUpperCase());
+      return roomApi.joinRoomByCode(roomRef.toUpperCase(), roomAccessToken);
     }
 
     throw new Error('room_not_available');
@@ -39,11 +52,13 @@ export function RoomPage() {
   const { user } = useSession();
   const queryClient = useQueryClient();
   const [newTaskTitle, setNewTaskTitle] = useState('');
+  const localSession = getLocalSession();
+  const roomAccessToken = user ? undefined : localSession?.roomAccessToken;
 
   const roomQuery = useQuery({
-    queryKey: ['room', roomRef, user?.id],
-    enabled: Boolean(user),
-    queryFn: () => loadRoomSnapshot(roomRef),
+    queryKey: ['room', roomRef, user?.id ?? 'guest', roomAccessToken ?? 'no-token'],
+    enabled: Boolean(user || roomAccessToken),
+    queryFn: () => loadRoomSnapshotWithToken(roomRef, roomAccessToken),
     refetchInterval: 4000,
   });
 
@@ -52,63 +67,71 @@ export function RoomPage() {
 
   const refreshRoomData = async () => {
     await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ['room', roomRef, user?.id] }),
+      queryClient.invalidateQueries({
+        queryKey: ['room', roomRef, user?.id ?? 'guest', roomAccessToken ?? 'no-token'],
+      }),
       queryClient.invalidateQueries({ queryKey: ['rooms'] }),
       queryClient.invalidateQueries({ queryKey: ['room-history', roomId] }),
     ]);
   };
 
   const createTaskMutation = useMutation({
-    mutationFn: (title: string) => roomApi.createTask(roomId as string, title),
+    mutationFn: (title: string) => roomApi.createTask(roomId as string, title, roomAccessToken),
     onSuccess: refreshRoomData,
   });
 
   const selectTaskMutation = useMutation({
-    mutationFn: (taskId: string) => roomApi.selectTask(roomId as string, taskId),
+    mutationFn: (taskId: string) => roomApi.selectTask(roomId as string, taskId, roomAccessToken),
     onSuccess: refreshRoomData,
   });
 
   const startRoundMutation = useMutation({
-    mutationFn: (taskId: string) => roomApi.startRound(roomId as string, taskId),
+    mutationFn: (taskId: string) => roomApi.startRound(roomId as string, taskId, roomAccessToken),
     onSuccess: refreshRoomData,
   });
 
   const voteMutation = useMutation({
     mutationFn: ({ roundId, value }: { roundId: string; value: string }) =>
-      roomApi.submitVote(roomId as string, roundId, value),
+      roomApi.submitVote(roomId as string, roundId, value, roomAccessToken),
     onSuccess: refreshRoomData,
   });
 
   const revealMutation = useMutation({
-    mutationFn: (roundId: string) => roomApi.revealRound(roomId as string, roundId),
+    mutationFn: (roundId: string) => roomApi.revealRound(roomId as string, roundId, roomAccessToken),
     onSuccess: refreshRoomData,
   });
 
   const finalizeMutation = useMutation({
     mutationFn: ({ roundId, resultValue }: { roundId: string; resultValue?: string }) =>
-      roomApi.finalizeRound(roomId as string, roundId, resultValue),
+      roomApi.finalizeRound(roomId as string, roundId, resultValue, roomAccessToken),
     onSuccess: refreshRoomData,
   });
 
   useEffect(() => {
-    if (!user || !snapshot) {
+    if (!snapshot) {
       return;
     }
 
-    const isOwner = user.id === snapshot.room.owner_id;
+    const selfParticipant = snapshot.self_participant_id
+      ? snapshot.participants.find((participant) => participant.id === snapshot.self_participant_id)
+      : null;
+    const userName = user?.name || selfParticipant?.name || localSession?.userName || 'Гость';
+    const isOwner = selfParticipant?.role === 'owner';
     const session: GameSession = {
       roomId: snapshot.room.slug,
       roomName: snapshot.room.name,
-      userName: user.name,
+      userName,
       ownerId: snapshot.room.owner_id,
-      ownerName: isOwner ? user.name : 'Владелец комнаты',
+      ownerName: isOwner ? userName : 'Владелец комнаты',
       deckType: snapshot.room.deck.code === 'even' ? 'even' : 'fibonacci',
+      roomAccessToken,
+      selfParticipantId: snapshot.self_participant_id,
     };
 
     window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
-  }, [snapshot, user]);
+  }, [localSession?.userName, roomAccessToken, snapshot, user?.name]);
 
-  if (!user) {
+  if (!user && !roomAccessToken) {
     return <Navigate to="/login" replace />;
   }
 
@@ -124,7 +147,11 @@ export function RoomPage() {
     return <NotFoundPage />;
   }
 
-  const isOwner = user.id === snapshot.room.owner_id;
+  const selfParticipant = snapshot.self_participant_id
+    ? snapshot.participants.find((participant) => participant.id === snapshot.self_participant_id)
+    : null;
+  const isOwner = selfParticipant?.role === 'owner';
+  const currentUserName = user?.name || selfParticipant?.name || localSession?.userName || 'Гость';
 
   const tasks = [...snapshot.tasks]
     .sort((a, b) => a.position - b.position)
@@ -293,7 +320,7 @@ export function RoomPage() {
                 </div>
                 <div className="mt-1 text-sm font-semibold text-foreground">
                   {isOwner
-                    ? user.name
+                    ? currentUserName
                     : snapshot.participants.find((participant) => participant.role === 'owner')?.name ||
                       'Владелец комнаты'}
                 </div>

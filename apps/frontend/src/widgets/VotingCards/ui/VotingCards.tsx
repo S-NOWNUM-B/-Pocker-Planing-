@@ -55,7 +55,7 @@ export function VotingCards({
                 variant={selectedCard === card ? 'primary' : 'outline'}
                 className="flex h-14 w-11 rounded-xl border text-sm font-black shadow-sm transition-transform duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-45 sm:h-16 sm:w-12 sm:text-base"
               >
-                {card === '☕' ? (
+                {card === '☕' || card === 'break' ? (
                   <span
                     className={`flex h-7 w-7 items-center justify-center rounded-full ${
                       selectedCard === card

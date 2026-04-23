@@ -53,7 +53,7 @@ class AuthService:
     def guest_login(self, payload: GuestAuthRequest) -> AuthResponse:
         display_name = payload.name.strip() if payload.name else "Гость"
         suffix = uuid4().hex[:8]
-        guest_email = f"guest-{suffix}@guest.local"
+        guest_email = f"guest-{suffix}@guest.example.com"
 
         user = self.users.create(
             email=guest_email,

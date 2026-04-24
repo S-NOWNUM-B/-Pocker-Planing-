@@ -17,6 +17,8 @@ export function mapSnapshotPlayers(snapshot: RoomSnapshot): Player[] {
     (snapshot.active_round?.votes ?? []).map((vote) => [vote.participant_id, vote]),
   );
 
+  const onlineParticipantIds = new Set(snapshot.online_participant_ids || []);
+
   return snapshot.participants.map((participant) => {
     const roundVote = voteValueByParticipantId.get(participant.id);
     const vote =
@@ -31,6 +33,7 @@ export function mapSnapshotPlayers(snapshot: RoomSnapshot): Player[] {
       name: participant.name,
       role: participant.role === 'owner' ? 'Создатель' : 'Участник',
       vote,
+      isOnline: onlineParticipantIds.has(participant.id),
       isThinking: false,
       isBot: false,
     };

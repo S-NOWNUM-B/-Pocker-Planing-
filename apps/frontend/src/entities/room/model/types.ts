@@ -60,6 +60,7 @@ export interface RoomSnapshot {
     role: 'owner' | 'member';
     has_voted: boolean;
   }>;
+  online_participant_ids: string[];
   tasks: Array<{
     id: string;
     title: string;

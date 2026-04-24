@@ -67,10 +67,23 @@ export function ParticipantsList({ players, hasActiveTask, isRevealed, className
             return (
               <div
                 key={player.id}
-                className="flex min-w-9.5rem items-center gap-2 rounded-xl border border-border/80 bg-secondary/35 px-2 py-1.5"
+                className={cn(
+                  'flex min-w-9.5rem items-center gap-2 rounded-xl border px-2 py-1.5',
+                  player.isOnline
+                    ? 'border-border/80 bg-secondary/35'
+                    : 'border-border/40 bg-secondary/15 opacity-60',
+                )}
               >
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[0.65rem] font-bold text-primary-foreground shadow-sm">
-                  {player.name.slice(0, 1).toUpperCase()}
+                <div className="relative">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[0.65rem] font-bold text-primary-foreground shadow-sm">
+                    {player.name.slice(0, 1).toUpperCase()}
+                  </div>
+                  {player.isOnline && (
+                    <div
+                      className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-green-500"
+                      title="Онлайн"
+                    />
+                  )}
                 </div>
 
                 <div className="min-w-0 flex-1">

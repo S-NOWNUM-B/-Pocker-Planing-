@@ -20,6 +20,7 @@ export interface Player {
   name: string;
   role: string;
   vote: string | null;
+  isOnline?: boolean;
   isThinking: boolean;
   isBot: boolean;
 }

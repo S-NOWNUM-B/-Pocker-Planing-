@@ -53,6 +53,8 @@ export function TaskSidebar({
 }: TaskSidebarProps) {
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editingTitle, setEditingTitle] = useState('');
+  const [filter, setFilter] = useState<'all' | 'pending' | 'estimated'>('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleStartEdit = (task: Task) => {
     if (task.estimate) return; // Нельзя редактировать оценённые задачи
@@ -72,6 +74,19 @@ export function TaskSidebar({
     setEditingTaskId(null);
     setEditingTitle('');
   };
+
+  const filteredTasks = tasks.filter((task) => {
+    // Фильтр по статусу
+    if (filter === 'pending' && task.estimate) return false;
+    if (filter === 'estimated' && !task.estimate) return false;
+
+    // Поиск по названию
+    if (searchQuery && !task.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+
+    return true;
+  });
   return (
     <aside
       className={cn(
@@ -79,20 +94,68 @@ export function TaskSidebar({
         className,
       )}
     >
-      <div className="mb-4 flex items-center gap-2">
+      <div className="mb-3 flex items-center gap-2">
         <h2 className="text-lg font-bold text-foreground">Задачи</h2>
         <span className="ml-auto text-sm text-muted-foreground">
-          {tasks.filter((task) => task.estimate).length}/{tasks.length}
+          {filteredTasks.filter((task) => task.estimate).length}/{filteredTasks.length}
         </span>
       </div>
 
+      <div className="mb-3 space-y-2">
+        <Input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Поиск задач..."
+          className="h-9 text-sm"
+        />
+
+        <div className="flex gap-1">
+          <button
+            type="button"
+            onClick={() => setFilter('all')}
+            className={cn(
+              'flex-1 rounded-lg px-2 py-1 text-xs font-medium transition-colors',
+              filter === 'all'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary/50 text-muted-foreground hover:bg-secondary',
+            )}
+          >
+            Все ({tasks.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setFilter('pending')}
+            className={cn(
+              'flex-1 rounded-lg px-2 py-1 text-xs font-medium transition-colors',
+              filter === 'pending'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary/50 text-muted-foreground hover:bg-secondary',
+            )}
+          >
+            Не оценённые ({tasks.filter((t) => !t.estimate).length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setFilter('estimated')}
+            className={cn(
+              'flex-1 rounded-lg px-2 py-1 text-xs font-medium transition-colors',
+              filter === 'estimated'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary/50 text-muted-foreground hover:bg-secondary',
+            )}
+          >
+            Оценённые ({tasks.filter((t) => t.estimate).length})
+          </button>
+        </div>
+      </div>
+
       <div className="mb-3 max-h-58 space-y-2 overflow-y-auto pr-1 lg:min-h-0 lg:flex-1 lg:max-h-none">
-        {tasks.length === 0 ? (
+        {filteredTasks.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-secondary/30 p-6 text-center text-sm text-muted-foreground">
-            Добавьте первую задачу, чтобы начать оценку
+            {searchQuery ? 'Задачи не найдены' : 'Добавьте первую задачу, чтобы начать оценку'}
           </div>
         ) : (
-          tasks.map((task) => {
+          filteredTasks.map((task) => {
             const isActive = task.id === activeTaskId;
             const isEditing = editingTaskId === task.id;
 
@@ -233,12 +296,26 @@ export function TaskSidebar({
           placeholder="Новая задача"
           className="h-11 w-full"
           style={{ paddingRight: '2.75rem' }}
+          maxLength={240}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
               onAddTask();
             }
           }}
         />
+        {newTaskTitle.length > 0 && (
+          <div
+            className={`mt-1 text-right text-xs ${
+              newTaskTitle.length > 220
+                ? 'text-destructive'
+                : newTaskTitle.length > 200
+                  ? 'text-amber-500'
+                  : 'text-muted-foreground'
+            }`}
+          >
+            {newTaskTitle.length}/240
+          </div>
+        )}
       </div>
     </aside>
   );

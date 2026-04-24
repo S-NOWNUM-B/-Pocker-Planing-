@@ -53,8 +53,10 @@ export function RoomPage() {
     };
   }, []);
 
+  const getRoomQueryKey = () => ['room', resolvedRoomRef, user?.id ?? 'guest', roomAccessToken ?? 'no-token'];
+
   const roomQuery = useQuery({
-    queryKey: ['room', resolvedRoomRef, user?.id ?? 'guest', roomAccessToken ?? 'no-token'],
+    queryKey: getRoomQueryKey(),
     enabled: Boolean(user || roomAccessToken),
     queryFn: () => loadRoomSnapshotWithToken(resolvedRoomRef, roomAccessToken),
     refetchInterval: (query) => {
@@ -82,9 +84,7 @@ export function RoomPage() {
 
   const refreshRoomData = async () => {
     await Promise.all([
-      queryClient.invalidateQueries({
-        queryKey: ['room', resolvedRoomRef, user?.id ?? 'guest', roomAccessToken ?? 'no-token'],
-      }),
+      queryClient.invalidateQueries({ queryKey: getRoomQueryKey() }),
       queryClient.invalidateQueries({ queryKey: ['rooms'] }),
       queryClient.invalidateQueries({ queryKey: ['room-history', roomId] }),
     ]);
@@ -92,41 +92,149 @@ export function RoomPage() {
 
   const createTaskMutation = useMutation({
     mutationFn: (title: string) => roomApi.createTask(roomId as string, title, roomAccessToken),
+    onMutate: async (title) => {
+      await queryClient.cancelQueries({ queryKey: getRoomQueryKey() });
+      const previousSnapshot = queryClient.getQueryData(getRoomQueryKey());
+
+      queryClient.setQueryData(getRoomQueryKey(), (old: any) => {
+        if (!old) return old;
+
+        const tempTask = {
+          id: `temp-${Date.now()}`,
+          title,
+          status: 'backlog' as const,
+          estimate_value: null,
+          position: old.tasks.length,
+        };
+
+        return {
+          ...old,
+          tasks: [...old.tasks, tempTask],
+        };
+      });
+
+      return { previousSnapshot };
+    },
+    onError: (error: any, variables, context) => {
+      if (context?.previousSnapshot) {
+        queryClient.setQueryData(getRoomQueryKey(), context.previousSnapshot);
+      }
+      toast.error(error?.message || 'Не удалось добавить задачу');
+    },
     onSuccess: () => {
-      refreshRoomData();
       toast.success('Задача добавлена');
     },
-    onError: (error: any) => {
-      toast.error(error?.message || 'Не удалось добавить задачу');
+    onSettled: () => {
+      refreshRoomData();
     },
   });
 
   const updateTaskMutation = useMutation({
     mutationFn: ({ taskId, title }: { taskId: string; title: string }) =>
       roomApi.updateTask(roomId as string, taskId, title, roomAccessToken),
+    onMutate: async ({ taskId, title }) => {
+      await queryClient.cancelQueries({ queryKey: getRoomQueryKey() });
+      const previousSnapshot = queryClient.getQueryData(getRoomQueryKey());
+
+      queryClient.setQueryData(getRoomQueryKey(), (old: any) => {
+        if (!old) return old;
+
+        return {
+          ...old,
+          tasks: old.tasks.map((task: any) =>
+            task.id === taskId ? { ...task, title } : task
+          ),
+        };
+      });
+
+      return { previousSnapshot };
+    },
+    onError: (error: any, variables, context) => {
+      if (context?.previousSnapshot) {
+        queryClient.setQueryData(getRoomQueryKey(), context.previousSnapshot);
+      }
+      toast.error(error?.message || 'Не удалось обновить задачу');
+    },
     onSuccess: () => {
-      refreshRoomData();
       toast.success('Задача обновлена');
     },
-    onError: (error: any) => {
-      toast.error(error?.message || 'Не удалось обновить задачу');
+    onSettled: () => {
+      refreshRoomData();
     },
   });
 
   const deleteTaskMutation = useMutation({
     mutationFn: (taskId: string) => roomApi.deleteTask(roomId as string, taskId, roomAccessToken),
+    onMutate: async (taskId) => {
+      await queryClient.cancelQueries({ queryKey: getRoomQueryKey() });
+      const previousSnapshot = queryClient.getQueryData(getRoomQueryKey());
+
+      queryClient.setQueryData(getRoomQueryKey(), (old: any) => {
+        if (!old) return old;
+
+        return {
+          ...old,
+          tasks: old.tasks.filter((task: any) => task.id !== taskId),
+        };
+      });
+
+      return { previousSnapshot };
+    },
+    onError: (error: any, variables, context) => {
+      if (context?.previousSnapshot) {
+        queryClient.setQueryData(getRoomQueryKey(), context.previousSnapshot);
+      }
+      toast.error(error?.message || 'Не удалось удалить задачу');
+    },
     onSuccess: () => {
-      refreshRoomData();
       toast.success('Задача удалена');
     },
-    onError: (error: any) => {
-      toast.error(error?.message || 'Не удалось удалить задачу');
+    onSettled: () => {
+      refreshRoomData();
     },
   });
 
   const selectTaskMutation = useMutation({
     mutationFn: (taskId: string) => roomApi.selectTask(roomId as string, taskId, roomAccessToken),
-    onSuccess: refreshRoomData,
+    onMutate: async (taskId) => {
+      await queryClient.cancelQueries({ queryKey: getRoomQueryKey() });
+      const previousSnapshot = queryClient.getQueryData(getRoomQueryKey());
+
+      queryClient.setQueryData(getRoomQueryKey(), (old: any) => {
+        if (!old) return old;
+
+        const prevTaskId = old.room.current_task_id;
+
+        return {
+          ...old,
+          room: {
+            ...old.room,
+            current_task_id: taskId,
+          },
+          tasks: old.tasks.map((task: any) => {
+            if (task.id === taskId) {
+              return { ...task, status: 'active' };
+            }
+            if (task.id === prevTaskId) {
+              return { ...task, status: 'backlog' };
+            }
+            return task;
+          }),
+          active_round: null,
+        };
+      });
+
+      return { previousSnapshot };
+    },
+    onError: (error: any, variables, context) => {
+      if (context?.previousSnapshot) {
+        queryClient.setQueryData(getRoomQueryKey(), context.previousSnapshot);
+      }
+      toast.error(error?.message || 'Не удалось выбрать задачу');
+    },
+    onSettled: () => {
+      refreshRoomData();
+    },
   });
 
   const startRoundMutation = useMutation({
@@ -137,12 +245,44 @@ export function RoomPage() {
   const voteMutation = useMutation({
     mutationFn: ({ roundId, value }: { roundId: string; value: string }) =>
       roomApi.submitVote(roomId as string, roundId, value, roomAccessToken),
+    onMutate: async (variables) => {
+      await queryClient.cancelQueries({ queryKey: getRoomQueryKey() });
+      const previousSnapshot = queryClient.getQueryData(getRoomQueryKey());
+
+      queryClient.setQueryData(getRoomQueryKey(), (old: any) => {
+        if (!old?.active_round || !old?.self_participant_id) return old;
+
+        return {
+          ...old,
+          active_round: {
+            ...old.active_round,
+            self_vote_value: variables.value,
+            votes_submitted: old.active_round.votes_submitted + 1,
+            votes: old.active_round.votes.map((v: any) =>
+              v.participant_id === old.self_participant_id
+                ? { ...v, value: variables.value, has_voted: true }
+                : v
+            ),
+          },
+          participants: old.participants.map((p: any) =>
+            p.id === old.self_participant_id ? { ...p, has_voted: true } : p
+          ),
+        };
+      });
+
+      return { previousSnapshot };
+    },
+    onError: (error: any, variables, context) => {
+      if (context?.previousSnapshot) {
+        queryClient.setQueryData(getRoomQueryKey(), context.previousSnapshot);
+      }
+      toast.error(error?.message || 'Не удалось отправить голос');
+    },
     onSuccess: () => {
-      refreshRoomData();
       toast.success('Голос принят');
     },
-    onError: (error: any) => {
-      toast.error(error?.message || 'Не удалось отправить голос');
+    onSettled: () => {
+      refreshRoomData();
     },
   });
 
@@ -324,6 +464,34 @@ export function RoomPage() {
     <div className="relative flex h-screen flex-col overflow-hidden">
       <div className="pointer-events-none absolute -left-24 top-20 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 bottom-24 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
+
+      {!wsConnected && canConnectWs && (
+        <div className="fixed top-16 left-1/2 z-50 -translate-x-1/2 animate-in slide-in-from-top-2">
+          <div className="flex items-center gap-2 rounded-xl border border-amber-500/50 bg-amber-500/10 px-4 py-2 text-sm font-medium text-amber-600 shadow-lg backdrop-blur dark:text-amber-400">
+            <svg
+              className="h-4 w-4 animate-spin"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
+            </svg>
+            <span>Переподключение...</span>
+          </div>
+        </div>
+      )}
 
       <RoomHeader
         roomName={snapshot.room.name}

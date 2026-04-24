@@ -21,8 +21,9 @@
  * @param className — дополнительный CSS-класс
  */
 import { useState } from 'react';
-import { Input } from '@/shared/ui';
+import { Input, ConfirmDialog } from '@/shared/ui';
 import { Button } from '@/shared/ui';
+import { EditIcon, TrashIcon } from '@/shared/ui/icons';
 import { cn } from '@/shared/lib';
 import type { Task } from '@/shared/lib/poker';
 
@@ -55,6 +56,7 @@ export function TaskSidebar({
   const [editingTitle, setEditingTitle] = useState('');
   const [filter, setFilter] = useState<'all' | 'pending' | 'estimated'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; title: string } | null>(null);
 
   const handleStartEdit = (task: Task) => {
     if (task.estimate) return; // Нельзя редактировать оценённые задачи
@@ -227,59 +229,32 @@ export function TaskSidebar({
                 {!task.estimate && (
                   <div className="absolute right-2 top-1/2 flex -translate-y-1/2 gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                     {onUpdateTask && (
-                      <button
+                      <Button
                         type="button"
+                        variant="ghost"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleStartEdit(task);
                         }}
-                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                        className="h-7 w-7 p-0 text-muted-foreground hover:bg-primary/10 hover:text-primary"
                         title="Редактировать задачу"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                          <path d="m15 5 4 4" />
-                        </svg>
-                      </button>
+                        <EditIcon className="h-4 w-4" />
+                      </Button>
                     )}
                     {onDeleteTask && (
-                      <button
+                      <Button
                         type="button"
+                        variant="ghost"
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (window.confirm(`Удалить задачу "${task.title}"?`)) {
-                            onDeleteTask(task.id);
-                          }
+                          setDeleteConfirm({ id: task.id, title: task.title });
                         }}
-                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                        className="h-7 w-7 p-0 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                         title="Удалить задачу"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M3 6h18" />
-                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                        </svg>
-                      </button>
+                        <TrashIcon className="h-4 w-4" />
+                      </Button>
                     )}
                   </div>
                 )}
@@ -317,6 +292,20 @@ export function TaskSidebar({
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        isOpen={deleteConfirm !== null}
+        onClose={() => setDeleteConfirm(null)}
+        onConfirm={() => {
+          if (deleteConfirm && onDeleteTask) {
+            onDeleteTask(deleteConfirm.id);
+          }
+        }}
+        title="Удалить задачу?"
+        message={`Вы уверены, что хотите удалить задачу "${deleteConfirm?.title}"?`}
+        confirmText="Удалить"
+        cancelText="Отмена"
+      />
     </aside>
   );
 }

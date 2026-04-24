@@ -10,7 +10,8 @@
  * Экспортируемые иконки:
  *  SparklesIcon, MoonIcon, SunIcon, PlayIcon, TrophyIcon,
  *  UsersIcon, LinkIcon, LogOutIcon, TargetIcon, CheckIcon,
- *  CoffeeIcon, HelpCircleIcon, EyeIcon, RotateCcwIcon, PlusIcon
+ *  CoffeeIcon, HelpCircleIcon, EyeIcon, RotateCcwIcon, PlusIcon,
+ *  EditIcon, TrashIcon, HistoryIcon
  *
  * Принимают стандартные SVG-пропсы (className, style и т.д.).
  */
@@ -168,6 +169,35 @@ export function PlusIcon(props: IconProps) {
   return (
     <IconShell {...props}>
       <path d="M12 5v14M5 12h14" />
+    </IconShell>
+  );
+}
+
+export function EditIcon(props: IconProps) {
+  return (
+    <IconShell {...props}>
+      <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+      <path d="m15 5 4 4" />
+    </IconShell>
+  );
+}
+
+export function TrashIcon(props: IconProps) {
+  return (
+    <IconShell {...props}>
+      <path d="M3 6h18" />
+      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+    </IconShell>
+  );
+}
+
+export function HistoryIcon(props: IconProps) {
+  return (
+    <IconShell {...props}>
+      <path d="M3 3v5h5" />
+      <path d="M3.05 13A9 9 0 1 0 6 5.3L3 8" />
+      <path d="M12 7v5l4 2" />
     </IconShell>
   );
 }

@@ -354,6 +354,7 @@ export function RoomPage() {
             onReveal={handleReveal}
             onNextTask={handleNextTask}
             onResetRound={isOwner ? handleResetRound : undefined}
+            isLoading={isBusy}
             className="h-auto min-h-48 lg:h-full"
           />
 

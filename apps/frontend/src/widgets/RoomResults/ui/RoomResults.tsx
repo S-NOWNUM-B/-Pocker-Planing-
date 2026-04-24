@@ -28,6 +28,7 @@ interface RoomResultsProps {
   onReveal: () => void;
   onNextTask: () => void;
   onResetRound?: () => void;
+  isLoading?: boolean;
   className?: string;
 }
 
@@ -40,6 +41,7 @@ export function RoomResults({
   onReveal,
   onNextTask,
   onResetRound,
+  isLoading = false,
   className,
 }: RoomResultsProps) {
   const hasActiveTask = Boolean(activeTaskTitle);
@@ -91,6 +93,7 @@ export function RoomResults({
                     type="button"
                     onClick={onResetRound}
                     variant="ghost"
+                    isLoading={isLoading}
                     className="h-8 rounded-2xl px-5 text-sm font-semibold sm:h-9 sm:px-6 sm:text-base"
                   >
                     Переголосовать
@@ -99,6 +102,7 @@ export function RoomResults({
                 <Button
                   type="button"
                   onClick={onNextTask}
+                  isLoading={isLoading}
                   className="h-8 rounded-2xl px-5 text-sm font-semibold sm:h-9 sm:px-6 sm:text-base"
                 >
                   Следующая задача
@@ -120,6 +124,7 @@ export function RoomResults({
                 type="button"
                 onClick={onReveal}
                 disabled={!hasActiveTask || (!allPlayersVoted && !anyPlayerVoted)}
+                isLoading={isLoading}
                 className="h-10 rounded-2xl px-6 text-sm font-semibold shadow-lg sm:px-7 sm:text-base"
               >
                 Вскрыть карты

@@ -86,6 +86,18 @@ export function RoomPage() {
     },
   });
 
+  const updateTaskMutation = useMutation({
+    mutationFn: ({ taskId, title }: { taskId: string; title: string }) =>
+      roomApi.updateTask(roomId as string, taskId, title, roomAccessToken),
+    onSuccess: () => {
+      refreshRoomData();
+      toast.success('Задача обновлена');
+    },
+    onError: (error: any) => {
+      toast.error(error?.message || 'Не удалось обновить задачу');
+    },
+  });
+
   const deleteTaskMutation = useMutation({
     mutationFn: (taskId: string) => roomApi.deleteTask(roomId as string, taskId, roomAccessToken),
     onSuccess: () => {
@@ -193,6 +205,7 @@ export function RoomPage() {
 
   const isBusy =
     createTaskMutation.isPending ||
+    updateTaskMutation.isPending ||
     deleteTaskMutation.isPending ||
     selectTaskMutation.isPending ||
     startRoundMutation.isPending ||
@@ -280,6 +293,18 @@ export function RoomPage() {
     }
   };
 
+  const handleUpdateTask = async (taskId: string, newTitle: string) => {
+    if (!isOwner || isBusy) {
+      return;
+    }
+
+    try {
+      await updateTaskMutation.mutateAsync({ taskId, title: newTitle });
+    } catch (error) {
+      console.error('Failed to update task:', error);
+    }
+  };
+
   return (
     <div className="relative flex h-screen flex-col overflow-hidden">
       <div className="pointer-events-none absolute -left-24 top-20 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
@@ -302,6 +327,7 @@ export function RoomPage() {
           onAddTask={handleAddTask}
           onSelectTask={handleSelectTask}
           onDeleteTask={isOwner ? handleDeleteTask : undefined}
+          onUpdateTask={isOwner ? handleUpdateTask : undefined}
           className="h-auto min-h-0 lg:h-full lg:max-h-full"
         />
 

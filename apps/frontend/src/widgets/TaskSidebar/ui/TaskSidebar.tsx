@@ -16,8 +16,11 @@
  * @param onNewTaskTitleChange — обработчик изменения поля
  * @param onAddTask — добавление задачи (Enter или кнопка)
  * @param onSelectTask — выбор активной задачи
+ * @param onDeleteTask — удаление задачи
+ * @param onUpdateTask — редактирование задачи
  * @param className — дополнительный CSS-класс
  */
+import { useState } from 'react';
 import { Input } from '@/shared/ui';
 import { Button } from '@/shared/ui';
 import { cn } from '@/shared/lib';
@@ -32,6 +35,7 @@ interface TaskSidebarProps {
   onAddTask: () => void;
   onSelectTask: (taskId: string) => void;
   onDeleteTask?: (taskId: string) => void;
+  onUpdateTask?: (taskId: string, newTitle: string) => void;
   className?: string;
 }
 
@@ -44,8 +48,30 @@ export function TaskSidebar({
   onAddTask,
   onSelectTask,
   onDeleteTask,
+  onUpdateTask,
   className,
 }: TaskSidebarProps) {
+  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
+  const [editingTitle, setEditingTitle] = useState('');
+
+  const handleStartEdit = (task: Task) => {
+    if (task.estimate) return; // Нельзя редактировать оценённые задачи
+    setEditingTaskId(task.id);
+    setEditingTitle(task.title);
+  };
+
+  const handleSaveEdit = () => {
+    if (editingTaskId && editingTitle.trim() && onUpdateTask) {
+      onUpdateTask(editingTaskId, editingTitle.trim());
+      setEditingTaskId(null);
+      setEditingTitle('');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingTaskId(null);
+    setEditingTitle('');
+  };
   return (
     <aside
       className={cn(
@@ -68,12 +94,53 @@ export function TaskSidebar({
         ) : (
           tasks.map((task) => {
             const isActive = task.id === activeTaskId;
+            const isEditing = editingTaskId === task.id;
+
+            if (isEditing) {
+              return (
+                <div key={task.id} className="rounded-2xl border border-primary/70 bg-card/95 p-3">
+                  <Input
+                    value={editingTitle}
+                    onChange={(e) => setEditingTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSaveEdit();
+                      } else if (e.key === 'Escape') {
+                        handleCancelEdit();
+                      }
+                    }}
+                    autoFocus
+                    className="mb-2"
+                    maxLength={240}
+                  />
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      onClick={handleSaveEdit}
+                      disabled={!editingTitle.trim()}
+                      className="h-8 flex-1 text-xs"
+                    >
+                      Сохранить
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={handleCancelEdit}
+                      variant="ghost"
+                      className="h-8 flex-1 text-xs"
+                    >
+                      Отмена
+                    </Button>
+                  </div>
+                </div>
+              );
+            }
 
             return (
               <div key={task.id} className="group relative">
                 <Button
                   type="button"
                   onClick={() => !isRevealed && onSelectTask(task.id)}
+                  onDoubleClick={() => !task.estimate && onUpdateTask && handleStartEdit(task)}
                   variant="ghost"
                   className={`w-full border p-3 text-left ${
                     isActive
@@ -94,34 +161,64 @@ export function TaskSidebar({
                     </div>
                   </div>
                 </Button>
-                {onDeleteTask && !task.estimate && (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (window.confirm(`Удалить задачу "${task.title}"?`)) {
-                        onDeleteTask(task.id);
-                      }
-                    }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-muted-foreground opacity-0 transition-opacity hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
-                    title="Удалить задачу"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M3 6h18" />
-                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                    </svg>
-                  </button>
+                {!task.estimate && (
+                  <div className="absolute right-2 top-1/2 flex -translate-y-1/2 gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                    {onUpdateTask && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleStartEdit(task);
+                        }}
+                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                        title="Редактировать задачу"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                          <path d="m15 5 4 4" />
+                        </svg>
+                      </button>
+                    )}
+                    {onDeleteTask && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (window.confirm(`Удалить задачу "${task.title}"?`)) {
+                            onDeleteTask(task.id);
+                          }
+                        }}
+                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                        title="Удалить задачу"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M3 6h18" />
+                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
             );

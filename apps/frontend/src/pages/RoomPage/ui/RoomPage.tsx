@@ -17,7 +17,7 @@ import {
 } from '@/features/task-management/lib/roomTaskActions';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { Card, Spinner, LoadingSpinner } from '@/shared/ui';
-import { getLocalSession, loadRoomSnapshotWithToken, roomRefLooksLikeCode } from '@/shared/lib/room';
+import { formatRoundScoreLabel, getLocalSession, loadRoomSnapshotWithToken, roomRefLooksLikeCode } from '@/shared/lib/room';
 import { persistRoomSession } from '@/shared/lib/session/persistRoomSession';
 import { SessionManager } from '@/shared/lib/session';
 import { useRoomWebSocket } from '@/shared/lib/hooks';
@@ -329,9 +329,16 @@ export function RoomPage() {
   const currentUserName = user?.name || selfParticipant?.name || localSession?.userName || 'Гость';
   const tasks = mapSnapshotTasks(snapshot);
   const players = mapSnapshotPlayers(snapshot);
-  const { activeTaskId, activeTask, isRevealed, allPlayersVoted, anyPlayerVoted, selectedCard, average } =
+  const { activeTaskId, activeTask, isRevealed, allPlayersVoted, anyPlayerVoted, selectedCard } =
     getRoomVotingView(snapshot, tasks);
   const roomOwnerName = resolveRoomOwnerName(snapshot);
+  const scoreLabel = formatRoundScoreLabel(snapshot.active_round?.average_score, snapshot.active_round?.suggested_result);
+  const scoreTitle = snapshot.active_round?.average_score === null || snapshot.active_round?.average_score === undefined
+    ? 'Оценка'
+    : 'Среднее';
+  const scoreSubtitle = snapshot.active_round?.average_score === null || snapshot.active_round?.average_score === undefined
+    ? 'Размер'
+    : 'Story Points';
 
   const isBusy =
     createTaskMutation.isPending ||
@@ -487,7 +494,9 @@ export function RoomPage() {
 
           <RoomResults
             activeTaskTitle={activeTask ? activeTask.title : null}
-            average={average}
+            scoreLabel={scoreLabel}
+            scoreTitle={scoreTitle}
+            scoreSubtitle={scoreSubtitle}
             isRevealed={isRevealed}
             allPlayersVoted={allPlayersVoted}
             anyPlayerVoted={anyPlayerVoted}

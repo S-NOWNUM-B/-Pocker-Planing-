@@ -23,7 +23,7 @@ export function Footer() {
             О проекте
           </Link>
           <a
-            href="https://github.com"
+            href="https://github.com/S-NOWNUM-B/-Pocker-Planning-"
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"

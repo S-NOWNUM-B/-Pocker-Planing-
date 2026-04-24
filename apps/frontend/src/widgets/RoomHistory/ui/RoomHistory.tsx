@@ -15,6 +15,7 @@
  */
 import { Modal, Badge } from '@/shared/ui';
 import type { RoomHistoryItem } from '@/entities/room/model/types';
+import { formatResultValueLabel, formatRoundScoreLabel } from '@/shared/lib/room';
 
 interface RoomHistoryProps {
   history: RoomHistoryItem[];
@@ -62,10 +63,10 @@ export function RoomHistory({ history, isOpen, onClose }: RoomHistoryProps) {
               <tr key={item.id} className="border-b border-border/50 hover:bg-secondary/30">
                 <td className="px-3 py-2.5 text-left">{item.task_title}</td>
                 <td className="px-3 py-2.5 text-center">
-                  <Badge label={`${item.result_value} SP`} color="primary" shape="rounded" />
+                  <Badge label={formatResultValueLabel(item.result_value)} color="primary" shape="rounded" />
                 </td>
                 <td className="px-3 py-2.5 text-center text-muted-foreground">
-                  {item.average_score !== null ? item.average_score.toFixed(1) : '—'}
+                  {formatRoundScoreLabel(item.average_score, item.result_value)}
                 </td>
                 <td className="px-3 py-2.5 text-center text-muted-foreground">{item.votes_count}</td>
                 <td className="px-3 py-2.5 text-center">

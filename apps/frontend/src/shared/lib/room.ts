@@ -10,6 +10,21 @@ export function toAverageLabel(value: number | null | undefined) {
   return Number.isInteger(value) ? value.toString() : value.toFixed(1);
 }
 
+export function formatRoundScoreLabel(
+  averageScore: number | null | undefined,
+  fallbackLabel: string | null | undefined,
+) {
+  if (averageScore === null || averageScore === undefined) {
+    return fallbackLabel ?? '—';
+  }
+
+  return `${toAverageLabel(averageScore)} SP`;
+}
+
+export function formatResultValueLabel(value: string) {
+  return /^\d+(?:\.\d+)?$/.test(value) ? `${value} SP` : value;
+}
+
 export function roomRefLooksLikeCode(value: string) {
   return /^[a-zA-Z]{4}$/.test(value);
 }

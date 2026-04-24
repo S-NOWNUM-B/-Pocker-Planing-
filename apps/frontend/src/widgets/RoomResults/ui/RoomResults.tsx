@@ -21,7 +21,9 @@ import { cn } from '@/shared/lib';
 
 interface RoomResultsProps {
   activeTaskTitle: string | null;
-  average: string;
+  scoreLabel: string;
+  scoreTitle: string;
+  scoreSubtitle: string;
   isRevealed: boolean;
   allPlayersVoted: boolean;
   anyPlayerVoted: boolean;
@@ -34,7 +36,9 @@ interface RoomResultsProps {
 
 export function RoomResults({
   activeTaskTitle,
-  average,
+  scoreLabel,
+  scoreTitle,
+  scoreSubtitle,
   isRevealed,
   allPlayersVoted,
   anyPlayerVoted,
@@ -68,8 +72,8 @@ export function RoomResults({
               </div>
             </div>
             <div className="rounded-xl border border-border bg-secondary/45 px-3 py-2 text-right sm:rounded-2xl sm:px-3.5 sm:py-2.5">
-              <div className="text-xs text-muted-foreground">Среднее</div>
-              <div className="text-lg font-black text-foreground sm:text-xl">{average} SP</div>
+              <div className="text-xs text-muted-foreground">{scoreTitle}</div>
+              <div className="text-lg font-black text-foreground sm:text-xl">{scoreLabel}</div>
             </div>
           </div>
         </Card>
@@ -81,9 +85,9 @@ export function RoomResults({
                 <div className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:text-xs">
                   Финальная оценка
                 </div>
-                <div className="mt-1 text-3xl font-black text-primary sm:text-4xl">{average}</div>
+                <div className="mt-1 text-3xl font-black text-primary sm:text-4xl">{scoreLabel}</div>
                 <div className="mt-0.5 text-xs font-medium text-muted-foreground sm:text-sm">
-                  Story Points
+                  {scoreSubtitle}
                 </div>
               </Card>
 

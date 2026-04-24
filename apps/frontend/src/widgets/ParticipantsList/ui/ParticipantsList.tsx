@@ -33,7 +33,7 @@ export function ParticipantsList({ players, hasActiveTask, isRevealed, className
   const renderVisibleVote = (value: string) => {
     if (value === '☕' || value === 'break') {
       return (
-        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-primary shadow-sm">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-primary/35 bg-primary/10 text-primary shadow-sm">
           <CoffeeIcon className="h-3.5 w-3.5" />
         </span>
       );
@@ -41,7 +41,7 @@ export function ParticipantsList({ players, hasActiveTask, isRevealed, className
 
     if (value === '?') {
       return (
-        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-primary shadow-sm">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-primary/35 bg-primary/10 text-primary shadow-sm">
           <HelpCircleIcon className="h-3.5 w-3.5" />
         </span>
       );
@@ -68,42 +68,42 @@ export function ParticipantsList({ players, hasActiveTask, isRevealed, className
               <div
                 key={player.id}
                 className={cn(
-                  'flex min-w-9.5rem items-center gap-2 rounded-xl border px-2 py-1.5',
+                  'flex min-w-9.5rem items-center gap-2 rounded-xl border px-2 py-1.5 transition-colors',
                   player.isOnline
-                    ? 'border-primary/35 bg-card/95 shadow-sm'
-                    : 'border-border/40 bg-secondary/15 opacity-60',
+                    ? 'border-primary/70 bg-card/95 shadow-[0_0_0_1px_rgba(220,38,38,0.16)]'
+                    : 'border-border/40 bg-secondary/15 opacity-65',
                 )}
               >
                 <div className="relative">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[0.65rem] font-bold text-primary-foreground shadow-sm">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[0.65rem] font-bold text-primary-foreground shadow-sm ring-2 ring-primary/15">
                     {player.name.slice(0, 1).toUpperCase()}
                   </div>
                   {player.isOnline && (
                     <div
-                      className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-green-500"
+                      className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-primary"
                       title="Онлайн"
                     />
                   )}
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-[0.82rem] font-semibold text-card-foreground">
+                  <div className="truncate text-[0.82rem] font-semibold text-foreground">
                     {player.name}
                   </div>
                   {player.role ? (
-                    <div className="text-[0.65rem] text-foreground/75">{player.role}</div>
+                    <div className="text-[0.65rem] font-semibold text-primary">{player.role}</div>
                   ) : null}
                 </div>
 
                 <div
                   className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-[0.65rem] font-black ${
                     voteIsVisible
-                      ? 'border-primary bg-card/90 text-foreground'
+                      ? 'border-primary/55 bg-primary/10 text-primary'
                       : hasVote
-                        ? 'border-primary bg-primary text-primary-foreground'
+                        ? 'border-primary bg-primary text-primary-foreground shadow-sm'
                         : isWaitingForTask
                           ? 'border-border bg-card/70 text-muted-foreground'
-                          : 'border-border bg-card/70 text-muted-foreground'
+                          : 'border-primary/45 bg-primary/8 text-primary'
                   }`}
                   aria-label={`Голос ${player.name}: ${
                     voteIsVisible

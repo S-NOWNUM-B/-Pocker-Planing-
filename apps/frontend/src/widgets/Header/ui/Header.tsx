@@ -1,9 +1,9 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Link, useMatch } from 'react-router-dom';
-import { useTheme } from '@/shared/lib/hooks';
 import { Switch } from '@/shared/ui';
 import { LogOutIcon, MoonIcon, SunIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
 import { baseButtonClasses, sizeClasses, variantClasses } from '@/shared/ui/Button/Button';
+import { useTheme } from '@/shared/lib/hooks';
 
 interface HeaderProps {
   showAuthButtons?: boolean;

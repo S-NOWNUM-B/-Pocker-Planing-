@@ -62,6 +62,7 @@ export function ParticipantsList({ players, isRevealed, className }: Participant
             const voteIsVisible = isRevealed && hasVote;
 
             return (
+              // Компактная карточка с тонкой акцентной окантовкой и мягкой тенью для лучшей читаемости в горизонтальном скролле.
               <div
                 key={player.id}
                 className={cn(
@@ -75,7 +76,7 @@ export function ParticipantsList({ players, isRevealed, className }: Participant
                   </div>
                   {player.isOnline && (
                     <div
-                      className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-primary"
+                      className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-online"
                       title="Онлайн"
                     />
                   )}

@@ -21,10 +21,10 @@
  * @param className — дополнительный CSS-класс
  */
 import { useState } from 'react';
-import { Input, ConfirmDialog, Badge } from '@/shared/ui';
-import { Button } from '@/shared/ui';
+import { Badge, Button, ConfirmDialog, Input } from '@/shared/ui';
 import { EditIcon, TrashIcon } from '@/shared/ui/icons';
 import { cn } from '@/shared/lib';
+import { VALIDATION } from '@/shared/lib/constants/validation';
 import type { Task } from '@/shared/lib/poker';
 
 interface TaskSidebarProps {
@@ -167,7 +167,7 @@ export function TaskSidebar({
                     }}
                     autoFocus
                     className="mb-2"
-                    maxLength={240}
+                    maxLength={VALIDATION.TASK_TITLE_MAX_LENGTH}
                   />
                   <div className="flex gap-2">
                     <Button
@@ -262,7 +262,7 @@ export function TaskSidebar({
           placeholder="Новая задача"
           className="h-11 w-full"
           style={{ paddingRight: '4.75rem' }}
-          maxLength={240}
+          maxLength={VALIDATION.TASK_TITLE_MAX_LENGTH}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
               onAddTask();
@@ -271,14 +271,14 @@ export function TaskSidebar({
         />
         <span
           className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs ${
-            newTaskTitle.length > 220
+            newTaskTitle.length > VALIDATION.TASK_TITLE_DANGER_LENGTH
               ? 'text-destructive'
-              : newTaskTitle.length > 200
+              : newTaskTitle.length > VALIDATION.TASK_TITLE_WARNING_LENGTH
                 ? 'text-amber-500'
                 : 'text-muted-foreground'
           }`}
         >
-          {newTaskTitle.length}/240
+          {newTaskTitle.length}/{VALIDATION.TASK_TITLE_MAX_LENGTH}
         </span>
       </div>
 

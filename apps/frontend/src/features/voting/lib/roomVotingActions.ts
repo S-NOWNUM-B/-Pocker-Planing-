@@ -1,5 +1,5 @@
-import type { Task } from '@/shared/lib/poker';
 import type { RoomSnapshot } from '@/entities/room/model/types';
+import type { Task } from '@/shared/lib/poker';
 
 interface HandleSelectCardActionParams {
   card: string;

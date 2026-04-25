@@ -1,6 +1,6 @@
 import type { Task, Player } from '@/shared/lib/poker';
-import type { RoomSnapshot } from '../model/types';
 import { toAverageLabel } from '@/shared/lib/room';
+import type { RoomSnapshot } from '../model/types';
 
 export function mapSnapshotTasks(snapshot: RoomSnapshot): Task[] {
   return [...snapshot.tasks]

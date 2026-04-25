@@ -27,6 +27,7 @@
   --ring: oklch(0.56 0.21 25.5);
   --table: oklch(0.27 0.08 24);
   --table-border: oklch(0.23 0.06 24);
+  --online: oklch(0.72 0.18 148);
   --radius: 1rem;
 }
 
@@ -55,6 +56,7 @@
   --ring: oklch(0.62 0.24 25.5);
   --table: oklch(0.22 0.05 23);
   --table-border: oklch(0.34 0.08 25);
+  --online: oklch(0.78 0.18 148);
 }
 
 @theme inline {
@@ -82,6 +84,7 @@
   --color-ring: var(--ring);
   --color-table: var(--table);
   --color-table-border: var(--table-border);
+  --color-online: var(--online);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

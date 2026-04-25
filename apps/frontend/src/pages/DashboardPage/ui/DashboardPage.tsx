@@ -9,8 +9,8 @@
  */
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Button, PageShell, Spinner, EmptyState } from '@/shared/ui';
 import { RoomCard, roomApi } from '@/entities/room';
+import { Button, EmptyState, PageShell, Spinner } from '@/shared/ui';
 
 export function DashboardPage() {
   const {

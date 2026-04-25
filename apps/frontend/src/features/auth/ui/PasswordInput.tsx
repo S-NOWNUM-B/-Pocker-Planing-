@@ -1,5 +1,5 @@
-import { Field, Input as HeadlessInput, Label } from '@headlessui/react';
 import { forwardRef, useState, type ChangeEvent } from 'react';
+import { Field, Input as HeadlessInput, Label } from '@headlessui/react';
 import { CheckIcon, EyeIcon } from '@/shared/ui/icons';
 import type { InputProps } from '@/shared/ui/Input';
 

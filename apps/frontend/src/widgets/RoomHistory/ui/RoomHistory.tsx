@@ -13,8 +13,8 @@
  * @param isOpen — открыто ли модальное окно
  * @param onClose — обработчик закрытия
  */
-import { Modal, Badge } from '@/shared/ui';
 import type { RoomHistoryItem } from '@/entities/room/model/types';
+import { Badge, Modal } from '@/shared/ui';
 import { formatResultValueLabel, formatRoundScoreLabel } from '@/shared/lib/room';
 
 interface RoomHistoryProps {

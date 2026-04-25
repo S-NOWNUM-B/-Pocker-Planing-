@@ -16,9 +16,9 @@ import {
   login as loginRequest,
   register as registerRequest,
 } from '@/entities/user';
-import type { ApiError } from '@/shared/api';
 import type { User } from '@/entities/user';
 import type { LoginCredentials, RegisterCredentials } from '@/entities/user';
+import type { ApiError } from '@/shared/api';
 import { SessionManager } from '@/shared/lib/session';
 
 // Функция для извлечения сообщения об ошибке из ответа API

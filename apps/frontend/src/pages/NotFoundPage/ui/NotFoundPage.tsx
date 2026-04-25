@@ -5,8 +5,8 @@
  * route-level error screen для ошибок роутера.
  */
 import { Link, isRouteErrorResponse, useRouteError } from 'react-router-dom';
-import { Button, Card, EmptyState, PageShell } from '@/shared/ui';
 import { useSession } from '@/app/providers';
+import { Button, Card, EmptyState, PageShell } from '@/shared/ui';
 
 function getErrorContent(error: unknown) {
   if (isRouteErrorResponse(error)) {

@@ -3,9 +3,9 @@
  *
  * Поддерживает несколько вариантов оформления и 3 размера.
  */
-import { Button as HeadlessButton } from '@headlessui/react';
 import { type ElementType, type ComponentPropsWithoutRef } from 'react';
-import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
+import { Button as HeadlessButton } from '@headlessui/react';
+import { Spinner } from '../Spinner/Spinner';
 
 export const baseButtonClasses =
   'inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl font-inherit font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/45 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100';
@@ -57,7 +57,7 @@ export function Button<E extends ElementType = 'button'>({
 
   const content = (
     <>
-      {isLoading && <LoadingSpinner className="h-4 w-4" />}
+      {isLoading && <Spinner className="h-4 w-4" />}
       {children}
     </>
   );

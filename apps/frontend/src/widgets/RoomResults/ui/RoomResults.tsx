@@ -57,6 +57,7 @@ export function RoomResults({
         className,
       )}
     >
+      {/* Два слоя фона создают эффект "покерного стола" без отдельного декоративного контейнера. */}
       <div className="absolute inset-0 bg-linear-to-br from-table/95 via-table/90 to-table" />
       <div className="absolute inset-2 rounded-2xl border border-table-border/55 sm:inset-2.5 sm:rounded-[1.35rem]" />
 
@@ -98,7 +99,7 @@ export function RoomResults({
                     onClick={onResetRound}
                     variant="outline"
                     isLoading={isLoading}
-                    className="h-8 rounded-2xl border-border/70 bg-card/90 px-5 text-sm font-semibold text-foreground shadow-sm hover:bg-card sm:h-9 sm:px-6 sm:text-base"
+                    className="h-10 rounded-2xl border-border/70 bg-card/90 px-5 text-sm font-semibold text-foreground shadow-sm hover:bg-card sm:px-6 sm:text-base"
                   >
                     Переголосовать
                   </Button>
@@ -107,7 +108,7 @@ export function RoomResults({
                   type="button"
                   onClick={onNextTask}
                   isLoading={isLoading}
-                  className="h-8 rounded-2xl px-5 text-sm font-semibold sm:h-9 sm:px-6 sm:text-base"
+                  className="h-10 rounded-2xl px-5 text-sm font-semibold sm:px-6 sm:text-base"
                 >
                   Следующая задача
                 </Button>

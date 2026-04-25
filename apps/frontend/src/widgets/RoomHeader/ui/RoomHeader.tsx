@@ -16,9 +16,9 @@
  */
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTheme } from '@/shared/lib/hooks';
 import { Button, Card, Switch } from '@/shared/ui';
-import { LinkIcon, LogOutIcon, MoonIcon, SunIcon, TrophyIcon, HistoryIcon } from '@/shared/ui/icons';
+import { HistoryIcon, LinkIcon, LogOutIcon, MoonIcon, SunIcon, TrophyIcon } from '@/shared/ui/icons';
+import { useTheme } from '@/shared/lib/hooks';
 
 interface RoomHeaderProps {
   roomName: string;

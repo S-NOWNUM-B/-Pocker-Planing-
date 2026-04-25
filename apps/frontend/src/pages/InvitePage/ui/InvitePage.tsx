@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSession } from '@/app/providers';
 import { roomApi } from '@/entities/room';
 import { loginAsGuest } from '@/entities/user';
 import { PageShell, Spinner } from '@/shared/ui';
 import { SESSION_STORAGE_KEY, type DeckType, type GameSession } from '@/shared/lib/poker';
-import { useSession } from '@/app/providers';
 
 function normalizeDeckType(code: string | undefined): DeckType {
   if (code === 'even') {

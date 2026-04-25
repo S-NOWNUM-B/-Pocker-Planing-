@@ -16,13 +16,13 @@ import {
   handleSelectTaskAction,
 } from '@/features/task-management/lib/roomTaskActions';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { Card, Spinner, LoadingSpinner } from '@/shared/ui';
+import { ParticipantsList, RoomFooter, RoomHeader, RoomHistory, RoomResults, TaskSidebar } from '@/widgets';
+import { Card, Spinner } from '@/shared/ui';
 import { formatRoundScoreLabel, getLocalSession, loadRoomSnapshotWithToken, roomRefLooksLikeCode } from '@/shared/lib/room';
 import { persistRoomSession } from '@/shared/lib/session/persistRoomSession';
 import { SessionManager } from '@/shared/lib/session';
 import { useRoomWebSocket } from '@/shared/lib/hooks';
 import { getDeckLabel } from '@/shared/lib/poker';
-import { ParticipantsList, RoomFooter, RoomHeader, RoomHistory, RoomResults, TaskSidebar } from '@/widgets';
 import { useRoomParams } from '../lib/useRoomParams';
 
 export function RoomPage() {
@@ -450,7 +450,7 @@ export function RoomPage() {
       {!wsConnected && canConnectWs && (
         <div className="fixed top-16 left-1/2 z-50 -translate-x-1/2 animate-in slide-in-from-top-2">
           <div className="flex items-center gap-2 rounded-xl border border-amber-500/50 bg-amber-500/10 px-4 py-2 text-sm font-medium text-amber-600 shadow-lg backdrop-blur dark:text-amber-400">
-            <LoadingSpinner className="h-4 w-4" />
+            <Spinner className="h-4 w-4" />
             <span>Переподключение...</span>
           </div>
         </div>

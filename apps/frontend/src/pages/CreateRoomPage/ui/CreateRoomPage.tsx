@@ -15,11 +15,11 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@/app/providers';
+import { roomApi } from '@/entities/room';
 import { loginAsGuest } from '@/entities/user';
-import type { ApiError } from '@/shared/api';
 import { Button, Card, Input, PageShell } from '@/shared/ui';
 import { LinkIcon, PlayIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
-import { roomApi } from '@/entities/room';
+import type { ApiError } from '@/shared/api';
 import { DECK_LABELS, type DeckType, type GameSession, SESSION_STORAGE_KEY } from '@/shared/lib/poker';
 
 const DECK_OPTIONS: Array<{ value: DeckType; title: string; description: string }> = [

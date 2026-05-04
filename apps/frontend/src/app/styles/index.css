@@ -29,6 +29,11 @@
   --table-border: oklch(0.23 0.06 24);
   --online: oklch(0.72 0.18 148);
   --radius: 1rem;
+  --shell-glow-primary: color-mix(in oklab, var(--primary) 14%, transparent);
+  --shell-glow-accent: color-mix(in oklab, var(--accent) 12%, transparent);
+  --surface-glass: color-mix(in oklab, var(--card) 88%, transparent);
+  --surface-glass-strong: color-mix(in oklab, var(--card) 70%, transparent);
+  --surface-border: color-mix(in oklab, var(--border) 70%, transparent);
 }
 
 .dark {
@@ -57,6 +62,11 @@
   --table: oklch(0.22 0.05 23);
   --table-border: oklch(0.34 0.08 25);
   --online: oklch(0.78 0.18 148);
+  --shell-glow-primary: color-mix(in oklab, var(--primary) 20%, transparent);
+  --shell-glow-accent: color-mix(in oklab, var(--accent) 14%, transparent);
+  --surface-glass: color-mix(in oklab, var(--card) 84%, transparent);
+  --surface-glass-strong: color-mix(in oklab, var(--card) 66%, transparent);
+  --surface-border: color-mix(in oklab, var(--border) 82%, transparent);
 }
 
 @theme inline {

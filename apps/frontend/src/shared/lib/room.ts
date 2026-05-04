@@ -29,17 +29,14 @@ export function roomRefLooksLikeCode(value: string) {
   return /^[a-zA-Z]{4}$/.test(value);
 }
 
-export function getLocalSession(): GameSession | null {
-  const rawSession = window.localStorage.getItem(SESSION_STORAGE_KEY);
-  if (!rawSession) {
-    return null;
-  }
+export function isRoomRoute(pathname: string) {
+  return /^\/room\/[^/]+$/.test(pathname);
+}
 
-  try {
-    return JSON.parse(rawSession) as GameSession;
-  } catch {
-    return null;
-  }
+import { RoomSessionManager } from '@/shared/lib/session/RoomSessionManager';
+
+export function getLocalSession(): GameSession | null {
+  return RoomSessionManager.getSession();
 }
 
 export async function loadRoomSnapshotWithToken(

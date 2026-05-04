@@ -4,11 +4,7 @@ import { Card, PageShell, Button } from '@/shared/ui';
 
 export function JoinRoomPage() {
   return (
-    <PageShell
-      maxWidth="lg"
-      className="min-h-[calc(100vh-8.5rem)]"
-      contentClassName="flex min-h-[calc(100vh-8.5rem)] flex-col justify-center"
-    >
+    <PageShell contentClassName="flex flex-col justify-center">
       <Card className="mx-auto w-full max-w-xl border border-border/70 bg-card/92 p-6 shadow-2xl backdrop-blur sm:p-8">
         <h1 className="text-2xl font-black tracking-tight text-foreground">Присоединиться к комнате</h1>
         <p className="mt-2 text-sm text-muted-foreground">

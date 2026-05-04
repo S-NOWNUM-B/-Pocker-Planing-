@@ -1,5 +1,6 @@
 import type { RoomSnapshot } from '@/entities/room/model/types';
-import { SESSION_STORAGE_KEY, type GameSession } from '@/shared/lib/poker';
+import { type GameSession } from '@/shared/lib/poker';
+import { RoomSessionManager } from './RoomSessionManager';
 
 interface PersistRoomSessionParams {
   snapshot: RoomSnapshot;
@@ -36,5 +37,5 @@ export function persistRoomSession({
     selfParticipantId: snapshot.self_participant_id,
   };
 
-  window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+  RoomSessionManager.saveSession(session);
 }

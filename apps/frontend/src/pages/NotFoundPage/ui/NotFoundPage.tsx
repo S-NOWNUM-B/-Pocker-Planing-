@@ -45,8 +45,7 @@ export function NotFoundPage() {
   return (
     <PageShell
       maxWidth="md"
-      className="min-h-[calc(100vh-8.5rem)]"
-      contentClassName="flex min-h-[calc(100vh-8.5rem)] items-center justify-center"
+      contentClassName="flex items-center justify-center"
     >
       <Card className="w-full border border-border/70 bg-card/92 p-8 shadow-2xl backdrop-blur">
         <EmptyState title={title} description={description} />

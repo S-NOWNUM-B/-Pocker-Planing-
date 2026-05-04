@@ -3,10 +3,12 @@
  *
  * Отображается на всех страницах, кроме /room/:roomId.
  */
-import { Link, useMatch } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { isRoomRoute } from '@/shared/lib/room';
 
 export function Footer() {
-  const isRoomPage = useMatch('/room/:roomId') !== null;
+  const { pathname } = useLocation();
+  const isRoomPage = isRoomRoute(pathname);
 
   if (isRoomPage) {
     return null;

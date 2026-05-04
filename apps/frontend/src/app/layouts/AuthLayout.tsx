@@ -11,11 +11,7 @@ interface AuthLayoutProps {
  */
 export function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <PageShell
-      maxWidth="md"
-      className="min-h-[calc(100vh-8.5rem)]"
-      contentClassName="flex min-h-[calc(100vh-8.5rem)] items-center justify-center"
-    >
+    <PageShell maxWidth="md" contentClassName="flex items-center justify-center">
       <div className="w-full max-w-md space-y-6">
         <div className="flex flex-col items-center">
           <h2 className="text-center text-3xl font-black tracking-tight text-foreground">

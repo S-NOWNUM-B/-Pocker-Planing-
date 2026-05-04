@@ -23,7 +23,7 @@ export function DashboardPage() {
   });
 
   return (
-    <PageShell className="min-h-[calc(100vh-8.5rem)]">
+    <PageShell>
       <section className="space-y-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>

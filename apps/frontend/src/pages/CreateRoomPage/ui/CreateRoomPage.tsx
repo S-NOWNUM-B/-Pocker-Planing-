@@ -16,11 +16,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@/app/providers';
 import { roomApi } from '@/entities/room';
-import { loginAsGuest } from '@/entities/user';
+import ensureRoomAccessToken from '@/shared/lib/session/ensureRoomAccess';
 import { Button, Card, Input, PageShell } from '@/shared/ui';
 import { LinkIcon, PlayIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
 import type { ApiError } from '@/shared/api';
-import { DECK_LABELS, type DeckType, type GameSession, SESSION_STORAGE_KEY } from '@/shared/lib/poker';
+import { DECK_LABELS, type DeckType } from '@/shared/lib/poker';
+import { persistRoomSession } from '@/shared/lib/session/persistRoomSession';
 
 const DECK_OPTIONS: Array<{ value: DeckType; title: string; description: string }> = [
   {
@@ -97,6 +98,10 @@ const getRussianCreateRoomErrorMessage = (error: unknown): string => {
     ) {
       return 'Сервер временно недоступен. Проверьте подключение и попробуйте снова.';
     }
+
+    if (hasCyrillic(error.message)) {
+      return error.message;
+    }
   }
 
   return fallbackMessage;
@@ -115,58 +120,21 @@ export function CreateRoomPage() {
   const isRoomNameValid = trimmedRoomName.length >= 3 && trimmedRoomName.length <= 120;
   const canStart = isRoomNameValid;
 
-  const getSession = (): GameSession | null => {
-    const rawSession = window.localStorage.getItem(SESSION_STORAGE_KEY);
-    if (!rawSession) {
-      return null;
-    }
-
-    try {
-      return JSON.parse(rawSession) as GameSession;
-    } catch {
-      return null;
-    }
-  };
-
-  const ensureRoomAccessToken = async (): Promise<{ token?: string; guestName?: string }> => {
-    if (user) {
-      return {};
-    }
-
-    const existingSession = getSession();
-    if (existingSession?.roomAccessToken) {
-      return { token: existingSession.roomAccessToken, guestName: existingSession.userName };
-    }
-
-    try {
-      const guestAuth = await loginAsGuest({ name: creatorName });
-      return { token: guestAuth.access_token, guestName: guestAuth.user.name };
-    } catch {
-      // Fallback: backend guest-auth can fail independently (e.g. CORS/500),
-      // while room creation may still be available for public onboarding flow.
-      return {};
-    }
-  };
+  const ensureRoomAccessTokenLocal = async () => ensureRoomAccessToken(user);
 
   const createRoomMutation = useMutation({
     mutationFn: async () => {
-      const roomAccess = await ensureRoomAccessToken();
+      const roomAccess = await ensureRoomAccessTokenLocal();
       const snapshot = await roomApi.createRoom(trimmedRoomName, deckType, roomAccess.token);
       return { snapshot, roomAccessToken: roomAccess.token, guestName: roomAccess.guestName };
     },
     onSuccess: ({ snapshot, roomAccessToken, guestName }) => {
-      const session: GameSession = {
-        roomId: snapshot.room.slug,
-        roomName: snapshot.room.name,
-        userName: user?.name?.trim() || guestName || creatorName,
-        deckType,
-        ownerId: snapshot.room.owner_id,
-        ownerName: user?.name?.trim() || guestName || creatorName,
+      persistRoomSession({
+        snapshot,
+        authUserName: user?.name?.trim(),
+        localUserName: guestName || creatorName,
         roomAccessToken,
-        selfParticipantId: snapshot.self_participant_id,
-      };
-
-      window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+      });
       queryClient.invalidateQueries({ queryKey: ['rooms'] });
       navigate(`/room/${snapshot.room.slug}`);
     },
@@ -188,8 +156,7 @@ export function CreateRoomPage() {
   return (
     <PageShell
       maxWidth="xl"
-      className="min-h-[calc(100vh-8.5rem)]"
-      contentClassName="flex min-h-[calc(100vh-8.5rem)] flex-col justify-center"
+      contentClassName="flex flex-col justify-center"
     >
       <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <section className="space-y-6">

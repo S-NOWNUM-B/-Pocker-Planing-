@@ -3,92 +3,80 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSession } from '@/app/providers';
 import { roomApi } from '@/entities/room';
-import { loginAsGuest } from '@/entities/user';
-import { PageShell, Spinner } from '@/shared/ui';
-import { SESSION_STORAGE_KEY, type DeckType, type GameSession } from '@/shared/lib/poker';
-
-function normalizeDeckType(code: string | undefined): DeckType {
-  if (code === 'even') {
-    return 'even';
-  }
-
-  if (code === 'tshirt') {
-    return 'tshirt';
-  }
-
-  return 'fibonacci';
-}
+import ensureRoomAccessToken from '@/shared/lib/session/ensureRoomAccess';
+import { EmptyState, PageShell, Spinner } from '@/shared/ui';
+import { persistRoomSession } from '@/shared/lib/session/persistRoomSession';
 
 export function InvitePage() {
   const navigate = useNavigate();
   const { token } = useParams<{ token: string }>();
   const { user } = useSession();
 
-  const getSession = (): GameSession | null => {
-    const rawSession = window.localStorage.getItem(SESSION_STORAGE_KEY);
-    if (!rawSession) {
-      return null;
-    }
-
-    try {
-      return JSON.parse(rawSession) as GameSession;
-    } catch {
-      return null;
-    }
-  };
-
-  const ensureRoomAccessToken = async (): Promise<{ token?: string; guestName?: string }> => {
-    if (user) {
-      return {};
-    }
-
-    const existingSession = getSession();
-    if (existingSession?.roomAccessToken) {
-      return { token: existingSession.roomAccessToken, guestName: existingSession.userName };
-    }
-
-    const guestAuth = await loginAsGuest({ name: 'Гость' });
-    return { token: guestAuth.access_token, guestName: guestAuth.user.name };
-  };
+  const ensureRoomAccessTokenLocal = async () => ensureRoomAccessToken(user);
 
   const joinMutation = useMutation({
     mutationFn: async (invitationToken: string) => {
-      const roomAccess = await ensureRoomAccessToken();
+      const roomAccess = await ensureRoomAccessTokenLocal();
       const snapshot = await roomApi.joinRoomByInvitation(invitationToken, roomAccess.token);
       return { snapshot, roomAccessToken: roomAccess.token, guestName: roomAccess.guestName };
     },
     onSuccess: ({ snapshot, roomAccessToken, guestName }) => {
-      const session: GameSession = {
-        roomId: snapshot.room.slug,
-        roomName: snapshot.room.name,
-        userName: user?.name?.trim() || guestName || 'Гость',
-        ownerId: snapshot.room.owner_id,
-        ownerName: 'Владелец комнаты',
-        deckType: normalizeDeckType(snapshot.room.deck?.code),
+      persistRoomSession({
+        snapshot,
+        authUserName: user?.name?.trim(),
+        localUserName: guestName || 'Гость',
         roomAccessToken,
-        selfParticipantId: snapshot.self_participant_id,
-      };
-
-      window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+      });
       navigate(`/room/${snapshot.room.slug}`, { replace: true });
-    },
-    onError: () => {
-      navigate('/join-room', { replace: true });
     },
   });
 
   useEffect(() => {
     if (!token) {
-      navigate('/join-room', { replace: true });
       return;
     }
 
     joinMutation.mutate(token);
   }, [joinMutation, navigate, token]);
 
+  if (!token) {
+    return (
+      <PageShell>
+        <div className="flex items-center justify-center">
+          <EmptyState
+            title="Неверная ссылка приглашения"
+            description="Ссылка не содержит токен комнаты. Попросите отправить приглашение ещё раз или перейдите к входу по коду."
+            actionLabel="Перейти к входу"
+            onAction={() => navigate('/join-room', { replace: true })}
+          />
+        </div>
+      </PageShell>
+    );
+  }
+
+  if (joinMutation.isError) {
+    const errorMessage =
+      joinMutation.error instanceof Error
+        ? joinMutation.error.message
+        : 'Похоже, ссылка уже недействительна или комната недоступна.';
+
+    return (
+      <PageShell>
+        <div className="flex items-center justify-center">
+          <EmptyState
+            title="Не удалось открыть приглашение"
+            description={`${errorMessage} Можно попробовать ещё раз либо перейти к входу по коду.`}
+            actionLabel={joinMutation.isPending ? 'Повторяем...' : 'Попробовать снова'}
+            onAction={() => joinMutation.mutate(token)}
+          />
+        </div>
+      </PageShell>
+    );
+  }
+
   return (
-    <PageShell className="min-h-[calc(100vh-8.5rem)]">
-      <div className="flex min-h-[calc(100vh-8.5rem)] items-center justify-center">
+    <PageShell>
+      <div className="flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <Spinner size="lg" />
           <p className="text-sm text-muted-foreground">Подключаем к комнате по приглашению...</p>

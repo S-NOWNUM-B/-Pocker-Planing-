@@ -9,7 +9,7 @@ export function AboutPage() {
   const sectionContainerClass = 'mx-auto w-full max-w-7xl';
 
   return (
-    <PageShell maxWidth="full" className="min-h-[calc(100vh-8.5rem)]">
+    <PageShell maxWidth="full">
       <section className="flex flex-col items-center py-16 text-center lg:py-20">
         <h1 className="max-w-4xl font-display text-5xl font-bold tracking-tight text-foreground sm:text-7xl">
           Почему существует{' '}

@@ -1,9 +1,10 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { Link, useMatch } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Switch } from '@/shared/ui';
 import { LogOutIcon, MoonIcon, SunIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
 import { baseButtonClasses, sizeClasses, variantClasses } from '@/shared/ui/Button/Button';
 import { useTheme } from '@/shared/lib/hooks';
+import { isRoomRoute } from '@/shared/lib/room';
 
 interface HeaderProps {
   showAuthButtons?: boolean;
@@ -23,7 +24,8 @@ export function Header({
   onLogout,
 }: HeaderProps) {
   const { theme, setTheme } = useTheme();
-  const isRoomPage = useMatch('/room/:roomId') !== null;
+  const { pathname } = useLocation();
+  const isRoomPage = isRoomRoute(pathname);
   const shouldShowLoginButton = showLoginButton ?? showAuthButtons;
   const shouldShowRegisterButton = showRegisterButton ?? showAuthButtons;
   const showAuthControls = shouldShowLoginButton || shouldShowRegisterButton;

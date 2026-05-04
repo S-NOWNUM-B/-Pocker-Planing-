@@ -19,6 +19,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, Card, Switch } from '@/shared/ui';
 import { HistoryIcon, LinkIcon, LogOutIcon, MoonIcon, SunIcon, TrophyIcon } from '@/shared/ui/icons';
 import { useTheme } from '@/shared/lib/hooks';
+import { themeTokens } from '@/shared/lib/theme/themeTokens';
 
 interface RoomHeaderProps {
   roomName: string;
@@ -67,7 +68,10 @@ export function RoomHeader({ roomName, roomId, deckName, inviteLink, onShowHisto
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-card/88 backdrop-blur-xl">
+    <header
+      className="sticky top-0 z-40 border-b backdrop-blur-xl"
+      style={{ background: themeTokens.surfaceGlass, borderColor: themeTokens.surfaceBorder }}
+    >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
           <Link to="/dashboard" className="flex items-center gap-2.5">
@@ -83,7 +87,10 @@ export function RoomHeader({ roomName, roomId, deckName, inviteLink, onShowHisto
             <span className="max-w-56 truncate font-semibold text-foreground/90">{roomName}</span>
             <span className="text-muted-foreground/60">•</span>
             <span className="truncate">/{roomId}</span>
-            <span className="rounded-full border border-border bg-secondary/45 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-foreground/90">
+            <span
+              className="rounded-full border px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-foreground/90"
+              style={{ background: themeTokens.surfaceGlassStrong, borderColor: themeTokens.surfaceBorder }}
+            >
               {deckName}
             </span>
           </div>
@@ -121,7 +128,10 @@ export function RoomHeader({ roomName, roomId, deckName, inviteLink, onShowHisto
             <LogOutIcon className="h-4 w-4" />
             <span className="hidden sm:inline">Выйти</span>
           </Button>
-          <div className="flex h-10 items-center gap-1.5 rounded-xl border border-border bg-card/70 px-2">
+          <div
+            className="flex h-10 items-center gap-1.5 rounded-xl border px-2"
+            style={{ background: themeTokens.surfaceGlassStrong, borderColor: themeTokens.surfaceBorder }}
+          >
             {theme === 'dark' ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
             <Switch
               checked={theme === 'dark'}

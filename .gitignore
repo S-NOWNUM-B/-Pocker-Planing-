@@ -58,6 +58,10 @@ coverage/
 # TypeScript
 *.tsbuildinfo
 
+# React Router generated types
+.react-router/
+apps/*/.react-router/
+
 # Vite
 vite.config.ts.timestamp-*
 

@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -p tsconfig.app.json && vite build",
+    "dev": "react-router dev",
+    "build": "react-router build",
     "preview": "vite preview",
     "lint": "pnpm lint:eslint && pnpm lint:style",
     "lint:fix": "pnpm lint:eslint:fix && pnpm lint:style:fix && pnpm format",
@@ -15,7 +15,7 @@
     "lint:style:fix": "stylelint \"src/**/*.css\" --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json,md}\"",
-    "typecheck": "tsc -p tsconfig.app.json --noEmit"
+    "typecheck": "react-router typegen && tsc -p tsconfig.app.json --noEmit"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
@@ -26,12 +26,16 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.50.0",
+    "react-router": "7.14.0",
     "react-router-dom": "^7.5.0",
     "zod": "^3.22.4",
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@react-router/dev": "7.14.0",
+    "@react-router/node": "7.14.0",
     "@tailwindcss/vite": "^4.2.2",
+    "@types/node": "^22.19.17",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.4.1",

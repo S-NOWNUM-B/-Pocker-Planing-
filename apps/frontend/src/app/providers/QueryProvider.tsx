@@ -5,9 +5,9 @@
  *  - SessionProvider — управление состоянием авторизации и восстановление сессии
  *  - QueryClientProvider (TanStack Query) — для серверного состояния
  *
- * Используется в main.tsx как обёртка над <App />.
+ * Используется в route root как обёртка над приложением.
  *
- * @param children — дочерние компоненты (обычно <App />)
+ * @param children — дочерние компоненты приложения
  */
 import { type ReactNode } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';

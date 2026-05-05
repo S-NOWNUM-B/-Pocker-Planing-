@@ -55,11 +55,11 @@ export const router = createBrowserRouter([
       {
         path: '/login',
         loader: publicOnlyLoader,
-        action: loginAction,
         element: <AuthLayoutWrapper />,
         children: [
           {
             index: true,
+            action: loginAction,
             element: <LoginPage />,
           },
         ],
@@ -67,11 +67,11 @@ export const router = createBrowserRouter([
       {
         path: '/register',
         loader: publicOnlyLoader,
-        action: registerAction,
         element: <AuthLayoutWrapper />,
         children: [
           {
             index: true,
+            action: registerAction,
             element: <RegisterPage />,
           },
         ],

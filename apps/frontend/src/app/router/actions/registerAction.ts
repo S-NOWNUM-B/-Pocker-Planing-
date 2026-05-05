@@ -1,6 +1,7 @@
 import { redirect } from 'react-router-dom';
 import { register as registerRequest } from '@/entities/user';
 import { SessionManager } from '@/shared/lib/session';
+import type { ApiError } from '@/shared/api';
 
 export async function registerAction({ request }: { request: Request }) {
   const formData = await request.formData();
@@ -13,8 +14,9 @@ export async function registerAction({ request }: { request: Request }) {
     SessionManager.saveToken(authData.access_token, authData.user);
     return redirect('/dashboard');
   } catch (error) {
+    const apiError = error as ApiError;
     return {
-      error: error instanceof Error ? error.message : 'Произошла ошибка при регистрации',
+      error: apiError.message || 'Произошла ошибка при регистрации',
     };
   }
 }

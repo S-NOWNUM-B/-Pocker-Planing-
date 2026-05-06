@@ -1,6 +1,5 @@
 import type { RoomSnapshot } from '@/entities/room/model/types';
-import { type GameSession } from '@/shared/lib/poker';
-import { RoomSessionManager } from './RoomSessionManager';
+import { SESSION_STORAGE_KEY, type GameSession } from '@/shared/lib/poker';
 
 interface PersistRoomSessionParams {
   snapshot: RoomSnapshot;
@@ -27,15 +26,10 @@ export function persistRoomSession({
     userName,
     ownerId: snapshot.room.owner_id,
     ownerName: isOwner ? userName : 'Владелец комнаты',
-    deckType:
-      snapshot.room.deck.code === 'even'
-        ? 'even'
-        : snapshot.room.deck.code === 'tshirt'
-          ? 'tshirt'
-          : 'fibonacci',
+    deckType: snapshot.room.deck.code === 'even' ? 'even' : 'fibonacci',
     roomAccessToken,
     selfParticipantId: snapshot.self_participant_id,
   };
 
-  RoomSessionManager.saveSession(session);
+  window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
 }

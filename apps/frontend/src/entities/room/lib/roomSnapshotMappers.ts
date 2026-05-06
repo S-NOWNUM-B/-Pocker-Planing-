@@ -1,6 +1,6 @@
 import type { Task, Player } from '@/shared/lib/poker';
-import { toAverageLabel } from '@/shared/lib/room';
 import type { RoomSnapshot } from '../model/types';
+import { toAverageLabel } from '@/shared/lib/room';
 
 export function mapSnapshotTasks(snapshot: RoomSnapshot): Task[] {
   return [...snapshot.tasks]
@@ -17,8 +17,6 @@ export function mapSnapshotPlayers(snapshot: RoomSnapshot): Player[] {
     (snapshot.active_round?.votes ?? []).map((vote) => [vote.participant_id, vote]),
   );
 
-  const onlineParticipantIds = new Set(snapshot.online_participant_ids || []);
-
   return snapshot.participants.map((participant) => {
     const roundVote = voteValueByParticipantId.get(participant.id);
     const vote =
@@ -33,7 +31,6 @@ export function mapSnapshotPlayers(snapshot: RoomSnapshot): Player[] {
       name: participant.name,
       role: participant.role === 'owner' ? 'Создатель' : 'Участник',
       vote,
-      isOnline: onlineParticipantIds.has(participant.id),
       isThinking: false,
       isBot: false,
     };
@@ -55,7 +52,6 @@ export function getRoomVotingView(snapshot: RoomSnapshot, tasks: Task[]) {
   const anyPlayerVoted = snapshot.active_round !== null ? snapshot.active_round.votes_submitted > 0 : false;
   const selectedCard = snapshot.active_round?.self_vote_value ?? null;
   const average = toAverageLabel(snapshot.active_round?.average_score);
-  const activeRoundId = snapshot.active_round?.id ?? null;
 
   return {
     activeTaskId,
@@ -65,6 +61,5 @@ export function getRoomVotingView(snapshot: RoomSnapshot, tasks: Task[]) {
     anyPlayerVoted,
     selectedCard,
     average,
-    activeRoundId,
   };
 }

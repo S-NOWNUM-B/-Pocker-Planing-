@@ -16,9 +16,9 @@ import {
   login as loginRequest,
   register as registerRequest,
 } from '@/entities/user';
+import type { ApiError } from '@/shared/api';
 import type { User } from '@/entities/user';
 import type { LoginCredentials, RegisterCredentials } from '@/entities/user';
-import type { ApiError } from '@/shared/api';
 import { SessionManager } from '@/shared/lib/session';
 
 // Функция для извлечения сообщения об ошибке из ответа API
@@ -35,6 +35,7 @@ export interface SessionContextValue {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  hasRegisteredUsers: boolean;
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (credentials: RegisterCredentials) => Promise<void>;
   logout: () => void;
@@ -48,6 +49,7 @@ const SessionContext = createContext<SessionContextValue | undefined>(undefined)
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasRegisteredUsers, setHasRegisteredUsers] = useState(false);
 
   const syncSession = async () => {
     const token = SessionManager.getToken();
@@ -58,24 +60,10 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const cached = SessionManager.getUser();
-    if (cached) {
-      setUser(cached as User);
-      setIsLoading(false);
-      // verify token in background
-      try {
-        const currentUser = await getUserRequest();
-        setUser(currentUser);
-      } catch {
-        SessionManager.removeToken({ notify: false });
-        setUser(null);
-      }
-      return;
-    }
-
     try {
       const currentUser = await getUserRequest();
       setUser(currentUser);
+      setHasRegisteredUsers(true);
     } catch {
       SessionManager.removeToken({ notify: false });
       setUser(null);
@@ -93,6 +81,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
       if (detail && 'user' in detail) {
         setUser(detail.user ?? null);
+        setHasRegisteredUsers(Boolean(detail.user));
         setIsLoading(false);
         return;
       }
@@ -100,18 +89,10 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       void syncSession();
     };
 
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === 'access_token' || event.key === 'auth_user') {
-        void syncSession();
-      }
-    };
-
     window.addEventListener(SessionManager.SESSION_CHANGE_EVENT, handleSessionChange);
-    window.addEventListener('storage', handleStorageChange);
 
     return () => {
       window.removeEventListener(SessionManager.SESSION_CHANGE_EVENT, handleSessionChange);
-      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
@@ -121,6 +102,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       const authData = await loginRequest(credentials);
       SessionManager.saveToken(authData.access_token, authData.user);
       setUser(authData.user);
+      setHasRegisteredUsers(true);
     } catch (error) {
       throw new Error(parseApiErrorMessage(error));
     }
@@ -132,6 +114,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       const authData = await registerRequest(credentials);
       SessionManager.saveToken(authData.access_token, authData.user);
       setUser(authData.user);
+      setHasRegisteredUsers(true);
     } catch (error) {
       throw new Error(parseApiErrorMessage(error));
     }
@@ -148,6 +131,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     user,
     isLoading,
     isAuthenticated: user !== null,
+    hasRegisteredUsers,
     login: handleLogin,
     register: handleRegister,
     logout: handleLogout,

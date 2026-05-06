@@ -43,7 +43,7 @@ const featureIcons = {
 
 export function OnboardingPage() {
   return (
-    <PageShell maxWidth="full">
+    <PageShell maxWidth="full" className="min-h-[calc(100vh-8.5rem)]">
       {/* Hero Section */}
       <section className="flex flex-col items-center py-16 text-center lg:py-20">
         <h1 className="max-w-4xl font-display text-5xl font-bold tracking-tight text-foreground sm:text-7xl">
@@ -67,7 +67,7 @@ export function OnboardingPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-16 lg:py-20">
+      <section className="py-24 sm:py-32">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Всё необходимое для оценки
@@ -120,7 +120,7 @@ export function OnboardingPage() {
       </section>
 
       {/* Steps Section */}
-      <section className="relative isolate overflow-hidden py-16 lg:py-20">
+      <section className="relative isolate overflow-hidden py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

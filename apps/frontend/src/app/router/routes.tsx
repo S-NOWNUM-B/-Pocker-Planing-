@@ -1,5 +1,5 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom';
-import { AuthLayout, RootLayout } from '@/app/layouts';
+import { AuthLayout, RootLayout } from '../layouts';
 import { authLoader, publicOnlyLoader } from './loaders';
 import { loginAction, registerAction } from './actions';
 import {
@@ -13,7 +13,7 @@ import {
   AboutPage,
   RoomPage,
   NotFoundPage,
-} from '@/pages';
+} from '../../pages';
 
 function AuthLayoutWrapper() {
   return (

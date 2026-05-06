@@ -8,8 +8,8 @@
  * @param error — текст ошибки под полем
  * @param id — id элемента (генерируется из label если не указан)
  */
-import { type InputHTMLAttributes, forwardRef } from 'react';
 import { Field, Input as HeadlessInput, Label } from '@headlessui/react';
+import { type InputHTMLAttributes, forwardRef } from 'react';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;

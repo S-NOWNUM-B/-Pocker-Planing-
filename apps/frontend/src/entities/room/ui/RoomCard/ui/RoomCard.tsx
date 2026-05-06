@@ -10,13 +10,12 @@
  *
  * Используется в DashboardPage для списка комнат пользователя.
  */
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
 import { useSession } from '@/app/providers';
-import { Button, Card, Modal, Spinner } from '@/shared/ui';
+import { Card, Button, Modal, Spinner } from '@/shared/ui';
 import { UsersIcon } from '@/shared/ui/icons';
-import { formatResultValueLabel } from '@/shared/lib/room';
 import { roomApi } from '../../../api/roomApi';
 import type { RoomListItem } from '../../../model/types';
 
@@ -131,7 +130,7 @@ export function RoomCard({ room }: RoomCardProps) {
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <h4 className="text-sm font-semibold text-foreground">{item.task_title}</h4>
                   <span className="rounded-md bg-primary/15 px-2 py-0.5 text-xs font-semibold text-primary">
-                    Итог: {formatResultValueLabel(item.result_value)}
+                    Итог: {item.result_value} SP
                   </span>
                 </div>
                 <div className="mt-2 flex items-center justify-between gap-3 text-xs text-muted-foreground">

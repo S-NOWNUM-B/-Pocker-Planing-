@@ -3,12 +3,10 @@
  *
  * Отображается на всех страницах, кроме /room/:roomId.
  */
-import { Link, useLocation } from 'react-router-dom';
-import { isRoomRoute } from '@/shared/lib/room';
+import { Link, useMatch } from 'react-router-dom';
 
 export function Footer() {
-  const { pathname } = useLocation();
-  const isRoomPage = isRoomRoute(pathname);
+  const isRoomPage = useMatch('/room/:roomId') !== null;
 
   if (isRoomPage) {
     return null;
@@ -25,7 +23,7 @@ export function Footer() {
             О проекте
           </Link>
           <a
-            href="https://github.com/S-NOWNUM-B/-Pocker-Planning-"
+            href="https://github.com"
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"

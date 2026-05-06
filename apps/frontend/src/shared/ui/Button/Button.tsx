@@ -3,9 +3,8 @@
  *
  * Поддерживает несколько вариантов оформления и 3 размера.
  */
-import { type ElementType, type ComponentPropsWithoutRef } from 'react';
 import { Button as HeadlessButton } from '@headlessui/react';
-import { Spinner } from '../Spinner/Spinner';
+import { type ElementType, type ComponentPropsWithoutRef } from 'react';
 
 export const baseButtonClasses =
   'inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl font-inherit font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/45 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100';
@@ -28,14 +27,12 @@ export const sizeClasses = {
   sm: 'px-3 py-1.5 text-sm',
   md: 'px-5 py-2.5 text-base',
   lg: 'px-8 py-4 text-lg',
-  icon: 'h-7 w-7 p-0',
 };
 
 type ButtonOwnProps<E extends ElementType = 'button'> = {
   as?: E;
   variant?: keyof typeof variantClasses;
   size?: keyof typeof sizeClasses;
-  isLoading?: boolean;
   className?: string;
 };
 
@@ -46,32 +43,19 @@ export function Button<E extends ElementType = 'button'>({
   as,
   variant = 'primary',
   size = 'md',
-  isLoading = false,
   className = '',
-  children,
-  disabled,
   ...props
 }: ButtonProps<E>) {
   const classes = `${baseButtonClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
-  const isDisabled = disabled || isLoading;
-
-  const content = (
-    <>
-      {isLoading && <Spinner className="h-4 w-4" />}
-      {children}
-    </>
-  );
 
   if (!as) {
     return (
-      <HeadlessButton className={classes} disabled={isDisabled} {...(props as ComponentPropsWithoutRef<'button'>)}>
-        {content}
-      </HeadlessButton>
+      <HeadlessButton className={classes} {...(props as ComponentPropsWithoutRef<'button'>)} />
     );
   }
 
   const Component = as as ElementType;
-  const componentProps = { ...props, disabled: isDisabled } as Record<string, unknown>;
+  const componentProps = props as Record<string, unknown>;
 
-  return <Component {...componentProps} className={classes}>{content}</Component>;
+  return <Component {...componentProps} className={classes} />;
 }

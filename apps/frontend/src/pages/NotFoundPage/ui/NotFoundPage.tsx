@@ -5,8 +5,8 @@
  * route-level error screen для ошибок роутера.
  */
 import { Link, isRouteErrorResponse, useRouteError } from 'react-router-dom';
-import { useSession } from '@/app/providers';
 import { Button, Card, EmptyState, PageShell } from '@/shared/ui';
+import { useSession } from '@/app/providers';
 
 function getErrorContent(error: unknown) {
   if (isRouteErrorResponse(error)) {
@@ -45,7 +45,8 @@ export function NotFoundPage() {
   return (
     <PageShell
       maxWidth="md"
-      contentClassName="flex items-center justify-center"
+      className="min-h-[calc(100vh-8.5rem)]"
+      contentClassName="flex min-h-[calc(100vh-8.5rem)] items-center justify-center"
     >
       <Card className="w-full border border-border/70 bg-card/92 p-8 shadow-2xl backdrop-blur">
         <EmptyState title={title} description={description} />

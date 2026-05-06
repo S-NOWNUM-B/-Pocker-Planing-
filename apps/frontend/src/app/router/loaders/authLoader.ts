@@ -1,6 +1,6 @@
 import { redirect } from 'react-router-dom';
-import { getUser } from '@/entities/user';
 import { SessionManager } from '@/shared/lib/session';
+import { getUser } from '@/entities/user';
 
 export async function authLoader() {
   const token = SessionManager.getToken();

@@ -13,10 +13,14 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@/app/providers';
-import ensureRoomAccessToken from '@/shared/lib/session/ensureRoomAccess';
+import { loginAsGuest } from '@/entities/user';
 import { roomApi } from '@/entities/room';
 import { Input, Button } from '@/shared/ui';
-import { persistRoomSession } from '@/shared/lib/session/persistRoomSession';
+import { SESSION_STORAGE_KEY, type DeckType, type GameSession } from '@/shared/lib/poker';
+
+function normalizeDeckType(code: string | undefined): DeckType {
+  return code === 'even' ? 'even' : 'fibonacci';
+}
 
 export function JoinRoomForm() {
   const [roomId, setRoomId] = useState('');
@@ -24,21 +28,52 @@ export function JoinRoomForm() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const ensureRoomAccessTokenLocal = async () => ensureRoomAccessToken(user);
+  const getSession = (): GameSession | null => {
+    const rawSession = window.localStorage.getItem(SESSION_STORAGE_KEY);
+    if (!rawSession) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(rawSession) as GameSession;
+    } catch {
+      return null;
+    }
+  };
+
+  const ensureRoomAccessToken = async (): Promise<{ token?: string; guestName?: string }> => {
+    if (user) {
+      return {};
+    }
+
+    const existingSession = getSession();
+    if (existingSession?.roomAccessToken) {
+      return { token: existingSession.roomAccessToken, guestName: existingSession.userName };
+    }
+
+    const guestAuth = await loginAsGuest({ name: 'Гость' });
+    return { token: guestAuth.access_token, guestName: guestAuth.user.name };
+  };
 
   const joinMutation = useMutation({
     mutationFn: async (code: string) => {
-      const roomAccess = await ensureRoomAccessTokenLocal();
+      const roomAccess = await ensureRoomAccessToken();
       const snapshot = await roomApi.joinRoomByCode(code, roomAccess.token);
       return { snapshot, roomAccessToken: roomAccess.token, guestName: roomAccess.guestName };
     },
     onSuccess: ({ snapshot, roomAccessToken, guestName }) => {
-      persistRoomSession({
-        snapshot,
-        authUserName: user?.name?.trim(),
-        localUserName: guestName || 'Гость',
+      const session: GameSession = {
+        roomId: snapshot.room.slug,
+        roomName: snapshot.room.name,
+        userName: user?.name?.trim() || guestName || 'Гость',
+        ownerId: snapshot.room.owner_id,
+        ownerName: 'Владелец комнаты',
+        deckType: normalizeDeckType(snapshot.room.deck?.code),
         roomAccessToken,
-      });
+        selfParticipantId: snapshot.self_participant_id,
+      };
+
+      window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
       queryClient.invalidateQueries({ queryKey: ['rooms'] });
       navigate(`/room/${snapshot.room.slug}`);
     },
@@ -67,11 +102,7 @@ export function JoinRoomForm() {
         {joinMutation.isPending ? 'Входим...' : 'Войти в комнату'}
       </Button>
       {joinMutation.isError && (
-        <p className="text-sm text-destructive">
-          {joinMutation.error instanceof Error
-            ? joinMutation.error.message
-            : 'Комната с таким кодом не найдена или недоступна.'}
-        </p>
+        <p className="text-sm text-destructive">Комната с таким кодом не найдена или недоступна.</p>
       )}
     </form>
   );

@@ -9,8 +9,8 @@
  */
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { Button, PageShell, Spinner, EmptyState } from '@/shared/ui';
 import { RoomCard, roomApi } from '@/entities/room';
-import { Button, EmptyState, PageShell, Spinner } from '@/shared/ui';
 
 export function DashboardPage() {
   const {
@@ -23,7 +23,7 @@ export function DashboardPage() {
   });
 
   return (
-    <PageShell>
+    <PageShell className="min-h-[calc(100vh-8.5rem)]">
       <section className="space-y-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>

@@ -12,7 +12,6 @@
  * Типы данных: RoomState, RoomDetails из entities/room/model/types.
  */
 import { api } from '@/shared/api';
-import type { DeckType } from '@/shared/lib/poker';
 import type { RoomState, RoomDetails, RoomListItem, RoomSnapshot } from '../model/types';
 
 const withToken = (authToken?: string) => {
@@ -45,7 +44,7 @@ export const roomApi = {
 
   createRoom: async (
     name: string,
-    deckPresetCode: DeckType = 'fibonacci',
+    deckPresetCode: 'fibonacci' | 'even' = 'fibonacci',
     authToken?: string,
   ): Promise<RoomSnapshot> => {
     const { data } = await api.post('/rooms', { name, deck_preset_code: deckPresetCode }, withToken(authToken));
@@ -70,14 +69,6 @@ export const roomApi = {
     await api.post(`/rooms/${roomId}/tasks`, { title }, withToken(authToken));
   },
 
-  updateTask: async (roomId: string, taskId: string, title: string, authToken?: string): Promise<void> => {
-    await api.patch(`/rooms/${roomId}/tasks/${taskId}`, { title }, withToken(authToken));
-  },
-
-  deleteTask: async (roomId: string, taskId: string, authToken?: string): Promise<void> => {
-    await api.delete(`/rooms/${roomId}/tasks/${taskId}`, withToken(authToken));
-  },
-
   selectTask: async (roomId: string, taskId: string, authToken?: string): Promise<void> => {
     await api.post(`/rooms/${roomId}/tasks/select`, { task_id: taskId }, withToken(authToken));
   },
@@ -93,11 +84,6 @@ export const roomApi = {
 
   revealRound: async (roomId: string, roundId: string, authToken?: string): Promise<RoomSnapshot> => {
     const { data } = await api.post(`/rooms/${roomId}/rounds/${roundId}/reveal`, undefined, withToken(authToken));
-    return data;
-  },
-
-  resetRound: async (roomId: string, roundId: string, authToken?: string): Promise<RoomSnapshot> => {
-    const { data } = await api.post(`/rooms/${roomId}/rounds/${roundId}/reset`, undefined, withToken(authToken));
     return data;
   },
 

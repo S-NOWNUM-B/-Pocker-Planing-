@@ -9,7 +9,7 @@ export function AboutPage() {
   const sectionContainerClass = 'mx-auto w-full max-w-7xl';
 
   return (
-    <PageShell maxWidth="full">
+    <PageShell maxWidth="full" className="min-h-[calc(100vh-8.5rem)]">
       <section className="flex flex-col items-center py-16 text-center lg:py-20">
         <h1 className="max-w-4xl font-display text-5xl font-bold tracking-tight text-foreground sm:text-7xl">
           Почему существует{' '}
@@ -22,9 +22,17 @@ export function AboutPage() {
         </p>
       </section>
 
-      <section className="py-16 sm:py-20">
+      <section className="py-20 sm:py-24">
         <div className={sectionContainerClass}>
-          
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Проблема, которую проект решает
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-muted-foreground">
+              В классическом планировании команды часто теряют время и точность оценок из-за
+              социальных и процессных перекосов — от эффекта якоря до неравного участия и потери контекста
+            </p>
+          </div>
           <div className="mx-auto mt-14 grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
               {
@@ -64,7 +72,7 @@ export function AboutPage() {
         </div>
       </section>
 
-      <section className="py-16 sm:py-20">
+      <section className="py-20 sm:py-24">
         <div className={`${sectionContainerClass} grid grid-cols-1 gap-6 lg:grid-cols-3`}>
           <Card className="lg:col-span-2 border border-border/70 bg-card/90 p-6 shadow-lg backdrop-blur">
             <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
@@ -117,7 +125,7 @@ export function AboutPage() {
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden py-16 sm:py-20">
+      <section className="relative isolate overflow-hidden py-20 sm:py-24">
         <div className={sectionContainerClass}>
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -160,7 +168,7 @@ export function AboutPage() {
         </div>
       </section>
 
-      <section className="py-16 sm:py-20">
+      <section className="py-20 sm:py-24">
         <div className={`${sectionContainerClass} grid grid-cols-1 gap-6 lg:grid-cols-3`}>
           <Card className="lg:col-span-2 border border-border/70 bg-card/90 p-6 shadow-lg backdrop-blur">
             <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">

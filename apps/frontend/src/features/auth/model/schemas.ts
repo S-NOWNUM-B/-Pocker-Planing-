@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Схема для валидации данных пользователя
-export const UserSchema = z.object({
+export const UserShema = z.object({
   id: z.string(),
   email: z.string().email('Некорректный email'),
   name: z
@@ -40,19 +40,19 @@ export const registerSchema = RegisterSchema;
 
 // Схемы для валидации ответов от сервера при логине и регистрации
 export const LoginResponseSchema = z.object({
-  user: UserSchema,
+  user: UserShema,
   access_token: z.string(),
   token_type: z.literal('bearer'),
 });
 
 export const RegisterResponseSchema = z.object({
-  user: UserSchema,
+  user: UserShema,
   access_token: z.string(),
   token_type: z.literal('bearer'),
 });
 
 // Типы данных, выводимые из схем
-export type User = z.infer<typeof UserSchema>;
+export type User = z.infer<typeof UserShema>;
 export type LoginCredentials = z.infer<typeof LoginSchema>;
 export type RegisterCredentials = z.infer<typeof RegisterSchema>;
 export type LoginResponse = z.infer<typeof LoginResponseSchema>;

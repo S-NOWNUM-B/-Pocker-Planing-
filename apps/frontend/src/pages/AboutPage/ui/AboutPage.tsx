@@ -18,7 +18,8 @@ export function AboutPage() {
           </span>
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
-          Большинство команд теряют время не на разработку, а на споры об оценках. Здесь объясняем, почему — и как это починить
+          Большинство команд теряют время не на разработку, а на споры об оценках. Здесь объясняем,
+          почему — и как это починить
         </p>
       </section>
 
@@ -30,7 +31,8 @@ export function AboutPage() {
             </h2>
             <p className="mt-4 text-lg leading-8 text-muted-foreground">
               В классическом планировании команды часто теряют время и точность оценок из-за
-              социальных и процессных перекосов — от эффекта якоря до неравного участия и потери контекста
+              социальных и процессных перекосов — от эффекта якоря до неравного участия и потери
+              контекста
             </p>
           </div>
           <div className="mx-auto mt-14 grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -80,7 +82,8 @@ export function AboutPage() {
             </h2>
             <p className="mt-4 text-base leading-7 text-muted-foreground">
               В Pocker Planning оценка рассматривается как способ синхронизировать понимание задачи,
-              а не как формальное голосование ради числа. Поэтому мы придерживаемся следующих принципов:
+              а не как формальное голосование ради числа. Поэтому мы придерживаемся следующих
+              принципов:
             </p>
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {[
@@ -102,7 +105,9 @@ export function AboutPage() {
           </Card>
 
           <Card className="border border-border/70 bg-card/88 p-6 shadow-lg backdrop-blur">
-            <h3 className="text-lg font-semibold leading-7 text-foreground">Для кого это полезно</h3>
+            <h3 className="text-lg font-semibold leading-7 text-foreground">
+              Для кого это полезно
+            </h3>
             <div className="mt-4 space-y-3 text-sm leading-6 text-muted-foreground">
               <p>
                 <span className="font-semibold text-foreground">Product Manager:</span> быстрее
@@ -113,8 +118,8 @@ export function AboutPage() {
                 оценок и причины расхождений для более точного планирования и управления рисками
               </p>
               <p>
-                <span className="font-semibold text-foreground">Developer:</span> участвует в
-                оценке на равных и влияет на общий результат без доминирования более опытных коллег
+                <span className="font-semibold text-foreground">Developer:</span> участвует в оценке
+                на равных и влияет на общий результат без доминирования более опытных коллег
               </p>
               <p>
                 <span className="font-semibold text-foreground">Scrum Master:</span> ведёт ритуал
@@ -132,7 +137,8 @@ export function AboutPage() {
               Сценарий до и после
             </h2>
             <p className="mt-4 text-lg leading-8 text-muted-foreground">
-              Как меняется планирование, когда у команды есть единый ритуал оценки и инструмент для его проведения
+              Как меняется планирование, когда у команды есть единый ритуал оценки и инструмент для
+              его проведения
             </p>
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2">
@@ -153,7 +159,11 @@ export function AboutPage() {
                 className="border border-border/70 bg-card/88 p-6 shadow-lg backdrop-blur"
               >
                 <time className="flex items-center text-sm font-semibold leading-6 text-primary">
-                  <svg viewBox="0 0 4 4" className="mr-3 h-1 w-1 flex-none fill-primary" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 4 4"
+                    className="mr-3 h-1 w-1 flex-none fill-primary"
+                    aria-hidden="true"
+                  >
                     <circle cx={2} cy={2} r={2} />
                   </svg>
                   {item.step}
@@ -175,9 +185,9 @@ export function AboutPage() {
               Open source сегодня и что дальше
             </h2>
             <p className="mt-4 text-base leading-7 text-muted-foreground">
-              Проект уже работает для командных сессий и параллельно готовится к production.
-              В открытой разработке публично дорабатывается устойчивость, UX и операционные
-              сценарии. Планируется релиз в ближайшие месяцы, а пока приглашаем всех заинтересованных
+              Проект уже работает для командных сессий и параллельно готовится к production. В
+              открытой разработке публично дорабатывается устойчивость, UX и операционные сценарии.
+              Планируется релиз в ближайшие месяцы, а пока приглашаем всех заинтересованных
               личностей присоединиться к обсуждению и тестированию в репозитории
             </p>
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -224,16 +234,28 @@ export function AboutPage() {
                 <p>Структура раунда делает оценку воспроизводимой и снижает эффект доминирования</p>
               </div>
               <div>
-                <p className="font-semibold text-foreground">Подходит для распределённой команды?</p>
-                <p>Да, синхронизация в реальном времени сохраняет общий темп даже при удалённой работе</p>
+                <p className="font-semibold text-foreground">
+                  Подходит для распределённой команды?
+                </p>
+                <p>
+                  Да, синхронизация в реальном времени сохраняет общий темп даже при удалённой
+                  работе
+                </p>
               </div>
               <div>
-                <p className="font-semibold text-foreground">Можно адаптировать под свой процесс?</p>
-                <p>Да, вы можете менять ритуал оценки и наборы карт под внутренние практики команды</p>
+                <p className="font-semibold text-foreground">
+                  Можно адаптировать под свой процесс?
+                </p>
+                <p>
+                  Да, вы можете менять ритуал оценки и наборы карт под внутренние практики команды
+                </p>
               </div>
               <div>
                 <p className="font-semibold text-foreground">Как начать использовать?</p>
-                <p>Просто создайте комнату, пригласите команду и начните планирование с первого раунда оценки</p>
+                <p>
+                  Просто создайте комнату, пригласите команду и начните планирование с первого
+                  раунда оценки
+                </p>
               </div>
             </div>
           </Card>

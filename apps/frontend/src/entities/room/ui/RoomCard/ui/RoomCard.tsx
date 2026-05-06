@@ -70,9 +70,7 @@ export function RoomCard({ room }: RoomCardProps) {
           </div>
         </div>
 
-        <p className="line-clamp-2 min-h-10 text-sm text-muted-foreground">
-          {room.name}
-        </p>
+        <p className="line-clamp-2 min-h-10 text-sm text-muted-foreground">{room.name}</p>
 
         {room.active_task_title && (
           <div className="rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
@@ -141,7 +139,9 @@ export function RoomCard({ room }: RoomCardProps) {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">В этой комнате пока нет завершённых раундов голосования.</p>
+          <p className="text-sm text-muted-foreground">
+            В этой комнате пока нет завершённых раундов голосования.
+          </p>
         )}
       </Modal>
     </Card>

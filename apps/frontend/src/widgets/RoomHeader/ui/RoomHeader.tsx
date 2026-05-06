@@ -17,8 +17,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '@/shared/lib/hooks';
-import { Button, Card, Switch } from '@/shared/ui';
-import { LinkIcon, LogOutIcon, MoonIcon, SunIcon, TrophyIcon, UsersIcon } from '@/shared/ui/icons';
+import { Button, Switch } from '@/shared/ui';
+import { LinkIcon, LogOutIcon, MoonIcon, SunIcon, TrophyIcon } from '@/shared/ui/icons';
 
 interface RoomHeaderProps {
   roomName: string;
@@ -77,9 +77,7 @@ export function RoomHeader({ roomName, roomId, deckName, inviteLink }: RoomHeade
             className="h-9 px-3 text-xs font-medium transition-colors hover:bg-primary/10 hover:text-primary"
           >
             <LinkIcon className="mr-1.5 h-3.5 w-3.5" />
-            <span>
-              {copyState === 'copied' ? 'Скопировано' : 'Пригласить'}
-            </span>
+            <span>{copyState === 'copied' ? 'Скопировано' : 'Пригласить'}</span>
           </Button>
           <Button
             type="button"
@@ -91,7 +89,11 @@ export function RoomHeader({ roomName, roomId, deckName, inviteLink }: RoomHeade
             <span>Выйти</span>
           </Button>
           <div className="ml-1 flex h-8 items-center gap-2 rounded-full border border-border bg-secondary/20 px-1.5">
-            {theme === 'dark' ? <MoonIcon className="ml-1 h-3.5 w-3.5" /> : <SunIcon className="ml-1 h-3.5 w-3.5" />}
+            {theme === 'dark' ? (
+              <MoonIcon className="ml-1 h-3.5 w-3.5" />
+            ) : (
+              <SunIcon className="ml-1 h-3.5 w-3.5" />
+            )}
             <Switch
               checked={theme === 'dark'}
               onChange={(isDark) => setTheme(isDark ? 'dark' : 'light')}

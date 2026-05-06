@@ -39,7 +39,12 @@ export function VotingCards({
           Карты голосования
         </div>
         <div className="flex items-center gap-1.5 text-[10px] font-medium text-muted-foreground/60">
-          <CheckIcon className={cn('h-3 w-3 transition-colors', selectedCard ? 'text-primary' : 'text-muted-foreground/40')} />
+          <CheckIcon
+            className={cn(
+              'h-3 w-3 transition-colors',
+              selectedCard ? 'text-primary' : 'text-muted-foreground/40',
+            )}
+          />
           {selectedCard ? `Выбрано: ${selectedCard}` : 'Карта не выбрана'}
         </div>
       </div>
@@ -59,15 +64,25 @@ export function VotingCards({
                 isSelected
                   ? 'border-primary bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105 ring-2 ring-primary/20'
                   : 'border-border/50 bg-card/50 text-foreground hover:border-primary/30 hover:bg-card hover:-translate-y-0.5',
-                'disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:scale-100'
+                'disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:scale-100',
               )}
             >
               {card === '☕' || card === 'break' ? (
-                <span className={cn('flex h-6 w-6 items-center justify-center rounded-full', isSelected ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary')}>
+                <span
+                  className={cn(
+                    'flex h-6 w-6 items-center justify-center rounded-full',
+                    isSelected ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary',
+                  )}
+                >
                   <CoffeeIcon className="h-4 w-4" strokeWidth={2.8} />
                 </span>
               ) : card === '?' ? (
-                <span className={cn('flex h-6 w-6 items-center justify-center rounded-full', isSelected ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary')}>
+                <span
+                  className={cn(
+                    'flex h-6 w-6 items-center justify-center rounded-full',
+                    isSelected ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary',
+                  )}
+                >
                   <HelpCircleIcon className="h-4 w-4" strokeWidth={2.8} />
                 </span>
               ) : (

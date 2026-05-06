@@ -6,13 +6,31 @@ import { Button, Card, PageShell } from '@/shared/ui';
 
 const featureIcons = {
   'Совместная оценка': (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <path d="M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0" />
       <path d="M4 20c1.7-2.8 4.1-4 8-4s6.3 1.2 8 4" />
     </svg>
   ),
   'В реальном времени': (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <path d="M12 3v4" />
       <path d="M12 17v4" />
       <path d="M4.9 4.9l2.8 2.8" />
@@ -25,7 +43,16 @@ const featureIcons = {
     </svg>
   ),
   'Гибкие колоды': (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <rect x="5" y="6" width="10" height="14" rx="2" />
       <path d="M9 4h8a2 2 0 0 1 2 2v12" />
       <path d="M8 10h4" />
@@ -33,7 +60,16 @@ const featureIcons = {
     </svg>
   ),
   'История сессий': (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <path d="M12 8v5l3 2" />
       <path d="M12 3a9 9 0 1 0 9 9" />
       <path d="M21 3v6h-6" />

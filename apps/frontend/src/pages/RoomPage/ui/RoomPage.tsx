@@ -9,20 +9,28 @@ import {
   mapSnapshotTasks,
   resolveRoomOwnerName,
 } from '@/entities/room/lib/roomSnapshotMappers';
-import { handleRevealAction, handleSelectCardAction } from '@/features/voting/lib/roomVotingActions';
+import {
+  handleRevealAction,
+  handleSelectCardAction,
+} from '@/features/voting/lib/roomVotingActions';
 import {
   handleAddTaskAction,
   handleNextTaskAction,
   handleSelectTaskAction,
 } from '@/features/task-management/lib/roomTaskActions';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { Card, Spinner } from '@/shared/ui';
+import { Spinner } from '@/shared/ui';
 import { TrophyIcon } from '@/shared/ui/icons';
-import { getLocalSession, loadRoomSnapshotWithToken, roomRefLooksLikeCode } from '@/shared/lib/room';
+import {
+  getLocalSession,
+  loadRoomSnapshotWithToken,
+  roomRefLooksLikeCode,
+} from '@/shared/lib/room';
 import { persistRoomSession } from '@/shared/lib/session/persistRoomSession';
+import { SessionManager } from '@/shared/lib/session';
 import { ParticipantsList, RoomFooter, RoomHeader, RoomResults, TaskSidebar } from '@/widgets';
 import { useRoomParams } from '../lib/useRoomParams';
-
+import { useRoomWebSocket } from '../lib/useRoomWebSocket';
 
 export function RoomPage() {
   const { roomId: roomRef } = useRoomParams();
@@ -42,11 +50,19 @@ export function RoomPage() {
     queryKey: ['room', resolvedRoomRef, user?.id ?? 'guest', roomAccessToken ?? 'no-token'],
     enabled: Boolean(user || roomAccessToken),
     queryFn: () => loadRoomSnapshotWithToken(resolvedRoomRef, roomAccessToken),
-    refetchInterval: 4000,
   });
 
   const snapshot = roomQuery.data;
   const roomId = snapshot?.room.id;
+
+  // Use WebSocket for real-time updates instead of polling
+  // Wait for resolved room ID before connecting WebSocket
+  const authToken = user ? SessionManager.getToken() : roomAccessToken;
+  useRoomWebSocket({
+    roomId: roomId || resolvedRoomRef,  // Use resolved room ID from snapshot or fallback to ref
+    token: authToken || undefined,
+    enabled: Boolean(user || roomAccessToken) && roomId !== undefined,  // Only enable when we have real room ID
+  });
 
   const refreshRoomData = async () => {
     await Promise.all([
@@ -57,7 +73,6 @@ export function RoomPage() {
       queryClient.invalidateQueries({ queryKey: ['room-history', roomId] }),
     ]);
   };
-
 
   const createTaskMutation = useMutation({
     mutationFn: (title: string) => roomApi.createTask(roomId as string, title, roomAccessToken),
@@ -81,7 +96,8 @@ export function RoomPage() {
   });
 
   const revealMutation = useMutation({
-    mutationFn: (roundId: string) => roomApi.revealRound(roomId as string, roundId, roomAccessToken),
+    mutationFn: (roundId: string) =>
+      roomApi.revealRound(roomId as string, roundId, roomAccessToken),
     onSuccess: refreshRoomData,
   });
 
@@ -131,7 +147,7 @@ export function RoomPage() {
   const currentUserName = user?.name || selfParticipant?.name || localSession?.userName || 'Гость';
   const tasks = mapSnapshotTasks(snapshot);
   const players = mapSnapshotPlayers(snapshot);
-  const { activeTaskId, activeTask, isRevealed, allPlayersVoted, anyPlayerVoted, selectedCard, average } =
+  const { activeTaskId, activeTask, isRevealed, allPlayersVoted, anyPlayerVoted, average } =
     getRoomVotingView(snapshot, tasks);
   const roomOwnerName = resolveRoomOwnerName(snapshot);
 
@@ -220,7 +236,10 @@ export function RoomPage() {
         <div className="absolute -right-1/4 -bottom-1/4 h-1/2 w-1/2 rounded-full bg-accent/5 blur-[120px]" />
         <div
           className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
-          style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '40px 40px' }}
+          style={{
+            backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
+            backgroundSize: '40px 40px',
+          }}
         />
       </div>
 

@@ -13,7 +13,6 @@
  * @param isRevealed — раскрыты ли результаты
  * @param className — дополнительный CSS-класс
  */
-import { Card } from '@/shared/ui';
 import { CheckIcon, CoffeeIcon, HelpCircleIcon, TargetIcon } from '@/shared/ui/icons';
 import { cn } from '@/shared/lib';
 import type { Player } from '@/shared/lib/poker';
@@ -25,7 +24,12 @@ interface ParticipantsListProps {
   className?: string;
 }
 
-export function ParticipantsList({ players, hasActiveTask, isRevealed, className }: ParticipantsListProps) {
+export function ParticipantsList({
+  players,
+  hasActiveTask,
+  isRevealed,
+  className,
+}: ParticipantsListProps) {
   if (players.length === 0) {
     return null;
   }
@@ -54,7 +58,9 @@ export function ParticipantsList({ players, hasActiveTask, isRevealed, className
     <section className={cn('w-full', className)}>
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between px-1">
-          <h2 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Участники</h2>
+          <h2 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+            Участники
+          </h2>
           <span className="text-xs font-medium text-muted-foreground/60">{players.length}</span>
         </div>
 
@@ -69,7 +75,9 @@ export function ParticipantsList({ players, hasActiveTask, isRevealed, className
                 key={player.id}
                 className={cn(
                   'group relative flex min-w-[140px] items-center gap-3 rounded-2xl border bg-card/30 p-2 backdrop-blur-sm transition-all duration-300',
-                  hasVote && !voteIsVisible ? 'border-primary/30 ring-1 ring-primary/10' : 'border-border/50'
+                  hasVote && !voteIsVisible
+                    ? 'border-primary/30 ring-1 ring-primary/10'
+                    : 'border-border/50',
                 )}
               >
                 {/* Subtle glow for players who voted */}
@@ -97,7 +105,7 @@ export function ParticipantsList({ players, hasActiveTask, isRevealed, className
                       ? 'border-primary/50 bg-background text-foreground'
                       : hasVote
                         ? 'border-primary bg-primary text-primary-foreground shadow-sm animate-vote-pulse'
-                        : 'border-border/50 bg-card/50 text-muted-foreground/40'
+                        : 'border-border/50 bg-card/50 text-muted-foreground/40',
                   )}
                   aria-label={`Голос ${player.name}: ${
                     voteIsVisible

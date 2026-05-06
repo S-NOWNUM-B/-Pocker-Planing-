@@ -38,7 +38,6 @@ export async function loadRoomSnapshotWithToken(
 
     return await roomApi.getRoomSnapshot(roomRef, roomAccessToken);
   } catch {
-
     throw new Error('room_not_available');
   }
 }

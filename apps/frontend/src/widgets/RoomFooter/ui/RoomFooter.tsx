@@ -1,6 +1,5 @@
 import { VotingCards } from '@/widgets/VotingCards';
 import { Button } from '@/shared/ui';
-import { cn } from '@/shared/lib';
 import { CheckIcon } from '@/shared/ui/icons';
 
 interface RoomFooterProps {

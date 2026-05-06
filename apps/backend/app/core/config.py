@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60 * 24 * 7
     frontend_url: str = "http://localhost:3000"
-    cors_origins: str = Field(default="http://localhost:3000,http://127.0.0.1:3000")
+    cors_origins: str = Field(default="http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173")
     seed_demo_data: bool = False
     demo_user_password: str = "DemoPass123!"
 

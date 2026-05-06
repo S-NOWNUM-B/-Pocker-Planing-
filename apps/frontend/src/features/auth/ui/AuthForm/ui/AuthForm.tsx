@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Link, useActionData, useNavigation, useSubmit } from 'react-router-dom';
-import type { z } from 'zod';
 import { Button, Input } from '@/shared/ui';
 import { LoginSchema, RegisterSchema } from '../../../model/schemas';
 import { PasswordInput } from '../../PasswordInput';
@@ -46,7 +45,6 @@ export function AuthForm({ mode }: AuthFormProps) {
 
   const isRegister = mode === 'register';
   const isSubmitting = navigation.state === 'submitting';
-  const submitAction = isRegister ? '/register' : '/login';
 
   const onSubmit = (data: AuthFormValues) => {
     const formData = new FormData();

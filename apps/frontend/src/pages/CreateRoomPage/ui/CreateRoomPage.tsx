@@ -184,15 +184,28 @@ export function CreateRoomPage() {
               Planning<span className="text-primary">.</span>Poker
             </h1>
             <p className="max-w-2xl text-xl leading-relaxed text-muted-foreground">
-              Создайте комнату, выберите колоду и начните оценивать задачи вместе с командой в реальном времени.
+              Создайте комнату, выберите колоду и начните оценивать задачи вместе с командой в
+              реальном времени.
             </p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
             {[
-              { icon: TrophyIcon, title: 'Быстрый старт', desc: 'Одна форма и мгновенный переход в комнату' },
-              { icon: UsersIcon, title: 'Командный ритм', desc: 'Идеально подходит для модератора и команды' },
-              { icon: LinkIcon, title: 'Постоянный доступ', desc: 'Ссылка сохраняется в браузере для быстрого возврата' },
+              {
+                icon: TrophyIcon,
+                title: 'Быстрый старт',
+                desc: 'Одна форма и мгновенный переход в комнату',
+              },
+              {
+                icon: UsersIcon,
+                title: 'Командный ритм',
+                desc: 'Идеально подходит для модератора и команды',
+              },
+              {
+                icon: LinkIcon,
+                title: 'Постоянный доступ',
+                desc: 'Ссылка сохраняется в браузере для быстрого возврата',
+              },
             ].map((item, i) => (
               <Card
                 key={i}

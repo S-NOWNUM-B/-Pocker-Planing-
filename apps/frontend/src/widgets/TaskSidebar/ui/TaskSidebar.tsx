@@ -85,7 +85,7 @@ export function TaskSidebar({
               'flex-1 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all duration-200',
               filter === f
                 ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
+                : 'text-muted-foreground hover:text-foreground',
             )}
           >
             {f === 'all' ? 'Все' : f === 'active' ? 'В работе' : 'Готовы'}
@@ -96,7 +96,9 @@ export function TaskSidebar({
       <div className="mb-6 max-h-58 space-y-2 overflow-y-auto pr-1 lg:min-h-0 lg:flex-1 lg:max-h-none scrollbar-hide">
         {filteredTasks.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border/60 bg-secondary/20 p-8 text-center text-xs text-muted-foreground leading-relaxed">
-            {filter === 'all' ? 'Список задач пуст. Добавьте первую задачу' : 'Нет задач в этом фильтре'}
+            {filter === 'all'
+              ? 'Список задач пуст. Добавьте первую задачу'
+              : 'Нет задач в этом фильтре'}
           </div>
         ) : (
           filteredTasks.map((task) => {
@@ -114,14 +116,18 @@ export function TaskSidebar({
                     ? 'border-primary/30 bg-primary/10 shadow-sm ring-1 ring-primary/10'
                     : task.estimate
                       ? 'border-border/50 bg-secondary/30 text-muted-foreground opacity-70'
-                      : 'border-border/50 bg-card/50 hover:border-primary/30 hover:bg-card/80'
+                      : 'border-border/50 bg-card/50 hover:border-primary/30 hover:bg-card/80',
                 )}
               >
                 <div className="flex items-start justify-between gap-2 w-full">
-                  <span className={cn(
-                    'line-clamp-2 text-sm font-medium transition-colors',
-                    isActive ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'
-                  )}>
+                  <span
+                    className={cn(
+                      'line-clamp-2 text-sm font-medium transition-colors',
+                      isActive
+                        ? 'text-foreground'
+                        : 'text-muted-foreground group-hover:text-foreground',
+                    )}
+                  >
                     {task.title}
                   </span>
                   {task.estimate && (
@@ -150,13 +156,13 @@ export function TaskSidebar({
           }}
         />
         <div className="absolute right-2 top-1/2 -translate-y-1/2">
-           <Button
-             onClick={onAddTask}
-             variant="ghost"
-             className="h-7 w-7 p-0 text-muted-foreground hover:text-primary"
-           >
-             <span className="text-lg leading-none">+</span>
-           </Button>
+          <Button
+            onClick={onAddTask}
+            variant="ghost"
+            className="h-7 w-7 p-0 text-muted-foreground hover:text-primary"
+          >
+            <span className="text-lg leading-none">+</span>
+          </Button>
         </div>
       </div>
     </aside>

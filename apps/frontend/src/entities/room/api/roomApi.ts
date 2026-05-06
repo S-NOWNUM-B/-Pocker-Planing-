@@ -47,12 +47,20 @@ export const roomApi = {
     deckPresetCode: 'fibonacci' | 'even' = 'fibonacci',
     authToken?: string,
   ): Promise<RoomSnapshot> => {
-    const { data } = await api.post('/rooms', { name, deck_preset_code: deckPresetCode }, withToken(authToken));
+    const { data } = await api.post(
+      '/rooms',
+      { name, deck_preset_code: deckPresetCode },
+      withToken(authToken),
+    );
     return data;
   },
 
   joinRoomByCode: async (roomCode: string, authToken?: string): Promise<RoomSnapshot> => {
-    const { data } = await api.post(`/rooms/code/${roomCode}/join`, undefined, withToken(authToken));
+    const { data } = await api.post(
+      `/rooms/code/${roomCode}/join`,
+      undefined,
+      withToken(authToken),
+    );
     return data;
   },
 
@@ -74,16 +82,33 @@ export const roomApi = {
   },
 
   startRound: async (roomId: string, taskId: string, authToken?: string): Promise<RoomSnapshot> => {
-    const { data } = await api.post(`/rooms/${roomId}/rounds/start`, { task_id: taskId }, withToken(authToken));
+    const { data } = await api.post(
+      `/rooms/${roomId}/rounds/start`,
+      { task_id: taskId },
+      withToken(authToken),
+    );
     return data;
   },
 
-  submitVote: async (roomId: string, roundId: string, value: string, authToken?: string): Promise<void> => {
+  submitVote: async (
+    roomId: string,
+    roundId: string,
+    value: string,
+    authToken?: string,
+  ): Promise<void> => {
     await api.post(`/rooms/${roomId}/rounds/${roundId}/vote`, { value }, withToken(authToken));
   },
 
-  revealRound: async (roomId: string, roundId: string, authToken?: string): Promise<RoomSnapshot> => {
-    const { data } = await api.post(`/rooms/${roomId}/rounds/${roundId}/reveal`, undefined, withToken(authToken));
+  revealRound: async (
+    roomId: string,
+    roundId: string,
+    authToken?: string,
+  ): Promise<RoomSnapshot> => {
+    const { data } = await api.post(
+      `/rooms/${roomId}/rounds/${roundId}/reveal`,
+      undefined,
+      withToken(authToken),
+    );
     return data;
   },
 
@@ -93,9 +118,13 @@ export const roomApi = {
     resultValue?: string,
     authToken?: string,
   ): Promise<RoomSnapshot> => {
-    const { data } = await api.post(`/rooms/${roomId}/rounds/${roundId}/finalize`, {
-      result_value: resultValue ?? null,
-    }, withToken(authToken));
+    const { data } = await api.post(
+      `/rooms/${roomId}/rounds/${roundId}/finalize`,
+      {
+        result_value: resultValue ?? null,
+      },
+      withToken(authToken),
+    );
     return data;
   },
 

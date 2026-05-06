@@ -17,7 +17,7 @@
  * @param className — дополнительный CSS-класс
  */
 import { useState, useEffect } from 'react';
-import { Button, Card, Modal } from '@/shared/ui';
+import { Button, Modal } from '@/shared/ui';
 import { cn } from '@/shared/lib';
 import { CheckIcon } from '@/shared/ui/icons';
 import type { RoomSnapshot } from '@/entities/room/model/types';
@@ -50,12 +50,10 @@ export function RoomResults({
   onFinalize,
   onNextTask,
   isOwner,
-  snapshot,
   className,
 }: RoomResultsProps) {
   const [finalValue, setFinalValue] = useState(average);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editValue, setEditValue] = useState(average);
 
   // Чтобы иметь доступ к snapshot внутри useEffect, нам нужно его передать.
   // Поскольку я не хочу переписывать RoomPage слишком сильно, я добавлю snapshot в пропсы.
@@ -91,102 +89,115 @@ export function RoomResults({
           className,
         )}
       >
-      <div className="relative z-10 flex h-full min-h-0 flex-col p-4 sm:p-6">
-        <div className="mb-6 flex items-start justify-between gap-4">
-          <div className="space-y-1">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-              Активная задача
+        <div className="relative z-10 flex h-full min-h-0 flex-col p-4 sm:p-6">
+          <div className="mb-6 flex items-start justify-between gap-4">
+            <div className="space-y-1">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                Активная задача
+              </div>
+              <div className="line-clamp-2 text-lg font-bold leading-tight text-foreground sm:text-2xl">
+                {activeTaskTitle ?? 'Добавьте задачу для оценки'}
+              </div>
             </div>
-            <div className="line-clamp-2 text-lg font-bold leading-tight text-foreground sm:text-2xl">
-              {activeTaskTitle ?? 'Добавьте задачу для оценки'}
+            <div className="flex flex-col items-end gap-1 rounded-2xl border border-border/50 bg-background/50 px-3 py-1.5 backdrop-blur-sm shadow-inner">
+              <div className="text-[10px] font-medium uppercase tracking-tight text-muted-foreground">
+                Среднее
+              </div>
+              <div className="text-lg font-black text-primary sm:text-xl">
+                {average} <span className="text-xs font-medium opacity-60">SP</span>
+              </div>
             </div>
           </div>
-          <div className="flex flex-col items-end gap-1 rounded-2xl border border-border/50 bg-background/50 px-3 py-1.5 backdrop-blur-sm shadow-inner">
-            <div className="text-[10px] font-medium uppercase tracking-tight text-muted-foreground">Среднее</div>
-            <div className="text-lg font-black text-primary sm:text-xl">{average} <span className="text-xs font-medium opacity-60">SP</span></div>
-          </div>
-        </div>
 
-        <div className="flex flex-1 items-center justify-center py-2 sm:py-4">
-          {isRevealed ? (
-            <div className="flex w-full max-w-xs flex-col items-center gap-4 text-center">
-              <div className="relative group shrink-0">
-                <div className="absolute -inset-8 rounded-full bg-primary/30 blur-3xl animate-pulse-glow" />
-                <div className={cn(
-                  'relative flex flex-col items-center justify-center rounded-full border-4 border-primary bg-card p-4 shadow-2xl w-32 h-32 sm:w-40 sm:h-40 transition-all',
-                  'animate-reveal-pop',
-                  isOwner && !isFinalized && 'cursor-pointer hover:scale-105 hover:border-primary/80 active:scale-95',
-                )}
-                onClick={() => {
-                  if (isOwner && !isFinalized) {
-                    setIsEditModalOpen(true);
-                    setEditValue(finalValue);
-                  }
-                }}
-                >
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Итог</div>
-                  <div className="text-4xl font-black text-foreground sm:text-5xl">{finalValue}</div>
-                  <div className="text-[9px] font-medium text-muted-foreground mt-1">Story Points</div>
-                  {!isFinalized && isOwner && (
-                    <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg animate-bounce">
-                      <CheckIcon className="h-2.5 w-2.5" />
+          <div className="flex flex-1 items-center justify-center py-2 sm:py-4">
+            {isRevealed ? (
+              <div className="flex w-full max-w-xs flex-col items-center gap-4 text-center">
+                <div className="relative group shrink-0">
+                  <div className="absolute -inset-8 rounded-full bg-primary/30 blur-3xl animate-pulse-glow" />
+                  <div
+                    className={cn(
+                      'relative flex flex-col items-center justify-center rounded-full border-4 border-primary bg-card p-4 shadow-2xl w-32 h-32 sm:w-40 sm:h-40 transition-all',
+                      'animate-reveal-pop',
+                      isOwner &&
+                        !isFinalized &&
+                        'cursor-pointer hover:scale-105 hover:border-primary/80 active:scale-95',
+                    )}
+                    onClick={() => {
+                      if (isOwner && !isFinalized) {
+                        setIsEditModalOpen(true);
+                        setEditValue(finalValue);
+                      }
+                    }}
+                  >
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">
+                      Итог
                     </div>
-                  )}
+                    <div className="text-4xl font-black text-foreground sm:text-5xl">
+                      {finalValue}
+                    </div>
+                    <div className="text-[9px] font-medium text-muted-foreground mt-1">
+                      Story Points
+                    </div>
+                    {!isFinalized && isOwner && (
+                      <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg animate-bounce">
+                        <CheckIcon className="h-2.5 w-2.5" />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              {isFinalized ? (
-                <Button
-                  type="button"
-                  onClick={onNextTask}
-                  className="h-11 rounded-full px-8 text-sm font-bold shadow-lg transition-transform hover:scale-105 active:scale-95"
-                >
-                  Следующая задача
-                </Button>
-              ) : isOwner ? (
-                <Button
-                  type="button"
-                  onClick={() => onFinalize(finalValue)}
-                  className="h-11 rounded-full px-8 text-sm font-bold shadow-lg transition-transform hover:scale-105 active:scale-95 bg-primary text-primary-foreground"
-                >
-                  Подтвердить оценку
-                </Button>
-              ) : null}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center gap-6 text-center">
-              <div className="max-w-sm text-sm font-medium text-muted-foreground leading-relaxed">
-                {allPlayersVoted
-                  ? isOwner
-                    ? 'Все участники проголосовали. Можно показывать результат.'
-                    : 'Все участники проголосовали. Ожидайте вскрытия карт.'
-                  : anyPlayerVoted
-                    ? isOwner
-                      ? 'Часть голосов уже есть. Можно вскрыть сейчас или подождать остальных.'
-                      : 'Идут голосования. Ожидайте вскрытия карт.'
-                    : hasActiveTask
-                      ? 'Пока нет голосов. Выберите карту, чтобы начать раунд.'
-                      : 'Пока нет активной задачи. Добавьте задачу и начните раунд.'}
+                {isFinalized ? (
+                  <Button
+                    type="button"
+                    onClick={onNextTask}
+                    className="h-11 rounded-full px-8 text-sm font-bold shadow-lg transition-transform hover:scale-105 active:scale-95"
+                  >
+                    Следующая задача
+                  </Button>
+                ) : isOwner ? (
+                  <Button
+                    type="button"
+                    onClick={() => onFinalize(finalValue)}
+                    className="h-11 rounded-full px-8 text-sm font-bold shadow-lg transition-transform hover:scale-105 active:scale-95 bg-primary text-primary-foreground"
+                  >
+                    Подтвердить оценку
+                  </Button>
+                ) : null}
               </div>
-              {isOwner ? (
-                <Button
-                  type="button"
-                  onClick={onReveal}
-                  disabled={!hasActiveTask || (!allPlayersVoted && !anyPlayerVoted)}
-                  className="h-12 rounded-full px-10 text-sm font-bold shadow-xl transition-all hover:scale-105 active:scale-95 disabled:opacity-50"
-                >
-                  Вскрыть карты
-                </Button>
-              ) : (
-                <div className="text-xs font-medium text-muted-foreground/60 italic">
-                  Только владелец может вскрыть карты
+            ) : (
+              <div className="flex flex-col items-center gap-6 text-center">
+                <div className="max-w-sm text-sm font-medium text-muted-foreground leading-relaxed">
+                  {allPlayersVoted
+                    ? isOwner
+                      ? 'Все участники проголосовали. Можно показывать результат.'
+                      : 'Все участники проголосовали. Ожидайте вскрытия карт.'
+                    : anyPlayerVoted
+                      ? isOwner
+                        ? 'Часть голосов уже есть. Можно вскрыть сейчас или подождать остальных.'
+                        : 'Идут голосования. Ожидайте вскрытия карт.'
+                      : hasActiveTask
+                        ? 'Пока нет голосов. Выберите карту, чтобы начать раунд.'
+                        : 'Пока нет активной задачи. Добавьте задачу и начните раунд.'}
                 </div>
-              )}
-            </div>
-          )}
+                {isOwner ? (
+                  <Button
+                    type="button"
+                    onClick={onReveal}
+                    disabled={!hasActiveTask || (!allPlayersVoted && !anyPlayerVoted)}
+                    className="h-12 rounded-full px-10 text-sm font-bold shadow-xl transition-all hover:scale-105 active:scale-95 disabled:opacity-50"
+                  >
+                    Вскрыть карты
+                  </Button>
+                ) : (
+                  <div className="text-xs font-medium text-muted-foreground/60 italic">
+                    Только владелец может вскрыть карты
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
       <EditResultModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}

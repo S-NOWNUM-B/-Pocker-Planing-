@@ -3,18 +3,23 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy root monorepo files
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Copy monorepo configuration
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 
-# Copy frontend app
+# Copy package.json files to leverage Docker cache
+# We need to copy all package.json files from the workspace to install dependencies
+COPY apps/frontend/package.json ./apps/frontend/
+COPY packages/shared/package.json ./packages/shared/
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Now copy the rest of the source code
 COPY apps/frontend ./apps/frontend
-
-# Copy shared packages
 COPY packages ./packages
-
-# Install pnpm and dependencies
-RUN npm install -g pnpm && \
-    pnpm install --frozen-lockfile
 
 # Build the frontend application
 RUN cd apps/frontend && pnpm run build

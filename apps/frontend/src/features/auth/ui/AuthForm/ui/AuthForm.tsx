@@ -32,41 +32,38 @@ const registerDefaults = {
 
 export function AuthForm({ mode }: AuthFormProps) {
   const navigation = useNavigation();
-  const actionData = useActionData() as { error?: string } | undefined;
   const submit = useSubmit();
+  const actionData = useActionData() as { error?: string } | undefined;
 
   const schema = useMemo(() => (mode === 'login' ? LoginSchema : RegisterSchema), [mode]);
 
   const form = useForm<AuthFormValues>({
     resolver: zodResolver(schema),
-    mode: 'onSubmit',
     defaultValues: mode === 'login' ? loginDefaults : registerDefaults,
+    mode: 'onBlur',
+    shouldFocusError: false,
   });
 
   const isRegister = mode === 'register';
-  const submitAction = isRegister ? '/register' : '/login';
   const isSubmitting = navigation.state === 'submitting';
+  const submitAction = isRegister ? '/register' : '/login';
 
-  const handleValidSubmit = (values: AuthFormValues) => {
+  const onSubmit = (data: AuthFormValues) => {
     const formData = new FormData();
-
-    formData.append('email', values.email);
-    formData.append('password', values.password);
-
-    if (isRegister) {
-      formData.append('name', values.name || '');
-      formData.append('confirmPassword', values.confirmPassword || '');
-    }
-
-    submit(formData, { method: 'post', action: submitAction });
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined) {
+        formData.append(key, value);
+      }
+    });
+    submit(formData, { method: 'post' });
   };
 
   return (
-    <form noValidate onSubmit={form.handleSubmit(handleValidSubmit)} className="space-y-4">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
       <Input
         label="Email"
         type="email"
-        autoComplete="email"
+        autoComplete="off"
         placeholder="you@example.com"
         error={form.formState.errors.email?.message}
         disabled={isSubmitting}
@@ -77,7 +74,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         <Input
           label="Имя пользователя"
           type="text"
-          autoComplete="name"
+          autoComplete="off"
           placeholder="Иван Петров"
           error={form.formState.errors.name?.message}
           disabled={isSubmitting}
@@ -87,7 +84,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 
       <PasswordInput
         label="Пароль"
-        autoComplete={isRegister ? 'new-password' : 'current-password'}
+        autoComplete="off"
         placeholder="••••••••"
         error={form.formState.errors.password?.message}
         disabled={isSubmitting}
@@ -98,7 +95,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       {isRegister && (
         <PasswordInput
           label="Подтверждение пароля"
-          autoComplete="new-password"
+          autoComplete="off"
           placeholder="••••••••"
           error={form.formState.errors.confirmPassword?.message}
           disabled={isSubmitting}
@@ -109,7 +106,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 
       {actionData?.error && (
         <p className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-          {actionData.error}
+          {mode === 'login' ? 'Неверный логин или пароль' : actionData.error}
         </p>
       )}
 
